@@ -1,0 +1,131 @@
+[07-Jul-2024 21:34:54 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'field list' in /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php:19
+Stack trace:
+#0 /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php(19): PDOStatement->execute()
+#1 {main}
+  thrown in /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php on line 19
+[07-Jul-2024 21:35:36 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'field list' in /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php:19
+Stack trace:
+#0 /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php(19): PDOStatement->execute()
+#1 {main}
+  thrown in /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php on line 19
+[07-Jul-2024 22:02:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'field list' in /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php:19
+Stack trace:
+#0 /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php(19): PDOStatement->execute()
+#1 {main}
+  thrown in /home/riidalms/public_html/gha.riidalms.com.ng/application/start-application.php on line 19
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Undefined variable $ref in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 15
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 26
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 32
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 34
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 45
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 49
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 53
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 57
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 61
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 65
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 166
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Undefined variable $progress in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 171
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Undefined variable $progress in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 174
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Undefined variable $color in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 174
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Undefined variable $progress in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 174
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 181
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 181
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 182
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 191
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 229
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 235
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 246
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 246
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 254
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 275
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 275
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 291
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 298
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 309
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 315
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 334
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 346
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 346
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 355
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 355
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 368
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 375
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 386
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 397
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 404
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 404
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 417
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 423
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 434
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 440
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 451
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 474
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 480
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 490
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 496
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 508
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 508
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 518
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 528
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 534
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 547
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 553
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 563
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 569
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 581
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 581
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 591
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 601
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 607
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 622
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 628
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 646
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 652
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 658
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 671
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 677
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 683
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 695
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 701
+[19-Jul-2024 04:22:10 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 707
+[19-Jul-2024 08:14:22 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 09:26:24 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 09:26:25 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 09:26:28 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 09:47:14 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 09:47:15 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 09:47:17 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 10:04:54 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 10:04:55 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[19-Jul-2024 10:04:56 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[21-Jul-2024 15:58:04 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[21-Jul-2024 15:58:12 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[21-Jul-2024 15:58:17 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[23-Jul-2024 20:46:13 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[23-Jul-2024 20:46:46 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[23-Jul-2024 20:46:50 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[23-Jul-2024 21:14:28 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[23-Jul-2024 21:14:30 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[25-Jul-2024 16:45:39 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[25-Jul-2024 16:45:40 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[25-Jul-2024 16:45:42 UTC] PHP Warning:  Undefined array key "ref" in /home/riidalms/public_html/gha.riidalms.com.ng/application/application.php on line 2
+[30-Jul-2024 13:53:27 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 34
+[30-Jul-2024 13:53:27 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 182
+[30-Jul-2024 13:53:27 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 34
+[30-Jul-2024 13:53:27 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 182
+[30-Jul-2024 14:17:52 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:17:52 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:17:52 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:17:52 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:23:33 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:23:33 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:23:33 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:23:33 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:24:49 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:24:49 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:24:49 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:24:49 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:29:41 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:29:41 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:29:42 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327
+[30-Jul-2024 14:29:42 UTC] PHP Warning:  Array to string conversion in /home/riidalms/public_html/gha.riidalms.com.ng/application/application-status.php on line 327

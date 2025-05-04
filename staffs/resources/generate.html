@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate Lesson contents</title>
+  <script src='curriculum.js'></script>
+<style>
+       .card {
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="status-container"></div>
+<div id="progress-container"></div>
+<button id="startBtn">Start</button>
+<button id="pauseBtn">Pause</button>
+<button id="stopBtn">Stop</button>
+
+<script>
+  // Function to send AJAX request
+  function sendAjaxRequest(data) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(xhr.responseText);
+          } else {
+            reject(xhr.statusText);
+          }
+        }
+      };
+      xhr.open("POST", "generate.php", true);
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify(data));
+    });
+  }
+
+  let isPaused = false;
+  let isStopped = false;
+
+  // Event listener for the start button
+  document.getElementById('startBtn').addEventListener('click', function() {
+    isStopped = false;
+    processJson();
+  });
+
+  // Event listener for the pause button
+  document.getElementById('pauseBtn').addEventListener('click', function() {
+    isPaused = !isPaused;
+  });
+
+  // Event listener for the stop button
+  document.getElementById('stopBtn').addEventListener('click', function() {
+    isStopped = true;
+  });
+
+  // Async function to iterate over the JSON and send AJAX requests
+  async function processJson() {
+    const statusContainer = document.getElementById('status-container');
+    const progressContainer = document.getElementById('progress-container');
+
+    const subjects = Object.keys(primaryOne);
+    const totalSubtopics = subjects.reduce((acc, subject) => {
+      return acc + Object.values(primaryOne[subject]).reduce((acc, theme) => acc + theme.Content.length, 0);
+    }, 0);
+
+    let processedSubtopics = 0;
+
+    // Iterate over primaryOne JSON
+    for (const subject of subjects) {
+      const themes = primaryOne[subject];
+
+      for (const theme in themes) {
+        const topic = themes[theme].Topic;
+        const contents = themes[theme].Content;
+        const student_class = 'Primary 1';
+
+        // Iterate over contents and send AJAX call for each
+        for (const subtopic of contents) {
+          if (isStopped) {
+            progressContainer.innerHTML = 'Processing stopped!';
+            return;
+          }
+
+          if (isPaused) {
+            progressContainer.innerHTML = 'Processing paused...';
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for 1 second
+            continue;
+          }
+
+          const data = {
+            subject: subject,
+            class: student_class,
+            topic: topic,
+            subtopic: subtopic
+          };
+
+          try {
+            console.log(data);
+            const response = await sendAjaxRequest(data);
+
+            // Check if the response is a success message
+            if (response.trim().toLowerCase() === 'success') {
+              statusContainer.innerHTML += `<p>Success: ${subject} - ${theme} - ${topic} - ${subtopic}</p>`;
+            } else {
+              statusContainer.innerHTML += `<p>Error: Unexpected response for ${subject} - ${theme} - ${topic} - ${subtopic}</p>`;
+            }
+          } catch (error) {
+            statusContainer.innerHTML += `<p>Error: ${error} for ${subject} - ${theme} - ${topic} - ${subtopic}</p>`;
+          }
+
+          processedSubtopics++;
+          const percentage = Math.round((processedSubtopics / totalSubtopics) * 100);
+          progressContainer.innerHTML = `Processing... ${percentage}%`;
+
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for 1 second
+        }
+      }
+    }
+
+    progressContainer.innerHTML = 'Processing complete!';
+  }
+</script>
+
+</body>
+</html>

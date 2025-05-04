@@ -1,0 +1,45 @@
+<div id="my-dropzone" class="dropzone">
+
+    <div class="dz-message needsclick">
+      <div class="circle circle-lg bg-primary">
+        <i class="fe fe-upload fe-24 text-white"></i>
+      </div>
+      <h5 class="text-muted mt-4">Drop files here or click to upload</h5>
+    </div>
+    
+    <div class="d-none" id="uploadPreviewTemplate">
+      <div class="card mt-1 mb-0 shadow-none border">
+        <div class="p-2">
+          <div class="row align-items-center">
+            <div class="col-auto" style="border-radius: 10%;">
+              <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
+            </div>
+            <div class="col pl-0">
+              <a href="javascript:void(0);" class="text-muted font-weight-bold" data-dz-name></a>
+              <p class="mb-0" data-dz-size></p>
+            </div>
+            <div class="col-auto">
+              <!-- Button -->
+              <a href="" class="btn btn-link btn-lg text-muted" data-dz-remove>
+                <i class="dripicons-cross"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    Dropzone.autoDiscover = false; // Disable auto initialization
+
+    $(document).ready(function () {
+      // Initialize Dropzone on the specific element
+      $("#my-dropzone").dropzone({
+        url: "upload.php",
+        paramName: "file", // Name of the file parameter to be sent to the server
+        maxFilesize: 10, // Maximum file size in MB
+        // Add more Dropzone options as needed
+      });
+    });
+  </script>

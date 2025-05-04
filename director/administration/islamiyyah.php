@@ -1,0 +1,692 @@
+<?php require '../settings.php'; ?>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../assets/images/logo.jpg">
+  <title>Islamiyyah Members | Rinda AMS</title>
+  <!-- Simple bar CSS -->
+  <link rel="stylesheet" href="../css/simplebar.css">
+  <!-- Fonts CSS -->
+  <link href="overpass-font.css" rel="stylesheet">
+  <!-- Icons CSS -->
+  <link rel="stylesheet" href="../css/feather.css">
+  <link rel="stylesheet" href="../css/dataTables.bootstrap4.css">
+  <!-- Date Range Picker CSS -->
+  <!-- jquery -->
+  <script src="jquery-3.6.0.min.js"></script>
+
+  <link rel="stylesheet" href="../css/daterangepicker.css">
+  <!-- App CSS -->
+  <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
+  <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
+  <style>
+    .card {
+      border-radius: 8px;
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      background-color: rgba(0, 10, 5, 0.8);
+      /* Background color with opacity */
+      color: #fff;
+    }
+
+    .popup.success {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .popup.error {
+      background-color: #F44336;
+      color: white;
+    }
+
+    .popup i {
+      margin-right: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .desktop {
+        display: none;
+        min-width: 720px;
+      }
+    }
+
+
+    @media (min-width: 768px) {
+      .mobile {
+        display: none;
+        min-width: 720px;
+      }
+    }
+  </style>
+</head>
+
+<body class="vertical  light  ">
+  <div class="wrapper">
+    <nav class="topnav navbar navbar-light">
+      <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
+        <i class="fe fe-menu navbar-toggler-icon"></i>
+      </button>
+      <form class="form-inline mr-auto searchform text-muted">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+      </form>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
+            <i class="fe fe-sun fe-16"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-shortcut">
+            <span class="fe fe-grid fe-16"></span>
+          </a>
+        </li>
+        <li class="nav-item nav-notif">
+          <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-notif">
+            <span class="fe fe-bell fe-16"></span>
+            <span class="dot dot-md bg-success"></span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="avatar avatar-sm mt-2">
+              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+            </span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <div class=" col-12 text-left">
+              <p style="padding: 0%; margin: 0%;">
+                <?= $full_name; ?>
+              </p>
+              <strong>
+                <?= $account_type; ?>
+              </strong>
+            </div>
+            <hr width="80%">
+            <a class="dropdown-item text-muted" href="#">Profile</a>
+            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../logout.php">Log out</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
+      <a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
+        <i class="fe fe-x"><span class="sr-only"></span></i>
+      </a>
+      <nav class="vertnav navbar navbar-light">
+        <!-- nav bar -->
+        <div class="w-100 mb-4 d-flex">
+          <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+              <g>
+                <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
+                <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
+                <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
+              </g>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Dashboard -->
+        <p class="text-muted nav-heading mt-4 mb-1">
+          <span>Dashboard</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="index.php">
+              <i class="fe fe-codesandbox fe-16"></i>
+              <span class="ml-3 item-text">General Fees</span>
+              </i>
+            </a>
+          </li>
+
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="invoices.php">
+              <i class="fe fe-users fe-16"></i>
+              <span class="ml-3 item-text">Invoices</span>
+              </i>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="expenses.php">
+              <i class="fe fe-users fe-16"></i>
+              <span class="ml-3 item-text">Expenses</span>
+              </i>
+            </a>
+          </li>
+
+          <!-- Subscriptions Types -->
+          <p class="text-muted nav-heading mt-4 mb-1">
+            <span>Subscriptions</span>
+          </p>
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item active">
+              <a class="nav-link text-primary" href="#">
+                <i class="fe fe-book-open fe-16"></i>
+                <span class="ml-3 item-text">Islamiyyah</span>
+                </i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="fe fe-coffee fe-16"></i>
+                <span class="ml-3 item-text">Breakfast</span>
+                </i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="lunch.php">
+                <i class="fe fe-slack fe-16"></i>
+                <span class="ml-3 item-text">Lunch</span>
+                </i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="shuttle.php">
+                <i class="fe fe-truck fe-16"></i>
+                <span class="ml-3 item-text">Shuttle</span>
+                </i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="iep.php">
+                <i class="fe fe-briefcase fe-16"></i>
+                <span class="ml-3 item-text">IEP</span>
+                </i>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="shadow.php">
+                <i class="fe fe-award fe-16"></i>
+                <span class="ml-3 item-text">Shadow</span>
+                </i>
+              </a>
+            </li>
+
+          </ul>
+
+          <!-- Hostel -->
+          <p class="text-muted nav-heading mt-4 mb-1">
+            <span>Hostel</span>
+          </p>
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="#">
+                <i class="fe fe-file-plus fe-16"></i>
+                <span class="ml-3 item-text">Hostels</span>
+                </i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="#">
+                <i class="fe fe-user-plus fe-16"></i>
+                <span class="ml-3 item-text">Room Types</span>
+                </i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="#">
+                <i class="fe fe-file-plus fe-16"></i>
+                <span class="ml-3 item-text">Membership</span>
+                </i>
+              </a>
+            </li>
+
+
+          </ul>
+
+          <!-- Extra -->
+
+      </nav>
+    </aside>
+    <main role="main" class="main-content">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="row">
+              <!-- Small table -->
+              <div class="col-md-12 my-4">
+                <div class="row align-items-center my-3">
+                  <div class="col">
+                    <h3 class="page-title">Islmaiyyah Invoices</h3>
+                  </div>
+                  <!-- <div class="col-auto">
+                    <a href="new.php">
+                      <button type="button" class="btn  btn-primary"><span class="fe fe-plus fe-16 mr-3"></span>New</button></a>
+                  </div> -->
+                </div>
+                <div class="row">
+                  <!-- Striped rows -->
+                  <div class="col-md-12 my-4">
+                    <div class="card shadow">
+                      <div class="card-body">
+                        <!-- table -->
+
+                        <table class="table datatables" id="dataTable-1">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>First Name</th>
+                              <th>Class</th>
+                              <th>Type</th>
+                              <th>Term</th>
+                              <th>Amount</th>
+                              <th>Paid</th>
+                              <th>Outstanding</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php
+                            try {
+
+                              $status = 'Paid';
+
+                              $sql = "SELECT
+            s.id, 
+            CONCAT(s.firstName, ' ', s.lastName) AS full_name, 
+            c.class, 
+            i.invoice_ref, 
+            i.type, 
+            i.amount, 
+            i.paid_amount,
+            i.validity, 
+            i.session, 
+            i.status,
+            ps.parent_id,
+            ps.student_id,
+            CASE 
+                WHEN i.term = 1 THEN 'First Term' 
+                WHEN i.term = 2 THEN 'Second Term' 
+                WHEN i.term = 3 THEN 'Third Term' 
+                ELSE '' 
+            END AS term
+        FROM students s  
+        INNER JOIN fees_invoices i ON i.student_id = s.id 
+        INNER JOIN classes c ON i.class_id = c.id
+        LEFT JOIN parent_student ps ON ps.student_id = s.id
+        WHERE s.status = 1 
+        AND i.amount != 0 
+        AND (i.session = :session OR i.status != :status) 
+        ORDER BY i.term ASC, full_name ASC";
+
+
+                              $stmt = $pdo->prepare($sql);
+                              $stmt->bindParam(':session', $curr_session);
+                              $stmt->bindParam(':status', $status);
+                              $stmt->execute();
+                              $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch (PDOException $e) {
+                              // Handle database error
+                              echo 'Error: ' . $e->getMessage();
+                              die();
+                            }
+
+                            foreach ($invoices as $index => $invoice) : ?>
+                              <tr>
+                                <td>
+                                  <?= $index + 1 ?>
+                                </td>
+
+                                <td>
+                                  <?= $invoice['full_name'] ?>
+                                </td>
+                                <td>
+                                  <?= $invoice['class'] ?>
+                                </td>
+                                <td>
+                                  <?= $invoice['type'] ?>
+                                </td>
+                                <td>
+                                  <?= $invoice['term'] ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  $formatted_amount = '₦' . number_format($invoice['amount'], 2);
+                                  echo
+                                  $formatted_amount;
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  $formatted_amount = '₦' . number_format($invoice['paid_amount'], 2);
+                                  echo
+                                  $formatted_amount;
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  if ($invoice['status'] !== 'Paid' && $invoice['status'] !== 'Paid (Discounted)') {
+                                    $defaulting_balance = $invoice['amount'] - $invoice['paid_amount'];
+                                    if ($defaulting_balance == 0) {
+                                      echo "<p class='text-success'>₦ " . number_format($defaulting_balance, 2) . "</p>";
+                                    } else {
+                                      echo "<p class='text-danger'>₦ " . number_format($defaulting_balance, 2) . "</p>";
+                                    }
+                                  } else {
+                                    echo "<p class='text-success'>₦ 0.00</p>";
+                                  }
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  if ($invoice['status'] === 'Paid') {
+                                    echo "<p class='text-success'>Paid in full</p>";
+                                  } elseif ($invoice['status'] == 'Unpaid') {
+                                    echo "<p class='text-danger'>Unpaid</p>";
+                                  } elseif ($defaulting_balance == 0) {
+                                    echo "<p class='text-success'>Paid in full</p>";
+                                  } elseif ($invoice['status'] == 'Paid (Discounted)') {
+                                    echo "<p class='text-success'>Paid (Discounted)</p>";
+                                  } else {
+                                    $statusUnpaid = $invoice['status'];
+                                    echo "<p class='text-warning'>$statusUnpaid</p>";
+                                  }
+                                  ?>
+                                </td>
+                                <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="text-muted sr-only">Action</span>
+                                  </button>
+                                  <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change status</a>
+
+                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
+                                                              echo 'disabled';
+                                                            } ?>" href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>" <?php if (empty($invoice['parent_id'])) {
+                                                                                                                                                                  echo 'title="Student not linked to any parent"';
+                                                                                                                                                                } ?>>
+                                      Send Reminder
+                                    </a>
+
+                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
+                                                              echo 'disabled';
+                                                            } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
+                                                                                                                                          echo 'title="Student not linked to any parent"';
+                                                                                                                                        } ?>>
+                                      Parent Profile
+                                    </a>
+                                  </div>
+
+                                </td>
+                              </tr>
+                            <?php endforeach; ?>
+
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div> <!-- simple table -->
+                </div> <!-- end section -->
+              </div> <!-- .col-12 -->
+            </div> <!-- .row -->
+          </div> <!-- .container-fluid -->
+          <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                  <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item bg-transparent">
+                      <div class="row align-items-center">
+                        <div class="col text-center"> <small><strong>You're well up to date</strong></small>
+                          <div class="my-0 text-muted small">No notifications available</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> <!-- / .list-group -->
+                </div>
+                <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="defaultModalLabel">Control Panel</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body px-5">
+                  <div class="row align-items-center">
+                    <div class="col-6 text-center">
+                      <a href="#" style="text-decoration: none;">
+                        <div class="squircle bg-success justify-content-center">
+                          <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
+                        </div>
+                        <p class="text-success">Dashboard</p>
+                      </a>
+                    </div>
+                    <div class="col-6 text-center">
+                      <a href="#" style="text-decoration: none;">
+                        <div class="squircle bg-secondary justify-content-center">
+                          <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
+                        </div>
+                        <p class="text-white">Academics</p>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row align-items-center">
+                    <div class="col-6 text-center">
+                      <a href="../lms" style="text-decoration: none;">
+                        <div class="squircle bg-secondary justify-content-center">
+                          <i class="fe fe-trello fe-32 align-self-center text-white"></i>
+                        </div>
+                        <p class="text-white">E-Learning</p>
+                      </a>
+                    </div>
+                    <div class="col-6 text-center">
+                      <a href="../messages" style="text-decoration: none;">
+                        <div class="squircle bg-secondary justify-content-center">
+                          <i class="fe fe-mail fe-32 align-self-center text-white"></i>
+                        </div>
+                        <p class="text-white">Messages</p>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row align-items-center">
+                    <div class="col-6 text-center">
+                      <a href="../shop" style="text-decoration: none;">
+                        <div class="squircle bg-secondary justify-content-center">
+                          <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
+                        </div>
+                        <p class="text-white">Shop</p>
+                      </a>
+                    </div>
+                    <div class="col-6 text-center">
+                      <a href="../hr/" style="text-decoration: none;">
+                        <div class="squircle bg-secondary justify-content-center text-white">
+                          <i class="fe fe-users fe-32 align-self-center"></i>
+                        </div>
+                        <p class="text-white">HR</p>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row align-items-center">
+                    <div class="col-6 text-center">
+                      <a href="../assessments" style="text-decoration: none;">
+                        <div class="squircle bg-secondary justify-content-center">
+                          <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
+                        </div>
+                        <p class="text-white">Assessments</p>
+                      </a>
+                    </div>
+                    <div class="col-6 text-center">
+                      <a href="#" style="text-decoration: none;">
+                        <div class="squircle bg-secondary justify-content-center">
+                          <i class="fe fe-settings fe-32 align-self-center text-muted"></i>
+                        </div>
+                        <p class="text-muted">Settings</p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </main> <!-- main -->
+  </div> <!-- .wrapper -->
+
+
+  <!-- new Modal-->
+  <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newModalLabel">Add New Fee Type</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="newForm">
+            <div class="form-group">
+              <label for="fee-name" class="col-form-label">Fees Type:</label>
+              <input type="text" class="form-control" id="fee-name" required>
+            </div>
+            <div class="form-group">
+              <label for="fee-amount" class="col-form-label">Amount:</label>
+              <input type="number" class="form-control" id="fee-amount" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="custom-subject">Duration</label>
+                <select class="custom-select" id="custom-subject" name="subject" required>
+                  <!-- Options for subject -->
+                  <option selected disabled>Select</option>
+                  <option value="1">One-time Payment</option>
+                  <option value="2">Weekly</option>
+                  <option value="3">Monthly</option>
+                  <option value="4">Per Term</option>
+                  <option value="5">Per session</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="custom-class">Class <span><small>optional</small></span></label>
+                <select class="custom-select" id="custom-class" name="class" required>
+                  <!-- Options for class -->
+                  <option selected disabled>Select</option>
+                  <option value="Grade 1">Grade 1</option>
+                  <option value="Grade 2">Grade 2</option>
+                  <option value="Grade 3">Grade 3</option>
+                  <option value="Grade 4">Grade 4</option>
+                  <option value="Grade 5">Grade 5</option>
+                  <option value="Grade 6">Grade 6</option>
+                  <option value="Grade 7">Grade 7</option>
+                  <option value="Grade 8">Grade 8</option>
+                  <option value="Grade 9">Grade 9</option>
+                  <option value="Grade 10">Grade 10</option>
+                  <option value="Grade 11">Grade 11</option>
+                  <option value="Grade 12">Grade 12</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn mb-2 btn-primary w-100" id="saveBtn">Save
+            Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    $(document).ready(function() {
+
+      // Event listener for saving changes
+      $('#saveBtn').on('click', function() {
+
+        var newTitle = $('#fee-name').val();
+        var newAmount = $('#fee-amount').val();
+        var newClass = $('#custom-class').val();
+        var newSubject = $('#custom-subject').val();
+
+        // Perform AJAX request to update fee information in the database
+        $.ajax({
+          url: 'add-fee.php',
+          type: 'POST',
+          data: {
+            title: newTitle,
+            class: newClass,
+            subject: newSubject
+          },
+          success: function(response) {
+            // Handle success
+            console.log(response);
+            // Optionally update the UI to reflect the changes
+            // For example, update the title of the fee row
+            $('#newModal').modal('hide');
+          },
+          error: function(xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- end new -->
+
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/popper.min.js"></script>
+  <script src="../js/moment.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/simplebar.min.js"></script>
+  <script src='../js/daterangepicker.js'></script>
+  <script src='../js/jquery.stickOnScroll.js'></script>
+  <script src="../js/tinycolor-min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src='../js/jquery.dataTables.min.js'></script>
+  <script src='../js/dataTables.bootstrap4.min.js'></script>
+  <script>
+    $('#dataTable-1').DataTable({
+      autoWidth: true,
+      "lengthMenu": [
+        [16, 32, 64, -1],
+        [16, 32, 64, "All"]
+      ]
+    });
+  </script>
+  <script src="../js/apps.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+  </script>
+</body>
+
+</html>

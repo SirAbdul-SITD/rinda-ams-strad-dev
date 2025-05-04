@@ -1,0 +1,33 @@
+To increment the admission number, you'll need to extract the numeric part, increment it, and then append it to the prefix ("GHA/2017/"). Here's a step-by-step approach:
+
+1. Extract the numeric part:
+```
+$last_admission_no = "GHA/2017/0198";
+$numeric_part = substr($last_admission_no, -4); // Get the last 4 characters (0198)
+```
+
+1. Increment the numeric part:
+```
+$numeric_part = (int)$numeric_part + 1; // Convert to integer, increment, and convert back to string
+$numeric_part = str_pad($numeric_part, 4, '0', STR_PAD_LEFT); // Pad with leading zeros
+```
+
+1. Append the numeric part to the prefix:
+```
+$new_admission_no = "GHA/2017/" . $numeric_part;
+```
+
+So, the new admission number would be "GHA/2017/0199".
+
+Here's the complete code:
+```
+$last_admission_no = "GHA/2017/0198";
+$prefix = "GHA/2017/";
+$numeric_part = substr($last_admission_no, strlen($prefix)); // Get the numeric part
+$numeric_part = (int)$numeric_part + 1; // Increment
+$numeric_part = str_pad($numeric_part, 4, '0', STR_PAD_LEFT); // Pad with leading zeros
+$new_admission_no = $prefix . $numeric_part;
+echo $new_admission_no; // Output: GHA/2017/0199
+```
+
+Note: This assumes the admission number format remains the same. If the format changes, you'll need to adjust the code accordingly.

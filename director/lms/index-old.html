@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>AI Chat</h1>
+    <form id="chatForm">
+        <label for="message">Message:</label>
+        <input type="text" id="message" name="message">
+        <button type="submit">Send</button>
+    </form>
+    <div id="chatOutput"></div>
+
+    <script>
+        $(document).ready(function () {
+            $('#chatForm').submit(function (event) {
+                event.preventDefault(); // Prevent form submission
+                var message = $('#message').val(); // Get the message from the input field
+                sendMessage(message); // Send the message to the PHP script
+            });
+        });
+
+        function sendMessage(message) {
+            $.ajax({
+                type: 'POST',
+                url: 'process.php',
+                data: { message: message }, // Send the message as a POST parameter
+                success: function (response) {
+                    // Display the response in the chat output area
+                    $('#chatOutput').append('<p>' + response + '</p>');
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr, status, error); // Log any errors to the console
+                    $('#chatOutput').append('<p>Error: Unable to send message</p>');
+                }
+            });
+
+            // Start listening for SSE messages
+            var eventSource = new EventSource('process.php');
+            eventSource.onmessage = function (event) {
+                var responseData = JSON.parse(event.data);
+                $('#chatOutput').append('<p>' + responseData + '</p>');
+            };
+            eventSource.onerror = function (error) {
+                console.error('EventSource error:', error);
+                eventSource.close();
+            };
+        }
+    </script>
+</body>
+
+</html>
