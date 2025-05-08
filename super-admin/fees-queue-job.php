@@ -39,8 +39,10 @@ foreach ($students as $student) {
 
         $payment_term = $index + 1;
 
-        $invoice_ref = 'GHA_inv' . time();
-        
+        $invoice_ref = $invoice_ref = 'GHA_inv' . bin2hex(random_bytes(4));
+        ;
+
+
         $insertQuery = "INSERT INTO fees_invoices (fee_id, invoice_ref, student_id, class_id, type, amount, validity, session, term) 
             VALUES (:fee_id, :invoice_ref, :student_id, :class_id, :type, :amount, :validity, :session, :term)";
         $insertQ = $pdo->prepare($insertQuery);
@@ -54,11 +56,11 @@ foreach ($students as $student) {
         $insertQ->bindParam(':session', $curr_session, PDO::PARAM_STR);
         $insertQ->bindParam(':term', $payment_term, PDO::PARAM_INT);
         $insertQ->execute();
-    
+
     }
 
     if ($insertQ) {
-        echo 'Added for ' . $student_name ;
+        echo 'Added for ' . $student_name;
     }
 }
 

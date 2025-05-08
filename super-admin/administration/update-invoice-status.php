@@ -1,7 +1,8 @@
 <?php require_once '../settings.php';
 
-if (isset($_GET['ref'])) {
-  $ref = $_GET['ref'];
+if (isset($_POST['ref']) && isset($_POST['student_id'])) {
+  $ref = $_POST['ref'];
+  $student_id = $_POST['student_id'];
 } else {
   header('Location: invoices.php');
 }
@@ -335,6 +336,7 @@ if (isset($_GET['ref'])) {
                 </script>
 
                 <input type="hidden" value="<?= $ref ?>" name="ref">
+                <input type="hidden" value="<?= $student_id ?>" name="student_id">
               </div>
               <div class="modal-footer d-flex justify-content-between">
                 <button type="submit" class="btn mb-2 btn-primary w-100">Update Status</button>

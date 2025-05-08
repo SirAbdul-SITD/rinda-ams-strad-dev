@@ -583,6 +583,9 @@
               </div>
             </div>
           </div>
+
+
+
           <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
             aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -608,7 +611,7 @@
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Academics</p>
+                        <p class="text-secondary">Academics</p>
                       </a>
                     </div>
                   </div>
@@ -618,7 +621,7 @@
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">E-Learning</p>
+                        <p class="text-secondary">E-Learning</p>
                       </a>
                     </div>
                     <div class="col-6 text-center">
@@ -626,7 +629,7 @@
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Messages</p>
+                        <p class="text-secondary">Messages</p>
                       </a>
                     </div>
                   </div>
@@ -636,7 +639,7 @@
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Shop</p>
+                        <p class="text-secondary">Shop</p>
                       </a>
                     </div>
                     <div class="col-6 text-center">
@@ -644,7 +647,7 @@
                         <div class="squircle bg-secondary justify-content-center text-white">
                           <i class="fe fe-users fe-32 align-self-center"></i>
                         </div>
-                        <p class="text-white">HR</p>
+                        <p class="text-secondary">HR</p>
                       </a>
                     </div>
                   </div>
@@ -654,7 +657,7 @@
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Assessments</p>
+                        <p class="text-secondary">Assessments</p>
                       </a>
                     </div>
                     <div class="col-6 text-center">

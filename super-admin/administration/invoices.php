@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-  <title>Rinda AMS | Rinda AMS</title>
+  <title>Student Invoices | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->
@@ -24,6 +24,18 @@
   <style>
     .card {
       border-radius: 8px;
+    }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
+    .modal-shortcut .con-item:hover p {
+      color: white !important;
     }
   </style>
 </head>
@@ -214,16 +226,168 @@
           <div class="col-12">
             <div class="row">
               <!-- Small table -->
+
+              <?php
+
+              try {
+
+                $curr_session = $_GET['session'] ?? $curr_session;
+
+
+                $status = 'Paid';
+
+                $sql = "SELECT
+            s.id, 
+            CONCAT(s.firstName, ' ', s.lastName) AS full_name, 
+            c.class, 
+            i.invoice_ref, 
+            i.type, 
+            i.amount, 
+            i.paid_amount,
+            i.validity, 
+            i.session, 
+            i.status,
+            ps.parent_id,
+            ps.student_id,
+            CASE 
+                WHEN i.term = 1 THEN 'First Term' 
+                WHEN i.term = 2 THEN 'Second Term' 
+                WHEN i.term = 3 THEN 'Third Term' 
+                ELSE '' 
+            END AS term
+        FROM students s  
+        INNER JOIN fees_invoices i ON i.student_id = s.id 
+        INNER JOIN classes c ON i.class_id = c.id
+        LEFT JOIN (
+  SELECT student_id, MIN(parent_id) as parent_id
+  FROM parent_student
+  GROUP BY student_id
+) ps ON ps.student_id = s.id
+        WHERE s.status = 1 
+        AND i.amount != 0 
+        AND (i.session = :session) 
+        ORDER BY i.term ASC, full_name ASC";
+
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':session', $curr_session);
+                // $stmt->bindParam(':status', $status);
+                $stmt->execute();
+                $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+              } catch (PDOException $e) {
+                // Handle database error
+                echo 'Error: ' . $e->getMessage();
+                die();
+              }
+
+              // Initialize summary variables
+              $totalInvoices = 0;
+              $totalInvoicesPaid = 0;
+              $totalInvoicesUnpaid = 0;
+              $totalAmountPaid = 0;
+              $totalAmount = 0;
+
+
+              // Loop through each invoice to calculate totals
+              foreach ($invoices as $invoice) {
+                $totalInvoices++;
+                $totalAmountPaid += floatval($invoice['paid_amount']);
+                $totalAmount += floatval($invoice['amount']);
+
+                if ($invoice['status'] === 'Paid') {
+                  $totalInvoicesPaid++;
+
+                } else {
+
+                  $totalInvoicesUnpaid++;
+
+                }
+              }
+
+              $totalAmountUnpaid = $totalAmount - $totalAmountPaid;
+
+
+              $formattedTotalInvoicesPaid = number_format($totalInvoicesPaid);
+              $formattedTotalAmountPaid = '₦' . number_format($totalAmountPaid, 2);
+              $formattedTotalInvoicesUnpaid = number_format($totalInvoicesUnpaid);
+              $formattedTotalAmountUnpaid = '₦' . number_format($totalAmountUnpaid, 2);
+
+              $sessionsQuery = "SELECT DISTINCT session FROM fees_invoices ORDER BY session DESC";
+              $sessionsStmt = $pdo->prepare($sessionsQuery);
+              $sessionsStmt->execute();
+              $sessions = $sessionsStmt->fetchAll(PDO::FETCH_COLUMN); // returns array of sessions
+              
+              ?>
               <div class="col-md-12 my-4">
                 <div class="row align-items-center my-3">
                   <div class="col">
                     <h3 class="page-title">Invoices</h3>
                   </div>
-                  <!-- <div class="col-auto">
-                    <a href="new.php">
-                      <button type="button" class="btn  btn-primary"><span class="fe fe-plus fe-16 mr-3"></span>New</button></a>
-                  </div> -->
+                  <div class="col-auto">
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="newDropdown"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="newDropdown">
+                        <?php foreach ($sessions as $sess): ?>
+                          <a class="dropdown-item <?= ($_GET['session'] ?? '') == $sess ? 'active' : '' ?>"
+                            href="?session=<?= urlencode($sess) ?>">
+                            <?= htmlspecialchars($sess) ?>
+                          </a>
+                        <?php endforeach; ?>
+                      </div>
+                    </div>
+
+
+                  </div>
                 </div>
+
+
+
+                <div class="row align-items-center my-3">
+                  <div class="col-md-6 mb-6">
+                    <div class="card shadow">
+                      <div class="card-body">
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <span class="badge badge-pill badge-success" style="background-color: #93bb84">+15.5%</span>
+                            <p class="small text-muted mb-0">Total paid amount</p>
+                            <p class="h2 mb-0"><?= $formattedTotalAmountPaid ?></p>
+                          </div>
+                          <div class="col-auto">
+                            <br>
+                            <p class="small text-muted mb-0">Invoices Paid</p>
+                            <p class="h2 mb-0"><?= $formattedTotalInvoicesPaid ?></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-6 mb-6">
+                    <div class="card shadow">
+                      <div class="card-body">
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <span class="badge badge-pill badge-success" style="background-color: #FB1010">+15.5%</span>
+                            <p class="small text-muted mb-0">Total unpaid amount</p>
+                            <p class="h2 mb-0"><?= $formattedTotalAmountUnpaid ?></p>
+                          </div>
+                          <div class="col-auto">
+                            <br>
+                            <p class="small text-muted mb-0">Invoices unpaid</p>
+                            <p class="h2 mb-0"><?= $formattedTotalInvoicesUnpaid ?></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
                 <div class="row">
                   <!-- Striped rows -->
                   <div class="col-md-12 my-4">
@@ -248,49 +412,7 @@
                           </thead>
                           <tbody>
                             <?php
-                            try {
 
-                              $status = 'Paid';
-
-                              $sql = "SELECT
-            s.id, 
-            CONCAT(s.firstName, ' ', s.lastName) AS full_name, 
-            c.class, 
-            i.invoice_ref, 
-            i.type, 
-            i.amount, 
-            i.paid_amount,
-            i.validity, 
-            i.session, 
-            i.status,
-            ps.parent_id,
-            ps.student_id,
-            CASE 
-                WHEN i.term = 1 THEN 'First Term' 
-                WHEN i.term = 2 THEN 'Second Term' 
-                WHEN i.term = 3 THEN 'Third Term' 
-                ELSE '' 
-            END AS term
-        FROM students s  
-        INNER JOIN fees_invoices i ON i.student_id = s.id 
-        INNER JOIN classes c ON i.class_id = c.id
-        LEFT JOIN parent_student ps ON ps.student_id = s.id
-        WHERE s.status = 1 
-        AND i.amount != 0 
-        AND (i.session = :session OR i.status != :status) 
-        ORDER BY i.term ASC, full_name ASC";
-
-
-                              $stmt = $pdo->prepare($sql);
-                              $stmt->bindParam(':session', $curr_session);
-                              $stmt->bindParam(':status', $status);
-                              $stmt->execute();
-                              $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            } catch (PDOException $e) {
-                              // Handle database error
-                              echo 'Error: ' . $e->getMessage();
-                              die();
-                            }
 
                             foreach ($invoices as $index => $invoice): ?>
                               <tr>
@@ -344,10 +466,10 @@
                                     echo "<p class='text-success'>Paid in full</p>";
                                   } elseif ($invoice['status'] == 'Unpaid') {
                                     echo "<p class='text-danger'>Unpaid</p>";
+                                  }  elseif ($invoice['status'] == 'Paid (Discounted)') {
+                                    echo "<p class='text-success'>Paid (Discounted)</p>";
                                   } elseif ($defaulting_balance == 0) {
                                     echo "<p class='text-success'>Paid in full</p>";
-                                  } elseif ($invoice['status'] == 'Paid (Discounted)') {
-                                    echo "<p class='text-success'>Paid (Discounted)</p>";
                                   } else {
                                     $statusUnpaid = $invoice['status'];
                                     echo "<p class='text-warning'>$statusUnpaid</p>";
@@ -359,28 +481,37 @@
                                     <span class="text-muted sr-only">Action</span>
                                   </button>
                                   <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item"
-                                      href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change
-                                      status</a>
 
-                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                      echo 'disabled';
-                                    } ?>"
-                                      href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>"
-                                      <?php if (empty($invoice['parent_id'])) {
-                                        echo 'title="Student not linked to any parent"';
-                                      } ?>>
-                                      Send Reminder
-                                    </a>
-
-                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                      echo 'disabled';
-                                    } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
-                                         echo 'title="Student not linked to any parent"';
-                                       } ?>>
-                                      Parent Profile
-                                    </a>
+                                    <!-- Change Status -->
+                                    <form action="update-invoice-status.php" method="POST" style="display: inline;">
+                                      <input type="hidden" name="ref" value="<?= $invoice['invoice_ref'] ?>">
+                                      <input type="hidden" name="student_id" value="<?= $invoice['id'] ?>">
+                                      <button type="submit" class="dropdown-item">Change status</button>
+                                    </form>
+                                  
+                                    <!-- Send Reminder -->
+                                    <?php if (!empty($invoice['parent_id'])): ?>
+                                      <form action="invoice-reminder.php" method="POST" style="display: inline;">
+                                        <input type="hidden" name="parent" value="<?= $invoice['parent_id'] ?>">
+                                        <input type="hidden" name="student" value="<?= $invoice['id'] ?>">
+                                        <button type="submit" class="dropdown-item">Send Reminder</button>
+                                      </form>
+                                    <?php else: ?>
+                                      <button class="dropdown-item disabled" title="Student not linked to any parent">Send Reminder</button>
+                                    <?php endif; ?>
+                                  
+                                    <!-- Parent Profile -->
+                                    <?php if (!empty($invoice['parent_id'])): ?>
+                                      <form action="../academics/parent.php" method="POST" style="display: inline;">
+                                        <input type="hidden" name="parent_id" value="<?= $invoice['parent_id'] ?>">
+                                        <button type="submit" class="dropdown-item">Parent Profile</button>
+                                      </form>
+                                    <?php else: ?>
+                                      <button class="dropdown-item disabled" title="Student not linked to any parent">Parent Profile</button>
+                                    <?php endif; ?>
+                                  
                                   </div>
+
 
                                 </td>
                               </tr>
@@ -420,6 +551,7 @@
               </div>
             </div>
           </div>
+
           <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
             aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -433,65 +565,65 @@
                 <div class="modal-body px-5">
                   <div class="row align-items-center">
                     <div class="col-6 text-center">
-                      <a href="#" style="text-decoration: none;">
-                        <div class="squircle bg-success justify-content-center">
-                          <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-success">Dashboard</p>
-                      </a>
+                      <!-- <a href="#" style="text-decoration: none;"> -->
+                      <div class="squircle bg-success justify-content-center">
+                        <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-success">Dashboard</p>
+                      <!-- </a> -->
                     </div>
-                    <div class="col-6 text-center">
-                      <a href="#" style="text-decoration: none;">
+                    <div class="col-6 text-center con-item">
+                      <a href="../academics/" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Academics</p>
+                        <p class="text-secondary control-panel-text">Academics</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../lms" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">E-Learning</p>
+                        <p class="text-secondary control-panel-text">E-Learning</p>
                       </a>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../messages" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Messages</p>
+                        <p class="text-secondary control-panel-text">Messages</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../shop" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Shop</p>
+                        <p class="text-secondary control-panel-text">Shop</p>
                       </a>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../hr/" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center text-white">
                           <i class="fe fe-users fe-32 align-self-center"></i>
                         </div>
-                        <p class="text-white">HR</p>
+                        <p class="text-secondary control-panel-text">HR</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../assessments" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Assessments</p>
+                        <p class="text-secondary control-panel-text">Assessments</p>
                       </a>
                     </div>
                     <div class="col-6 text-center">
