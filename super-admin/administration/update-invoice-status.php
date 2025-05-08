@@ -87,7 +87,8 @@ if (isset($_GET['ref'])) {
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -107,7 +108,8 @@ if (isset($_GET['ref'])) {
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -137,7 +139,8 @@ if (isset($_GET['ref'])) {
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -165,7 +168,7 @@ if (isset($_GET['ref'])) {
           <li class="nav-item active">
             <a class="nav-link text-primary" href="invoices.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Invoices</span>
+              <span class="ml-3 item-text">Student Invoices</span>
               </i>
             </a>
           </li>
@@ -173,7 +176,7 @@ if (isset($_GET['ref'])) {
           <li class="nav-item">
             <a class="nav-link" href="expenses.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Expenses</span>
+              <span class="ml-3 item-text">School Expenses</span>
               </i>
             </a>
           </li>
@@ -274,7 +277,8 @@ if (isset($_GET['ref'])) {
                     <p>Part Payment: A portion of the amount has been paid, but not in full.</p>
                     <p>Paid (Discounted): The full amount has been paid with an approved discount applied.</p>
                     <p>Paid: The full amount has been completely paid.</p>
-                    <p>Additional Payment Required: The full amount was paid previously, but the required amount has increased, and additional payment is needed.</p>
+                    <p>Additional Payment Required: The full amount was paid previously, but the required amount has
+                      increased, and additional payment is needed.</p>
                   </div>
                 </div>
 
@@ -296,7 +300,8 @@ if (isset($_GET['ref'])) {
                 <div class="form-row" id="paid-amount-row" style="display: none;">
                   <div class="form-group col-12">
                     <label for="paid-amount">Enter Paid Amount</label>
-                    <input type="number" id="paid-amount" class="form-control" name="paid_amount" placeholder="Enter amount paid">
+                    <input type="number" id="paid-amount" class="form-control" name="paid_amount"
+                      placeholder="Enter amount paid">
                   </div>
                 </div>
 
@@ -304,12 +309,13 @@ if (isset($_GET['ref'])) {
                 <div class="form-row" id="additionalPaymentRow" style="display: none;">
                   <div class="form-group col-12">
                     <label for="additional_payment_amount">Additional Payment Amount</label>
-                    <input type="number" class="form-control" id="additional_payment_amount" name="additional_payment_amount" placeholder="Enter additional payment amount">
+                    <input type="number" class="form-control" id="additional_payment_amount"
+                      name="additional_payment_amount" placeholder="Enter additional payment amount">
                   </div>
                 </div>
 
                 <script>
-                  document.getElementById('status').addEventListener('change', function() {
+                  document.getElementById('status').addEventListener('change', function () {
                     var paidAmountRow = document.getElementById('paid-amount-row');
                     var additionalPaymentRow = document.getElementById('additionalPaymentRow');
 
@@ -340,11 +346,13 @@ if (isset($_GET['ref'])) {
 
 
 
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -357,11 +365,13 @@ if (isset($_GET['ref'])) {
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -483,14 +493,14 @@ if (isset($_GET['ref'])) {
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
 
     // Assign Class Teacher js
-    document.querySelectorAll(".change_status").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".change_status").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         $.ajax({
@@ -498,19 +508,19 @@ if (isset($_GET['ref'])) {
           url: 'change_invoice_status.php',
           data: $(this).serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             $('#eventModal').modal('hide');
             if (response.success) {
               displayPopup(response.message, true);
               // Refresh the page after 2 seconds
-              setTimeout(function() {
+              setTimeout(function () {
                 location.href = 'invoices.php';
               }, 2000);
             } else {
               $('#warningModel').modal('show');
             }
           },
-          error: function(error, xhr) {
+          error: function (error, xhr) {
             console.log(error, xhr);
             displayPopup('Error occurred during request. Contact Admin', false);
           },

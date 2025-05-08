@@ -114,7 +114,8 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -134,7 +135,8 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -164,7 +166,8 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -192,7 +195,7 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
           <li class="nav-item">
             <a class="nav-link" href="invoices.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Invoices</span>
+              <span class="ml-3 item-text">Student Invoices</span>
               </i>
             </a>
           </li>
@@ -200,7 +203,7 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
           <li class="nav-item">
             <a class="nav-link" href="expenses.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Expenses</span>
+              <span class="ml-3 item-text">School Expenses</span>
               </i>
             </a>
           </li>
@@ -297,7 +300,8 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
                   </div>
                   <div class="col-auto">
                     <a href="breakfast.php">
-                      <button type="button" class="btn btn-primary"><span class="fe fe-plus fe-16 mr-3"></span>Manage Breakfast Categories</button></a>
+                      <button type="button" class="btn btn-primary"><span class="fe fe-plus fe-16 mr-3"></span>Manage
+                        Breakfast Categories</button></a>
                   </div>
                 </div>
                 <div class="card shadow">
@@ -354,7 +358,8 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
                               echo "<td class='text-success'>" . $l_status . "</td>";
                             } else {
                               echo "<td class='text-muted'>" . $l_status . "</td>";
-                            };
+                            }
+                            ;
                             $admission_no = $breakfast['admission_no'];
                             $parent_id = $breakfast['parent_id'];
                             echo "<td>
@@ -393,7 +398,8 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
 
 
       <!-- PaymentConfirmModal -->
-      <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -403,7 +409,8 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
               </button>
             </div>
             <div class="modal-body">
-              Are you sure you want to update this payment status from <span id="prev-status"></span> to <span id='new-status'></span>?
+              Are you sure you want to update this payment status from <span id="prev-status"></span> to <span
+                id='new-status'></span>?
             </div>
             <form id="updateForm">
               <input type="hidden" id="update-status" name="status" value="">
@@ -420,11 +427,13 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
 
 
 
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -437,11 +446,13 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -580,14 +591,14 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Event listener for the edit option
-      $('.table').on('click', '.dropdown-item.p-status', function() {
+      $('.table').on('click', '.dropdown-item.p-status', function () {
         // $('').on('click'
 
         var row = $(this).closest('tr');
@@ -615,7 +626,7 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
     });
 
     // Event listener for saving changes
-    $('.confirm-update').on('click', function() {
+    $('.confirm-update').on('click', function () {
 
       form = $('#updateForm');
 
@@ -624,7 +635,7 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
         url: 'update-breakfast-payment.php',
         type: 'POST',
         data: form.serialize(),
-        success: function(response) {
+        success: function (response) {
           // Handle success
           // console.log(response);
 
@@ -632,13 +643,13 @@ if (isset($_POST['breakfast_id'], $_POST['student_id'], $_POST['amount_fare'])) 
           displayPopup('Payment status updated successfully.', true);
 
           $('#confirmationModal').modal('hide');
-          setTimeout(function() {
+          setTimeout(function () {
             location.reload();
           }, 1000);
 
 
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           //Handle error
           // console.error(xhr, status, error);
         }

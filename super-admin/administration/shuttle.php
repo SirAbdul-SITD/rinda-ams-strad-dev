@@ -82,7 +82,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -102,7 +103,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -132,7 +134,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -160,7 +163,7 @@
           <li class="nav-item">
             <a class="nav-link" href="invoices.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Invoices</span>
+              <span class="ml-3 item-text">Student Invoices</span>
               </i>
             </a>
           </li>
@@ -168,7 +171,7 @@
           <li class="nav-item">
             <a class="nav-link" href="expenses.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Expenses</span>
+              <span class="ml-3 item-text">School Expenses</span>
               </i>
             </a>
           </li>
@@ -265,7 +268,8 @@
                   </div>
                   <div class="col-auto">
                     <a href="shuttle-membership.php">
-                      <button type="button" class="btn btn-primary"><span class="fe fe-plus fe-16 mr-3"></span>View Subscribers</button></a>
+                      <button type="button" class="btn btn-primary"><span class="fe fe-plus fe-16 mr-3"></span>View
+                        Subscribers</button></a>
                   </div>
                 </div>
                 <div class="row">
@@ -297,7 +301,7 @@
                             if (count($fees_type) === 0) {
                               echo '<p class="text-center">None added Yet!</p>';
                             } else {
-                              foreach ($fees_type as $index => $route) : ?>
+                              foreach ($fees_type as $index => $route): ?>
                                 <tr>
 
                                   <td>
@@ -336,7 +340,8 @@
                                   </td>
 
                                   <td>
-                                    <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <span class="text-muted sr-only">Action</span>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
@@ -345,7 +350,7 @@
                                     </div>
                                   </td>
                                 </tr>
-                            <?php endforeach;
+                              <?php endforeach;
                             } ?>
 
                           </tbody>
@@ -362,7 +367,8 @@
 
 
           <!-- edit Modal-->
-          <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+          <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -386,7 +392,8 @@
 
                     <div class="form-group">
                       <label for="edit-route-category" class="col-form-label">Category:</label>
-                      <input type="text" class="form-control" name="edit-route-category" disabled id="edit-route-category">
+                      <input type="text" class="form-control" name="edit-route-category" disabled
+                        id="edit-route-category">
                     </div>
 
                     <div class="form-group">
@@ -411,7 +418,8 @@
 
 
           <!-- new Modal-->
-          <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+          <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -458,7 +466,8 @@
 
 
           <!-- RemoveConfirmModal -->
-          <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -478,11 +487,13 @@
             </div>
           </div>
 
-          <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+          <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog"
+            aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                 </div>
                 <div class="modal-body">
                   <div class="list-group list-group-flush my-n3">
@@ -495,11 +506,13 @@
                     </div>
                   </div> <!-- / .list-group -->
                 </div>
-                <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+                <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block"
+                    data-dismiss="modal" disabled>Clear All</button> </div>
               </div>
             </div>
           </div>
-          <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+          <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
+            aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -638,14 +651,14 @@
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Event listener for the edit option
-      $('.table').on('click', '.dropdown-item.edit', function() {
+      $('.table').on('click', '.dropdown-item.edit', function () {
         // $('').on('click'
 
         var row = $(this).closest('tr');
@@ -669,7 +682,7 @@
     });
 
     // Event listener for saving changes
-    $('#saveChangesBtn').on('click', function() {
+    $('#saveChangesBtn').on('click', function () {
 
       form = $('#editForm');
 
@@ -678,18 +691,18 @@
         url: 'update-route.php',
         type: 'POST',
         data: form.serialize(),
-        success: function(response) {
+        success: function (response) {
           // Handle success
           console.log(response);
           displayPopup('Information updated successfully.', true);
           // Optionally update the UI to reflect the changes
           // For example, update the title of the fee row
           $('#editModal').modal('hide');
-          setTimeout(function() {
+          setTimeout(function () {
             location.reload();
           }, 1000);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // Handle error
           // console.error(xhr.responseText);
         }
@@ -699,10 +712,10 @@
 
   <!-- add fee -->
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
       // Event listener for saving changes
-      $('#saveBtn').on('click', function() {
+      $('#saveBtn').on('click', function () {
 
         form = $('#newForm');
         // Perform AJAX request to update fee information in the database
@@ -711,19 +724,19 @@
           type: 'POST',
           data: form.serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               displayPopup(response.message, true);
               // Remove the row from the table
               $('#newModal').modal('hide');
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
               }, 1000);
             } else {
               displayPopup(response.message, false);
             }
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             // Handle error
             console.error(xhr.responseText);
           }

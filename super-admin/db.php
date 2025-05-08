@@ -12,15 +12,15 @@ ini_set('display_errors', 0);
 //  $password = "K_TcmAcE?%_EZwqtkY";
 //  $database = "riidalms_gha";
 
-$servername = "localhost";
-$username = "riidalms_gha";
-$password = "K_TcmAcE?%_EZwqtkY";
-$database = "riidalms_gha";
-
 // $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $database = "gha";
+// $username = "riidalms_gha";
+// $password = "K_TcmAcE?%_EZwqtkY";
+// $database = "riidalms_gha";
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "rinda_ams";
 
 try {
   $pdo = new PDO("mysql:host=$servername;dbname=$database;charset=utf8", $username, $password);

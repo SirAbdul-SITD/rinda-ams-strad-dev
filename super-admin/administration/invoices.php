@@ -35,7 +35,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -55,7 +56,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -85,7 +87,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -113,7 +116,7 @@
           <li class="nav-item active">
             <a class="nav-link text-primary" href="#">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Invoices</span>
+              <span class="ml-3 item-text">Student Invoices</span>
               </i>
             </a>
           </li>
@@ -121,7 +124,7 @@
           <li class="nav-item">
             <a class="nav-link" href="expenses.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Expenses</span>
+              <span class="ml-3 item-text">School Expenses</span>
               </i>
             </a>
           </li>
@@ -289,7 +292,7 @@
                               die();
                             }
 
-                            foreach ($invoices as $index => $invoice) : ?>
+                            foreach ($invoices as $index => $invoice): ?>
                               <tr>
                                 <td>
                                   <?= $index + 1 ?>
@@ -311,14 +314,14 @@
                                   <?php
                                   $formatted_amount = '₦' . number_format($invoice['amount'], 2);
                                   echo
-                                  $formatted_amount;
+                                    $formatted_amount;
                                   ?>
                                 </td>
                                 <td>
                                   <?php
                                   $formatted_amount = '₦' . number_format($invoice['paid_amount'], 2);
                                   echo
-                                  $formatted_amount;
+                                    $formatted_amount;
                                   ?>
                                 </td>
                                 <td>
@@ -351,25 +354,30 @@
                                   }
                                   ?>
                                 </td>
-                                <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="text-muted sr-only">Action</span>
                                   </button>
                                   <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change status</a>
+                                    <a class="dropdown-item"
+                                      href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change
+                                      status</a>
 
                                     <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                                              echo 'disabled';
-                                                            } ?>" href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>" <?php if (empty($invoice['parent_id'])) {
-                                                                                                                                                                  echo 'title="Student not linked to any parent"';
-                                                                                                                                                                } ?>>
+                                      echo 'disabled';
+                                    } ?>"
+                                      href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>"
+                                      <?php if (empty($invoice['parent_id'])) {
+                                        echo 'title="Student not linked to any parent"';
+                                      } ?>>
                                       Send Reminder
                                     </a>
 
                                     <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                                              echo 'disabled';
-                                                            } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
-                                                                                                                                          echo 'title="Student not linked to any parent"';
-                                                                                                                                        } ?>>
+                                      echo 'disabled';
+                                    } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
+                                         echo 'title="Student not linked to any parent"';
+                                       } ?>>
                                       Parent Profile
                                     </a>
                                   </div>
@@ -388,11 +396,13 @@
               </div> <!-- .col-12 -->
             </div> <!-- .row -->
           </div> <!-- .container-fluid -->
-          <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+          <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog"
+            aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                 </div>
                 <div class="modal-body">
                   <div class="list-group list-group-flush my-n3">
@@ -405,11 +415,13 @@
                     </div>
                   </div> <!-- / .list-group -->
                 </div>
-                <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+                <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block"
+                    data-dismiss="modal" disabled>Clear All</button> </div>
               </div>
             </div>
           </div>
-          <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+          <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
+            aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -565,10 +577,10 @@
 
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
       // Event listener for saving changes
-      $('#saveBtn').on('click', function() {
+      $('#saveBtn').on('click', function () {
 
         var newTitle = $('#fee-name').val();
         var newAmount = $('#fee-amount').val();
@@ -584,14 +596,14 @@
             class: newClass,
             subject: newSubject
           },
-          success: function(response) {
+          success: function (response) {
             // Handle success
             console.log(response);
             // Optionally update the UI to reflect the changes
             // For example, update the title of the fee row
             $('#newModal').modal('hide');
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             // Handle error
             console.error(xhr.responseText);
           }

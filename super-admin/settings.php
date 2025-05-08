@@ -31,16 +31,16 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
 // $database = "riidalms_gha_dev";
 
 
- $servername = "localhost";
- $username = "riidalms_gha";
- $password = "K_TcmAcE?%_EZwqtkY";
- $database = "riidalms_gha";
+//  $servername = "localhost";
+//  $username = "riidalms_gha";
+//  $password = "K_TcmAcE?%_EZwqtkY";
+//  $database = "riidalms_gha";
 
 
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $database = "gha";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "rinda_ams";
 
 
 try {

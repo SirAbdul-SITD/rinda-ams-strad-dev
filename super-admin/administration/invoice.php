@@ -45,7 +45,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -65,7 +66,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -95,7 +97,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -123,7 +126,7 @@
           <li class="nav-item active">
             <a class="nav-link text-primary" href="#">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Invoices</span>
+              <span class="ml-3 item-text">Student Invoices</span>
               </i>
             </a>
           </li>
@@ -131,7 +134,7 @@
           <li class="nav-item">
             <a class="nav-link" href="expenses.php">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">Expenses</span>
+              <span class="ml-3 item-text">School Expenses</span>
               </i>
             </a>
           </li>
@@ -246,7 +249,7 @@
           function calculateTotalAmount($invoiceId)
           {
             global $pdo; // Assuming $pdo is your PDO database connection object
-
+          
             // Prepare SQL query to sum the total amount of invoice items
             $stmt = $pdo->prepare("SELECT SUM(amount) AS total_amount FROM invoice_item WHERE invoice_id = :invoice_id");
             $stmt->bindParam(':invoice_id', $invoiceId, PDO::PARAM_INT);
@@ -260,7 +263,7 @@
           function calculatePaidAmount($invoiceId)
           {
             global $pdo; // Assuming $pdo is your PDO database connection object
-
+          
             // Prepare SQL query to sum the total paid amount
             $stmt = $pdo->prepare("SELECT SUM(amount) AS total_paid FROM invoice_item WHERE invoice_id = :invoice_id AND status = 'paid'");
             $stmt->bindParam(':invoice_id', $invoiceId, PDO::PARAM_INT);
@@ -349,7 +352,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($invoiceItems as $index => $item) : ?>
+                    <?php foreach ($invoiceItems as $index => $item): ?>
                       <tr>
                         <th scope="row">
                           <?= $index + 1 ?>
@@ -431,11 +434,13 @@
 
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -448,11 +453,13 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
