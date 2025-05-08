@@ -168,7 +168,7 @@
           <li class="nav-item active">
             <a class="nav-link text-primary" href="#">
               <i class="fe fe-users fe-16"></i>
-              <span class="ml-3 item-text">School Expenses</span>
+              <span class="ml-3 item-text">Expenses</span>
               </i>
             </a>
           </li>

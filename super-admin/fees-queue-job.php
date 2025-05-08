@@ -1,6 +1,8 @@
 <?php
 require_once 'settings.php';
 
+$curr_session = '2023/2024';
+
 $query = "SELECT 
             s.id, 
             s.class_id, 

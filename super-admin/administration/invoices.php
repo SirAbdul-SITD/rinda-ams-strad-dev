@@ -1,4 +1,11 @@
-<?php require '../settings.php'; ?>
+<?php require_once('../settings.php');
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_POST['term'])) {
+  $_SESSION['session'] = $_POST['session']; //store session
+  $_SESSION['term'] = intval($_POST['term']); //store session
+  header("Location: invoices.php"); //redirect to avoid form resubmission
+  exit();
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -231,47 +238,89 @@
 
               try {
 
-                $curr_session = $_GET['session'] ?? $curr_session;
+                $curr_session = isset($_SESSION['session']) ? $_SESSION['session'] : $curr_session;
+                $curr_term = isset($_SESSION['term']) && in_array((int) $_SESSION['term'], [1, 2, 3]) ? (int) $_SESSION['term'] : null;;
+
 
 
                 $status = 'Paid';
 
-                $sql = "SELECT
-            s.id, 
-            CONCAT(s.firstName, ' ', s.lastName) AS full_name, 
-            c.class, 
-            i.invoice_ref, 
-            i.type, 
-            i.amount, 
-            i.paid_amount,
-            i.validity, 
-            i.session, 
-            i.status,
-            ps.parent_id,
-            ps.student_id,
-            CASE 
-                WHEN i.term = 1 THEN 'First Term' 
-                WHEN i.term = 2 THEN 'Second Term' 
-                WHEN i.term = 3 THEN 'Third Term' 
-                ELSE '' 
-            END AS term
-        FROM students s  
-        INNER JOIN fees_invoices i ON i.student_id = s.id 
-        INNER JOIN classes c ON i.class_id = c.id
-        LEFT JOIN (
-  SELECT student_id, MIN(parent_id) as parent_id
-  FROM parent_student
-  GROUP BY student_id
-) ps ON ps.student_id = s.id
-        WHERE s.status = 1 
-        AND i.amount != 0 
-        AND (i.session = :session) 
-        ORDER BY i.term ASC, full_name ASC";
+                if (!empty($curr_term)) {
+                  $sql = "SELECT
+                        s.id, 
+                        CONCAT(s.firstName, ' ', s.lastName) AS full_name, 
+                        c.class, 
+                        i.invoice_ref, 
+                        i.type, 
+                        i.amount, 
+                        i.paid_amount,
+                        i.validity, 
+                        i.session, 
+                        i.status,
+                        ps.parent_id,
+                        ps.student_id,
+                        CASE 
+                            WHEN i.term = 1 THEN 'First Term' 
+                            WHEN i.term = 2 THEN 'Second Term' 
+                            WHEN i.term = 3 THEN 'Third Term' 
+                            ELSE '' 
+                        END AS term
+                    FROM students s  
+                    INNER JOIN fees_invoices i ON i.student_id = s.id 
+                    INNER JOIN classes c ON i.class_id = c.id
+                          LEFT JOIN (
+                    SELECT student_id, MIN(parent_id) as parent_id
+                    FROM parent_student
+                    GROUP BY student_id
+                  ) ps ON ps.student_id = s.id
+                    WHERE s.status = 1 
+                    AND i.term = :term
+                    AND i.amount != 0 
+                    AND (i.session = :session) 
+                    ORDER BY i.term ASC, full_name ASC";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(':session', $curr_session);
+                    $stmt->bindParam(':term', $curr_term);
+                    // $stmt->bindParam(':status', $status);
+                } else {
+                  $sql = "SELECT
+                                s.id, 
+                                CONCAT(s.firstName, ' ', s.lastName) AS full_name, 
+                                c.class, 
+                                i.invoice_ref, 
+                                i.type, 
+                                i.amount, 
+                                i.paid_amount,
+                                i.validity, 
+                                i.session, 
+                                i.status,
+                                ps.parent_id,
+                                ps.student_id,
+                                CASE 
+                                      WHEN i.term = 1 THEN 'First Term' 
+                                      WHEN i.term = 2 THEN 'Second Term' 
+                                      WHEN i.term = 3 THEN 'Third Term' 
+                                      ELSE '' 
+                                  END AS term
+                              FROM students s  
+                              INNER JOIN fees_invoices i ON i.student_id = s.id 
+                              INNER JOIN classes c ON i.class_id = c.id
+                              LEFT JOIN (
+                        SELECT student_id, MIN(parent_id) as parent_id
+                        FROM parent_student
+                        GROUP BY student_id
+                      ) ps ON ps.student_id = s.id
+                              WHERE s.status = 1 
+                              AND i.amount != 0 
+                              AND (i.session = :session) 
+                              ORDER BY i.term ASC, full_name ASC";
+                  $stmt = $pdo->prepare($sql);
+                  $stmt->bindParam(':session', $curr_session);
+                  // $stmt->bindParam(':status', $status);
+                  }
 
 
-                $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':session', $curr_session);
-                // $stmt->bindParam(':status', $status);
+               
                 $stmt->execute();
                 $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
               } catch (PDOException $e) {
@@ -312,10 +361,7 @@
               $formattedTotalInvoicesUnpaid = number_format($totalInvoicesUnpaid);
               $formattedTotalAmountUnpaid = '₦' . number_format($totalAmountUnpaid, 2);
 
-              $sessionsQuery = "SELECT DISTINCT session FROM fees_invoices ORDER BY session DESC";
-              $sessionsStmt = $pdo->prepare($sessionsQuery);
-              $sessionsStmt->execute();
-              $sessions = $sessionsStmt->fetchAll(PDO::FETCH_COLUMN); // returns array of sessions
+             
               
               ?>
               <div class="col-md-12 my-4">
@@ -324,22 +370,8 @@
                     <h3 class="page-title">Invoices</h3>
                   </div>
                   <div class="col-auto">
-                    <div class="dropdown">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="newDropdown"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Filter
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="newDropdown">
-                        <?php foreach ($sessions as $sess): ?>
-                          <a class="dropdown-item <?= ($_GET['session'] ?? '') == $sess ? 'active' : '' ?>"
-                            href="?session=<?= urlencode($sess) ?>">
-                            <?= htmlspecialchars($sess) ?>
-                          </a>
-                        <?php endforeach; ?>
-                      </div>
-                    </div>
-
-
+                    <button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#newModal"><span
+                        class="fe fe-filter fe-16 mr-3"></span>Filter: <?= $curr_session ?></button>
                   </div>
                 </div>
 
@@ -648,101 +680,57 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="newModalLabel">Add New Fee Type</h5>
+          <h5 class="modal-title" id="newModalLabel">Filter Invoices</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <form id="newForm">
-            <div class="form-group">
-              <label for="fee-name" class="col-form-label">Fees Type:</label>
-              <input type="text" class="form-control" id="fee-name" required>
-            </div>
-            <div class="form-group">
-              <label for="fee-amount" class="col-form-label">Amount:</label>
-              <input type="number" class="form-control" id="fee-amount" required>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="custom-subject">Duration</label>
-                <select class="custom-select" id="custom-subject" name="subject" required>
-                  <!-- Options for subject -->
-                  <option selected disabled>Select</option>
-                  <option value="1">One-time Payment</option>
-                  <option value="2">Weekly</option>
-                  <option value="3">Monthly</option>
-                  <option value="4">Per Term</option>
-                  <option value="5">Per session</option>
-                </select>
-              </div>
+        <form id="newForm" method="post" action="">
+          <div class="modal-body">
+            
+              
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <?php
+                    $sessionsQuery = "SELECT DISTINCT session FROM fees_invoices ORDER BY session DESC";
+                    $sessionsStmt = $pdo->prepare($sessionsQuery);
+                    $sessionsStmt->execute();
+                    $sessions = $sessionsStmt->fetchAll(PDO::FETCH_COLUMN); // returns array of sessions
+                    ?>
+                  <label for="session">Academic Year</label>
+                  <select class="custom-select" id="session" name="session" required>
+                    <!-- Options for subject -->
+                    <option selected disabled>Select</option>
+                    <?php foreach ($sessions as $sess): ?>
+                      <option value="<?= $sess ?>"><?= $sess ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
 
-              <div class="form-group col-md-6">
-                <label for="custom-class">Class <span><small>optional</small></span></label>
-                <select class="custom-select" id="custom-class" name="class" required>
-                  <!-- Options for class -->
-                  <option selected disabled>Select</option>
-                  <option value="Grade 1">Grade 1</option>
-                  <option value="Grade 2">Grade 2</option>
-                  <option value="Grade 3">Grade 3</option>
-                  <option value="Grade 4">Grade 4</option>
-                  <option value="Grade 5">Grade 5</option>
-                  <option value="Grade 6">Grade 6</option>
-                  <option value="Grade 7">Grade 7</option>
-                  <option value="Grade 8">Grade 8</option>
-                  <option value="Grade 9">Grade 9</option>
-                  <option value="Grade 10">Grade 10</option>
-                  <option value="Grade 11">Grade 11</option>
-                  <option value="Grade 12">Grade 12</option>
-                </select>
+                <div class="form-group col-md-6">
+                  <label for="term">Term</label>
+                  <select class="custom-select" id="term" name="term" required>
+                    <!-- Options for class -->
+                    <option selected value="4">Full Year</option>
+                    <option value="1">First Term</option>
+                    <option value="2">Second Term</option>
+                    <option value="3">Third Term</option>
+                    
+                  </select>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn mb-2 btn-primary w-100" id="saveBtn">Save
-            Changes</button>
-        </div>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn mb-2 btn-primary w-100">Filter</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
 
-  <script>
-    $(document).ready(function () {
 
-      // Event listener for saving changes
-      $('#saveBtn').on('click', function () {
-
-        var newTitle = $('#fee-name').val();
-        var newAmount = $('#fee-amount').val();
-        var newClass = $('#custom-class').val();
-        var newSubject = $('#custom-subject').val();
-
-        // Perform AJAX request to update fee information in the database
-        $.ajax({
-          url: 'add-fee.php',
-          type: 'POST',
-          data: {
-            title: newTitle,
-            class: newClass,
-            subject: newSubject
-          },
-          success: function (response) {
-            // Handle success
-            console.log(response);
-            // Optionally update the UI to reflect the changes
-            // For example, update the title of the fee row
-            $('#newModal').modal('hide');
-          },
-          error: function (xhr, status, error) {
-            // Handle error
-            console.error(xhr.responseText);
-          }
-        });
-      });
-    });
-  </script>
 
   <!-- end new -->
 

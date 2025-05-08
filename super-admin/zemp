@@ -1,0 +1,14 @@
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="newDropdown" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Filter
+    </button>
+    <div class="dropdown-menu" aria-labelledby="newDropdown">
+        <?php foreach ($sessions as $sess): ?>
+            <a class="dropdown-item <?= ($_GET['session'] ?? '') == $sess ? 'active' : '' ?>"
+                href="?session=<?= urlencode($sess) ?>">
+                <?= htmlspecialchars($sess) ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</div>
