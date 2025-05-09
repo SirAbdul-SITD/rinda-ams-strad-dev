@@ -150,13 +150,15 @@
           <span>Dashboard</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">
+          <li class="nav-item active">
+            <a class="nav-link text-primary" href="#">
               <i class="fe fe-codesandbox fe-16"></i>
               <span class="ml-3 item-text">General Fees</span>
               </i>
             </a>
           </li>
+
+
 
           <li class="nav-item">
             <a class="nav-link" href="invoices.php">
@@ -201,46 +203,52 @@
                 </i>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="iep.php">
-                <i class="fe fe-briefcase fe-16"></i>
-                <span class="ml-3 item-text">IEP</span>
-                </i>
-              </a>
-            </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="shadow.php">
-                <i class="fe fe-award fe-16"></i>
-                <span class="ml-3 item-text">Shadow</span>
-                </i>
-              </a>
-            </li>
 
           </ul>
 
-
-          <!-- Hostel -->
+          <!-- Extras -->
           <p class="text-muted nav-heading mt-4 mb-1">
+            <span>Extras</span>
+          </p>
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item">
+              <a class="nav-link" href="calendar.php">
+                <i class="fe fe-calendar fe-16"></i>
+                <span class="ml-3 item-text">Academic Calendar</span>
+                </i>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="notice-board.php">
+                <i class="fe fe-bell fe-16"></i>
+                <span class="ml-3 item-text">Notice Board</span>
+                </i>
+              </a>
+            </li>
+          </ul>
+          <!-- Hostel -->
+          <p class=" nav-heading mt-4 mb-1">
             <span>Hostel</span>
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item">
-              <a class="nav-link text-muted" href="#">
+              <a class="nav-link " href="hostel.php">
                 <i class="fe fe-file-plus fe-16"></i>
                 <span class="ml-3 item-text">Hostels</span>
                 </i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" href="#">
+              <a class="nav-link " href="room-types.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Room Types</span>
                 </i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" href="#">
+              <a class="nav-link " href="hostel-membership.php">
                 <i class="fe fe-file-plus fe-16"></i>
                 <span class="ml-3 item-text">Membership</span>
                 </i>
@@ -251,40 +259,7 @@
           </ul>
 
           <!-- Extra -->
-          <!-- <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Extra</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item">
-              <a class="nav-link" href="drivers.php">
-                <i class="fe fe-slash fe-16"></i>
-                <span class="ml-3 item-text">Drivers</span>
-                </i>
-              </a>
-            </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="route.php">
-                <i class="fe fe-printer fe-16"></i>
-                <span class="ml-3 item-text">Routes</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="vehicles.php">
-                <i class="fe fe-file-plus fe-16"></i>
-                <span class="ml-3 item-text">Vehicle</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="transport-membership.php">
-                <i class="fe fe-file-plus fe-16"></i>
-                <span class="ml-3 item-text">Membership</span>
-                </i>
-              </a>
-            </li>
-          </ul> -->
       </nav>
     </aside>
     <main role="main" class="main-content">

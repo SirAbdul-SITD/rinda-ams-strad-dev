@@ -41,9 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_
       transform: scale(1.05);
     }
 
-    .modal-shortcut .con-item:hover p {
-      color: white !important;
-    }
   </style>
 </head>
 
@@ -175,45 +172,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_
                 </i>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="iep.php">
-                <i class="fe fe-briefcase fe-16"></i>
-                <span class="ml-3 item-text">IEP</span>
-                </i>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="shadow.php">
-                <i class="fe fe-award fe-16"></i>
-                <span class="ml-3 item-text">Shadow</span>
-                </i>
-              </a>
-            </li>
+           
 
           </ul>
 
+          <!-- Extras -->
+           <p class="text-muted nav-heading mt-4 mb-1">
+            <span>Extras</span>
+          </p>
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item">
+              <a class="nav-link" href="calendar.php">
+                <i class="fe fe-calendar fe-16"></i>
+                <span class="ml-3 item-text">Academic Calendar</span>
+                </i>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="notice-board.php">
+                <i class="fe fe-bell fe-16"></i>
+                <span class="ml-3 item-text">Notice Board</span>
+                </i>
+              </a>
+            </li>
+            </ul>
           <!-- Hostel -->
-          <p class="text-muted nav-heading mt-4 mb-1">
+          <p class=" nav-heading mt-4 mb-1">
             <span>Hostel</span>
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item">
-              <a class="nav-link text-muted" href="#">
+              <a class="nav-link " href="hostel.php">
                 <i class="fe fe-file-plus fe-16"></i>
                 <span class="ml-3 item-text">Hostels</span>
                 </i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" href="#">
+              <a class="nav-link " href="room-types.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Room Types</span>
                 </i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" href="#">
+              <a class="nav-link " href="hostel-membership.php">
                 <i class="fe fe-file-plus fe-16"></i>
                 <span class="ml-3 item-text">Membership</span>
                 </i>
@@ -360,9 +364,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_
               $formattedTotalAmountPaid = '₦' . number_format($totalAmountPaid, 2);
               $formattedTotalInvoicesUnpaid = number_format($totalInvoicesUnpaid);
               $formattedTotalAmountUnpaid = '₦' . number_format($totalAmountUnpaid, 2);
+              $percentagePaid = $totalAmount > 0 ? ($totalAmountPaid / $totalAmount) * 100 : 0;
+              $percentageUnpaid = $totalAmount > 0 ? ($totalAmountUnpaid / $totalAmount) * 100 : 0;
 
-             
-              
+              $percentagePaidFormatted = number_format($percentagePaid, 2) . '%';
+              $percentageUnpaidFormatted = number_format($percentageUnpaid, 2) . '%';
+
+
+
+
+
               ?>
               <div class="col-md-12 my-4">
                 <div class="row align-items-center my-3">
@@ -381,9 +392,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_
                   <div class="col-md-6 mb-6">
                     <div class="card shadow">
                       <div class="card-body">
-                        <div class="row align-items-center">
+                        <div class="row align-items-center mb-6">
                           <div class="col">
-                            <span class="badge badge-pill badge-success" style="background-color: #93bb84">+15.5%</span>
+                            <span class="badge badge-pill badge-success" style="background-color: #93bb84"><?= $percentagePaidFormatted ?></span>
                             <p class="small text-muted mb-0">Total paid amount</p>
                             <p class="h2 mb-0"><?= $formattedTotalAmountPaid ?></p>
                           </div>
@@ -403,7 +414,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_
                       <div class="card-body">
                         <div class="row align-items-center">
                           <div class="col">
-                            <span class="badge badge-pill badge-success" style="background-color: #FB1010">+15.5%</span>
+                            <span class="badge badge-pill badge-success" style="background-color: #FB1010"><?= $percentageUnpaidFormatted ?></span>
                             <p class="small text-muted mb-0">Total unpaid amount</p>
                             <p class="h2 mb-0"><?= $formattedTotalAmountUnpaid ?></p>
                           </div>
