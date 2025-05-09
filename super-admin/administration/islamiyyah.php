@@ -29,6 +29,14 @@
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -346,97 +354,97 @@
                             }
 
                             foreach ($invoices as $index => $invoice): ?>
-                              <tr>
-                                <td>
-                                  <?= $index + 1 ?>
-                                </td>
+                                <tr>
+                                  <td>
+                                    <?= $index + 1 ?>
+                                  </td>
 
-                                <td>
-                                  <?= $invoice['full_name'] ?>
-                                </td>
-                                <td>
-                                  <?= $invoice['class'] ?>
-                                </td>
-                                <td>
-                                  <?= $invoice['type'] ?>
-                                </td>
-                                <td>
-                                  <?= $invoice['term'] ?>
-                                </td>
-                                <td>
-                                  <?php
-                                  $formatted_amount = '₦' . number_format($invoice['amount'], 2);
-                                  echo
-                                    $formatted_amount;
-                                  ?>
-                                </td>
-                                <td>
-                                  <?php
-                                  $formatted_amount = '₦' . number_format($invoice['paid_amount'], 2);
-                                  echo
-                                    $formatted_amount;
-                                  ?>
-                                </td>
-                                <td>
-                                  <?php
-                                  if ($invoice['status'] !== 'Paid' && $invoice['status'] !== 'Paid (Discounted)') {
-                                    $defaulting_balance = $invoice['amount'] - $invoice['paid_amount'];
-                                    if ($defaulting_balance == 0) {
-                                      echo "<p class='text-success'>₦ " . number_format($defaulting_balance, 2) . "</p>";
+                                  <td>
+                                    <?= $invoice['full_name'] ?>
+                                  </td>
+                                  <td>
+                                    <?= $invoice['class'] ?>
+                                  </td>
+                                  <td>
+                                    <?= $invoice['type'] ?>
+                                  </td>
+                                  <td>
+                                    <?= $invoice['term'] ?>
+                                  </td>
+                                  <td>
+                                    <?php
+                                    $formatted_amount = '₦' . number_format($invoice['amount'], 2);
+                                    echo
+                                      $formatted_amount;
+                                    ?>
+                                  </td>
+                                  <td>
+                                    <?php
+                                    $formatted_amount = '₦' . number_format($invoice['paid_amount'], 2);
+                                    echo
+                                      $formatted_amount;
+                                    ?>
+                                  </td>
+                                  <td>
+                                    <?php
+                                    if ($invoice['status'] !== 'Paid' && $invoice['status'] !== 'Paid (Discounted)') {
+                                      $defaulting_balance = $invoice['amount'] - $invoice['paid_amount'];
+                                      if ($defaulting_balance == 0) {
+                                        echo "<p class='text-success'>₦ " . number_format($defaulting_balance, 2) . "</p>";
+                                      } else {
+                                        echo "<p class='text-danger'>₦ " . number_format($defaulting_balance, 2) . "</p>";
+                                      }
                                     } else {
-                                      echo "<p class='text-danger'>₦ " . number_format($defaulting_balance, 2) . "</p>";
+                                      echo "<p class='text-success'>₦ 0.00</p>";
                                     }
-                                  } else {
-                                    echo "<p class='text-success'>₦ 0.00</p>";
-                                  }
-                                  ?>
-                                </td>
-                                <td>
-                                  <?php
-                                  if ($invoice['status'] === 'Paid') {
-                                    echo "<p class='text-success'>Paid in full</p>";
-                                  } elseif ($invoice['status'] == 'Unpaid') {
-                                    echo "<p class='text-danger'>Unpaid</p>";
-                                  } elseif ($defaulting_balance == 0) {
-                                    echo "<p class='text-success'>Paid in full</p>";
-                                  } elseif ($invoice['status'] == 'Paid (Discounted)') {
-                                    echo "<p class='text-success'>Paid (Discounted)</p>";
-                                  } else {
-                                    $statusUnpaid = $invoice['status'];
-                                    echo "<p class='text-warning'>$statusUnpaid</p>";
-                                  }
-                                  ?>
-                                </td>
-                                <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="text-muted sr-only">Action</span>
-                                  </button>
-                                  <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item"
-                                      href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change
-                                      status</a>
+                                    ?>
+                                  </td>
+                                  <td>
+                                    <?php
+                                    if ($invoice['status'] === 'Paid') {
+                                      echo "<p class='text-success'>Paid in full</p>";
+                                    } elseif ($invoice['status'] == 'Unpaid') {
+                                      echo "<p class='text-danger'>Unpaid</p>";
+                                    } elseif ($defaulting_balance == 0) {
+                                      echo "<p class='text-success'>Paid in full</p>";
+                                    } elseif ($invoice['status'] == 'Paid (Discounted)') {
+                                      echo "<p class='text-success'>Paid (Discounted)</p>";
+                                    } else {
+                                      $statusUnpaid = $invoice['status'];
+                                      echo "<p class='text-warning'>$statusUnpaid</p>";
+                                    }
+                                    ?>
+                                  </td>
+                                  <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <span class="text-muted sr-only">Action</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                      <a class="dropdown-item"
+                                        href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change
+                                        status</a>
 
-                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                      echo 'disabled';
-                                    } ?>"
-                                      href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>"
-                                      <?php if (empty($invoice['parent_id'])) {
-                                        echo 'title="Student not linked to any parent"';
-                                      } ?>>
-                                      Send Reminder
-                                    </a>
+                                      <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
+                                        echo 'disabled';
+                                      } ?>"
+                                        href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>"
+                                        <?php if (empty($invoice['parent_id'])) {
+                                          echo 'title="Student not linked to any parent"';
+                                        } ?>>
+                                        Send Reminder
+                                      </a>
 
-                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                      echo 'disabled';
-                                    } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
-                                         echo 'title="Student not linked to any parent"';
-                                       } ?>>
-                                      Parent Profile
-                                    </a>
-                                  </div>
+                                      <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
+                                        echo 'disabled';
+                                      } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
+                                           echo 'title="Student not linked to any parent"';
+                                         } ?>>
+                                        Parent Profile
+                                      </a>
+                                    </div>
 
-                                </td>
-                              </tr>
+                                  </td>
+                                </tr>
                             <?php endforeach; ?>
 
                           </tbody>
@@ -486,65 +494,65 @@
                 <div class="modal-body px-5">
                   <div class="row align-items-center">
                     <div class="col-6 text-center">
-                      <a href="#" style="text-decoration: none;">
-                        <div class="squircle bg-success justify-content-center">
-                          <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-success">Dashboard</p>
-                      </a>
+                      <!-- <a href="#" style="text-decoration: none;"> -->
+                      <div class="squircle bg-success justify-content-center">
+                        <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-success">Dashboard</p>
+                      <!-- </a> -->
                     </div>
-                    <div class="col-6 text-center">
-                      <a href="#" style="text-decoration: none;">
+                    <div class="col-6 text-center con-item">
+                      <a href="../academics/" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Academics</p>
+                        <p class="text-secondary control-panel-text">Academics</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../lms" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">E-Learning</p>
+                        <p class="text-secondary control-panel-text">E-Learning</p>
                       </a>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../messages" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Messages</p>
+                        <p class="text-secondary control-panel-text">Messages</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../shop" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Shop</p>
+                        <p class="text-secondary control-panel-text">Shop</p>
                       </a>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../hr/" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center text-white">
                           <i class="fe fe-users fe-32 align-self-center"></i>
                         </div>
-                        <p class="text-white">HR</p>
+                        <p class="text-secondary control-panel-text">HR</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../assessments" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Assessments</p>
+                        <p class="text-secondary control-panel-text">Assessments</p>
                       </a>
                     </div>
                     <div class="col-6 text-center">

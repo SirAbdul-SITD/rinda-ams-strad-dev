@@ -29,6 +29,14 @@
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -301,46 +309,46 @@
                               echo '<p class="text-center">None added Yet!</p>';
                             } else {
                               foreach ($fees_type as $index => $iep): ?>
-                                <tr>
+                                    <tr>
 
-                                  <td>
-                                    <input type="hidden" value="<?= $iep['id']; ?>" class="edit-iep-id" ?>
-                                    <input type="hidden" value="<?= $iep['amount']; ?>" class="edit-iep-amount" ?>
-                                    <input type="hidden" value="<?= $iep['category']; ?>" class="edit-iep-category" ?>
-                                    <input type="hidden" value="<?= $iep['duration']; ?>" class="edit-iep-duration" ?>
+                                      <td>
+                                        <input type="hidden" value="<?= $iep['id']; ?>" class="edit-iep-id" ?>
+                                        <input type="hidden" value="<?= $iep['amount']; ?>" class="edit-iep-amount" ?>
+                                        <input type="hidden" value="<?= $iep['category']; ?>" class="edit-iep-category" ?>
+                                        <input type="hidden" value="<?= $iep['duration']; ?>" class="edit-iep-duration" ?>
 
-                                    <?= $index + 1 ?>
-                                  </td>
-                                  <td>
-                                    <p class="mb-0 text-muted"><strong>
-                                        <?= $iep['category'] ?>
-                                      </strong></p>
-                                  </td>
-                                  <td>
-                                    <p class="mb-0 text-muted">
-                                      <?php $formatted_amount = '₦ ' . number_format($iep['amount'], 2);
-                                      echo $formatted_amount;
-                                      ?>
-                                    </p>
-                                  </td>
+                                        <?= $index + 1 ?>
+                                      </td>
+                                      <td>
+                                        <p class="mb-0 text-muted"><strong>
+                                            <?= $iep['category'] ?>
+                                          </strong></p>
+                                      </td>
+                                      <td>
+                                        <p class="mb-0 text-muted">
+                                          <?php $formatted_amount = '₦ ' . number_format($iep['amount'], 2);
+                                          echo $formatted_amount;
+                                          ?>
+                                        </p>
+                                      </td>
 
-                                  <td>
-                                    <p class="mb-0 text-muted">
-                                      <?= $iep['duration'] ?>
-                                    </p>
-                                  </td>
-                                  <td>
-                                    <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
-                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <span class="text-muted sr-only">Action</span>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                      <a class="dropdown-item edit">Edit</a>
-                                      <a class="dropdown-item remove">Delete</a>
-                                    </div>
-                                  </td>
-                                </tr>
-                              <?php endforeach;
+                                      <td>
+                                        <p class="mb-0 text-muted">
+                                          <?= $iep['duration'] ?>
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <span class="text-muted sr-only">Action</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                          <a class="dropdown-item edit">Edit</a>
+                                          <a class="dropdown-item remove">Delete</a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                <?php endforeach;
                             } ?>
 
                           </tbody>
@@ -507,65 +515,65 @@
                 <div class="modal-body px-5">
                   <div class="row align-items-center">
                     <div class="col-6 text-center">
-                      <a href="#" style="text-decoration: none;">
-                        <div class="squircle bg-success justify-content-center">
-                          <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-success">Dashboard</p>
-                      </a>
+                      <!-- <a href="#" style="text-decoration: none;"> -->
+                      <div class="squircle bg-success justify-content-center">
+                        <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-success">Dashboard</p>
+                      <!-- </a> -->
                     </div>
-                    <div class="col-6 text-center">
-                      <a href="#" style="text-decoration: none;">
+                    <div class="col-6 text-center con-item">
+                      <a href="../academics/" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Academics</p>
+                        <p class="text-secondary control-panel-text">Academics</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../lms" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">E-Learning</p>
+                        <p class="text-secondary control-panel-text">E-Learning</p>
                       </a>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../messages" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Messages</p>
+                        <p class="text-secondary control-panel-text">Messages</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../shop" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Shop</p>
+                        <p class="text-secondary control-panel-text">Shop</p>
                       </a>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../hr/" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center text-white">
                           <i class="fe fe-users fe-32 align-self-center"></i>
                         </div>
-                        <p class="text-white">HR</p>
+                        <p class="text-secondary control-panel-text">HR</p>
                       </a>
                     </div>
                   </div>
                   <div class="row align-items-center">
-                    <div class="col-6 text-center">
+                    <div class="col-6 text-center con-item">
                       <a href="../assessments" style="text-decoration: none;">
                         <div class="squircle bg-secondary justify-content-center">
                           <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                         </div>
-                        <p class="text-white">Assessments</p>
+                        <p class="text-secondary control-panel-text">Assessments</p>
                       </a>
                     </div>
                     <div class="col-6 text-center">

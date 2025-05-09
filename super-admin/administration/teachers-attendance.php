@@ -24,6 +24,14 @@
     .card {
       border-radius: 8px;
     }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
   </style>
 </head>
 
@@ -34,7 +42,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -54,7 +63,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -84,7 +94,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -104,10 +115,12 @@
                 <a class="nav-link pl-3" href="./index.html"><span class="ml-1 item-text">Default</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./dashboard-analytics.html"><span class="ml-1 item-text">Analytics</span></a>
+                <a class="nav-link pl-3" href="./dashboard-analytics.html"><span
+                    class="ml-1 item-text">Analytics</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./dashboard-sales.html"><span class="ml-1 item-text">E-commerce</span></a>
+                <a class="nav-link pl-3" href="./dashboard-sales.html"><span
+                    class="ml-1 item-text">E-commerce</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./dashboard-saas.html"><span class="ml-1 item-text">Saas
@@ -143,7 +156,8 @@
                 <a class="nav-link pl-3" href="./ui-buttons.html"><span class="ml-1 item-text">Buttons</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./ui-notification.html"><span class="ml-1 item-text">Notifications</span></a>
+                <a class="nav-link pl-3" href="./ui-notification.html"><span
+                    class="ml-1 item-text">Notifications</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./ui-modals.html"><span class="ml-1 item-text">Modals</span></a>
@@ -179,7 +193,8 @@
                     Elements</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./form_validation.html"><span class="ml-1 item-text">Validation</span></a>
+                <a class="nav-link pl-3" href="./form_validation.html"><span
+                    class="ml-1 item-text">Validation</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./form_wizard.html"><span class="ml-1 item-text">Wizard</span></a>
@@ -224,7 +239,8 @@
                 <a class="nav-link pl-3" href="./chart-chartjs.html"><span class="ml-1 item-text">Chartjs</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./chart-apexcharts.html"><span class="ml-1 item-text">ApexCharts</span></a>
+                <a class="nav-link pl-3" href="./chart-apexcharts.html"><span
+                    class="ml-1 item-text">ApexCharts</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./datamaps.html"><span class="ml-1 item-text">Datamaps</span></a>
@@ -374,7 +390,8 @@
           </li>
         </ul>
         <div class="btn-box w-100 mt-4 mb-1">
-          <a href="https://themeforest.net/item/tinydash-bootstrap-html-admin-dashboard-template/27511269" target="_blank" class="btn mb-2 btn-primary btn-lg btn-block">
+          <a href="https://themeforest.net/item/tinydash-bootstrap-html-admin-dashboard-template/27511269"
+            target="_blank" class="btn mb-2 btn-primary btn-lg btn-block">
             <i class="fe fe-shopping-cart fe-12 mx-2"></i><span class="small">Buy now</span>
           </a>
         </div>
@@ -423,7 +440,8 @@
                       <div class="col ml-auto">
                         <div class="dropdown float-right">
                           <button class="btn btn-primary float-right ml-3" type="button">Add more +</button>
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="actionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action </button>
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="actionMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action </button>
                           <div class="dropdown-menu" aria-labelledby="actionMenuButton">
                             <a class="dropdown-item" href="#">Export</a>
                             <a class="dropdown-item" href="#">Delete</a>
@@ -463,7 +481,8 @@
                           <td>Maths Teacher</td>
                           <td>abdul@gmal.com</td>
                           <td>
-                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <span class="text-muted sr-only">Action</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -487,7 +506,8 @@
                           <td>English Teacher</td>
                           <td>emily@example.com</td>
                           <td>
-                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <span class="text-muted sr-only">Action</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -510,7 +530,8 @@
                           <td>Science Teacher</td>
                           <td>michael@example.com</td>
                           <td>
-                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <span class="text-muted sr-only">Action</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -533,7 +554,8 @@
                           <td>History Teacher</td>
                           <td>sarah@example.com</td>
                           <td>
-                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <span class="text-muted sr-only">Action</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -556,7 +578,8 @@
                           <td>Art Teacher</td>
                           <td>john@example.com</td>
                           <td>
-                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <span class="text-muted sr-only">Action</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -584,11 +607,13 @@
           </div> <!-- .col-12 -->
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -601,11 +626,13 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">

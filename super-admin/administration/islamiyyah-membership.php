@@ -33,6 +33,14 @@ require_once('../settings.php');
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -341,33 +349,33 @@ require_once('../settings.php');
                           // Extract 'Weekdays & Weekends' or 'Weekends' from the type
                           $displayType = str_replace(['School Fees ', '(', ')'], '', $invoice['type']);
                           ?>
-                          <tr>
-                            <td>
-                              <?php if (in_array($invoice['student_id'], $inserted)) {
-                                continue; // Skip this student if already inserted
-                              } else {
-                                $index + 1;
-                              } ?>
-                            </td>
-                            <td>
-                              <?= $invoice['full_name'] ?>
-                            </td>
-                            <td>
-                              <?= $invoice['class'] ?>
-                            </td>
-                            <td>
-                              <?= $displayType ?>
-                            </td>
-                            <td>
-                              <?php if (in_array($invoice['student_id'], $inserted)) {
-                                continue; // Skip this student if already inserted
-                              } else {
-                                $formatted_amount = '₦' . number_format($invoice['total_amount'], 2);
-                                echo
-                                  $formatted_amount;
-                              } ?>
-                            </td>
-                          </tr>
+                            <tr>
+                              <td>
+                                <?php if (in_array($invoice['student_id'], $inserted)) {
+                                  continue; // Skip this student if already inserted
+                                } else {
+                                  $index + 1;
+                                } ?>
+                              </td>
+                              <td>
+                                <?= $invoice['full_name'] ?>
+                              </td>
+                              <td>
+                                <?= $invoice['class'] ?>
+                              </td>
+                              <td>
+                                <?= $displayType ?>
+                              </td>
+                              <td>
+                                <?php if (in_array($invoice['student_id'], $inserted)) {
+                                  continue; // Skip this student if already inserted
+                                } else {
+                                  $formatted_amount = '₦' . number_format($invoice['total_amount'], 2);
+                                  echo
+                                    $formatted_amount;
+                                } ?>
+                              </td>
+                            </tr>
                         <?php endforeach; ?>
                       </tbody>
 
@@ -417,65 +425,65 @@ require_once('../settings.php');
             <div class="modal-body px-5">
               <div class="row align-items-center">
                 <div class="col-6 text-center">
-                  <a href="#" style="text-decoration: none;">
-                    <div class="squircle bg-success justify-content-center">
-                      <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p class="text-success">Dashboard</p>
-                  </a>
+                  <!-- <a href="#" style="text-decoration: none;"> -->
+                  <div class="squircle bg-success justify-content-center">
+                    <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
+                  </div>
+                  <p class="text-success">Dashboard</p>
+                  <!-- </a> -->
                 </div>
-                <div class="col-6 text-center">
-                  <a href="#" style="text-decoration: none;">
+                <div class="col-6 text-center con-item">
+                  <a href="../academics/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-secondary control-panel-text">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">

@@ -25,6 +25,14 @@
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     @media print {
       table {
         /* Reset margins and padding */
@@ -54,7 +62,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -74,7 +83,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -104,7 +114,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -143,7 +154,8 @@
 
           <!-- Asset Management -->
           <li class="nav-item dropdown">
-            <a href="#asset-management-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+            <a href="#asset-management-elements" data-toggle="collapse" aria-expanded="false"
+              class="dropdown-toggle nav-link">
               <i class="fe fe-box fe-16"></i>
               <span class="ml-3 item-text">Asset Management</span>
             </a>
@@ -201,14 +213,16 @@
                 <a class="nav-link pl-3" href="room-types.html"><span class="ml-1 item-text">Room Types</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="hostel-membership.html"><span class="ml-1 item-text">Membership</span></a>
+                <a class="nav-link pl-3" href="hostel-membership.html"><span
+                    class="ml-1 item-text">Membership</span></a>
               </li>
             </ul>
           </li>
 
           <!-- Study materials -->
           <li class="nav-item dropdown">
-            <a href="#study-materials-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+            <a href="#study-materials-elements" data-toggle="collapse" aria-expanded="false"
+              class="dropdown-toggle nav-link">
               <i class="fe fe-archive fe-16"></i>
               <span class="ml-3 item-text">Study Materials</span>
             </a>
@@ -233,7 +247,8 @@
           </li>
           <!-- Transportation -->
           <li class="nav-item dropdown">
-            <a href="#transportation-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+            <a href="#transportation-elements" data-toggle="collapse" aria-expanded="false"
+              class="dropdown-toggle nav-link">
               <i class="fe fe-truck fe-16"></i>
               <span class="ml-3 item-text">Transportation</span>
             </a>
@@ -249,7 +264,8 @@
                 <a class="nav-link pl-3" href="vehicles.html"><span class="ml-1 item-text">Vehicle</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="transport-membership.html"><span class="ml-1 item-text">Membership</span></a>
+                <a class="nav-link pl-3" href="transport-membership.html"><span
+                    class="ml-1 item-text">Membership</span></a>
               </li>
             </ul>
           </li>
@@ -272,7 +288,8 @@
 
 
                   </div>
-                  <form action="upload-item.php" method="POST" class=" needs-validation" id="tinydash-dropzone" novalidate>
+                  <form action="upload-item.php" method="POST" class=" needs-validation" id="tinydash-dropzone"
+                    novalidate>
 
                     <div class="input-space">
 
@@ -291,9 +308,9 @@
                             if (count($sections) === 0) {
                               echo '<p class="text-center">None added Yet!</p>';
                             } else {
-                              foreach ($sections as $section) : ?>
+                              foreach ($sections as $section): ?>
                                 <option value="<?= $section['section']; ?>"> <?= $section['section'] ?></option>
-                            <?php endforeach;
+                              <?php endforeach;
                             } ?>
                           </select>
                           <div class="invalid-feedback"> Please select a section before selecting a class. </div>
@@ -320,7 +337,7 @@
 
                       <script>
                         // Enable/disable class select based on selected section
-                        document.getElementById('validationSelect2').addEventListener('change', function() {
+                        document.getElementById('validationSelect2').addEventListener('change', function () {
                           var sectionValue = this.value;
                           var classSelect = document.getElementById('studentClass');
                           var studentSelect = document.getElementById('studentName');
@@ -340,7 +357,7 @@
 
                           var xhr = new XMLHttpRequest();
                           xhr.open('GET', 'fetch_classes.php?section=' + sectionValue, true);
-                          xhr.onreadystatechange = function() {
+                          xhr.onreadystatechange = function () {
                             if (xhr.readyState === 4 && xhr.status === 200) {
                               classSelect.innerHTML = xhr.responseText;
                               classSelect.disabled = false;
@@ -350,7 +367,7 @@
                         });
 
                         // Enable/disable name input based on selected class
-                        document.getElementById('studentClass').addEventListener('change', function() {
+                        document.getElementById('studentClass').addEventListener('change', function () {
                           var classValue = this.value;
                           var studentSelect = document.getElementById('studentName');
 
@@ -363,7 +380,7 @@
 
                           var xhr = new XMLHttpRequest();
                           xhr.open('GET', 'fetch_students.php?class=' + classValue, true);
-                          xhr.onreadystatechange = function() {
+                          xhr.onreadystatechange = function () {
                             if (xhr.readyState === 4 && xhr.status === 200) {
                               studentSelect.innerHTML = xhr.responseText;
                               studentSelect.disabled = false;
@@ -413,9 +430,9 @@
                             if (count($upload_status) === 0) {
                               echo '<p class="text-center">No class added Yet!</p>';
                             } else {
-                              foreach ($upload_status as $type) : ?>
+                              foreach ($upload_status as $type): ?>
                                 <option value="<?= $type['type']; ?>"> <?= $type['type'] ?></option>
-                            <?php endforeach;
+                              <?php endforeach;
                             } ?>
                           </select>
                           <div class="invalid-feedback"> Please select a class. </div>
@@ -445,9 +462,9 @@
                             if (count($folders) === 0) {
                               echo '<p class="text-center">No class added Yet!</p>';
                             } else {
-                              foreach ($folders as $folder) : ?>
+                              foreach ($folders as $folder): ?>
                                 <option value="<?= $folder['name']; ?>"> <?= $folder['name'] ?></option>
-                            <?php endforeach;
+                              <?php endforeach;
                             } ?>
                           </select>
                           <div class="invalid-feedback"> Please select a folder. </div>
@@ -460,14 +477,16 @@
                         <div class="form-row">
                           <div class="col-md-6">
                             <div class="custom-control custom-radio">
-                              <input type="radio" class="custom-control-input" id="customControlValidation23" name="permission" checked required value='1'>
+                              <input type="radio" class="custom-control-input" id="customControlValidation23"
+                                name="permission" checked required value='1'>
                               <label class="custom-control-label" for="customControlValidation223">Private</label>
                               <p class="text-muted"> Only I & management will be able to see this. </p>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="custom-control custom-radio mb-3">
-                              <input type="radio" class="custom-control-input" id="customControlValidation34" name="permission" required value='2'>
+                              <input type="radio" class="custom-control-input" id="customControlValidation34"
+                                name="permission" required value='2'>
                               <label class="custom-control-label" for="customControlValidation34">Public</label>
                               <p class="text-muted"> Others will be able to see this.
                               </p>
@@ -481,7 +500,8 @@
                           <div class="form-group mb-3">
                             <p class="mb-3">Available To Teachers</p>
                             <div class="custom-control custom-switch">
-                              <input type="checkbox" checked class="custom-control-input" id="customSwitch1" name='students'>
+                              <input type="checkbox" checked class="custom-control-input" id="customSwitch1"
+                                name='students'>
                               <label class="custom-control-label" for="customSwitch1">Yes</label>
                             </div>
                           </div>
@@ -549,11 +569,13 @@
           </div>
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -566,11 +588,13 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">

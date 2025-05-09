@@ -24,6 +24,14 @@
     .card {
       border-radius: 8px;
     }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
   </style>
 </head>
 
@@ -34,7 +42,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -54,7 +63,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -84,7 +94,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -106,7 +117,8 @@
             </a>
             <ul class="collapse list-unstyled pl-4 w-100" id="account-elements">
               <li class="nav-item">
-                <a class="nav-link pl-3" href="fees-type.php"><span class="ml-1 item-text  text-primary">Fees Type</span></a>
+                <a class="nav-link pl-3" href="fees-type.php"><span class="ml-1 item-text  text-primary">Fees
+                    Type</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="invoice/"><span class="ml-1 item-text">Invoices</span></a>
@@ -123,7 +135,8 @@
 
           <!-- Asset Management -->
           <li class="nav-item dropdown">
-            <a href="#asset-management-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+            <a href="#asset-management-elements" data-toggle="collapse" aria-expanded="false"
+              class="dropdown-toggle nav-link">
               <i class="fe fe-box fe-16"></i>
               <span class="ml-3 item-text">Asset Management</span>
             </a>
@@ -181,14 +194,16 @@
                 <a class="nav-link pl-3" href="room-types.html"><span class="ml-1 item-text">Room Types</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="hostel-membership.html"><span class="ml-1 item-text">Membership</span></a>
+                <a class="nav-link pl-3" href="hostel-membership.html"><span
+                    class="ml-1 item-text">Membership</span></a>
               </li>
             </ul>
           </li>
 
           <!-- Study materials -->
           <li class="nav-item dropdown">
-            <a href="#study-materials-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+            <a href="#study-materials-elements" data-toggle="collapse" aria-expanded="false"
+              class="dropdown-toggle nav-link">
               <i class="fe fe-archive fe-16"></i>
               <span class="ml-3 item-text">Study Materials</span>
             </a>
@@ -213,7 +228,8 @@
           </li>
           <!-- Transportation -->
           <li class="nav-item dropdown">
-            <a href="#transportation-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+            <a href="#transportation-elements" data-toggle="collapse" aria-expanded="false"
+              class="dropdown-toggle nav-link">
               <i class="fe fe-truck fe-16"></i>
               <span class="ml-3 item-text">Transportation</span>
             </a>
@@ -229,7 +245,8 @@
                 <a class="nav-link pl-3" href="vehicles.html"><span class="ml-1 item-text">Vehicle</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="transport-membership.html"><span class="ml-1 item-text">Membership</span></a>
+                <a class="nav-link pl-3" href="transport-membership.html"><span
+                    class="ml-1 item-text">Membership</span></a>
               </li>
             </ul>
           </li>
@@ -254,8 +271,10 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <button type="button" class="btn btn-sm"><span class="fe fe-refresh-ccw fe-16 text-muted"></span></button>
-                    <button type="button" class="btn btn-sm mr-2"><span class="fe fe-filter fe-16 text-muted"></span></button>
+                    <button type="button" class="btn btn-sm"><span
+                        class="fe fe-refresh-ccw fe-16 text-muted"></span></button>
+                    <button type="button" class="btn btn-sm mr-2"><span
+                        class="fe fe-filter fe-16 text-muted"></span></button>
                   </div>
                 </form>
               </div>
@@ -269,7 +288,8 @@
                       <div class="col">
                         <small class="text-muted mb-1">Page Views</small>
                         <h3 class="card-title mb-0">1168</h3>
-                        <p class="small text-muted mb-0"><span class="fe fe-arrow-down fe-12 text-danger"></span><span>-18.9% Last week</span></p>
+                        <p class="small text-muted mb-0"><span
+                            class="fe fe-arrow-down fe-12 text-danger"></span><span>-18.9% Last week</span></p>
                       </div>
                       <div class="col-4 text-right">
                         <span class="sparkline inlineline"></span>
@@ -285,7 +305,8 @@
                       <div class="col">
                         <small class="text-muted mb-1">Conversion</small>
                         <h3 class="card-title mb-0">68</h3>
-                        <p class="small text-muted mb-0"><span class="fe fe-arrow-up fe-12 text-warning"></span><span>+1.9% Last week</span></p>
+                        <p class="small text-muted mb-0"><span
+                            class="fe fe-arrow-up fe-12 text-warning"></span><span>+1.9% Last week</span></p>
                       </div>
                       <div class="col-4 text-right">
                         <span class="sparkline inlinepie"></span>
@@ -301,7 +322,8 @@
                       <div class="col">
                         <small class="text-muted mb-1">Visitors</small>
                         <h3 class="card-title mb-0">108</h3>
-                        <p class="small text-muted mb-0"><span class="fe fe-arrow-up fe-12 text-success"></span><span>37.7% Last week</span></p>
+                        <p class="small text-muted mb-0"><span
+                            class="fe fe-arrow-up fe-12 text-success"></span><span>37.7% Last week</span></p>
                       </div>
                       <div class="col-4 text-right">
                         <span class="sparkline inlinebar"></span>
@@ -391,7 +413,8 @@
                           <div class="col-auto">
                             <strong>+85%</strong>
                             <div class="progress mt-2" style="height: 4px;">
-                              <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                              <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
+                                aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                           </div>
                         </div>
@@ -408,7 +431,8 @@
                           <div class="col-auto">
                             <strong>+75%</strong>
                             <div class="progress mt-2" style="height: 4px;">
-                              <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                              <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75"
+                                aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                           </div>
                         </div>
@@ -425,7 +449,8 @@
                           <div class="col-auto">
                             <strong>+62%</strong>
                             <div class="progress mt-2" style="height: 4px;">
-                              <div class="progress-bar" role="progressbar" style="width: 62%" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"></div>
+                              <div class="progress-bar" role="progressbar" style="width: 62%" aria-valuenow="62"
+                                aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                           </div>
                         </div>
@@ -442,7 +467,8 @@
                           <div class="col-auto">
                             <strong>+24%</strong>
                             <div class="progress mt-2" style="height: 4px;">
-                              <div class="progress-bar" role="progressbar" style="width: 24%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
+                              <div class="progress-bar" role="progressbar" style="width: 24%" aria-valuenow="24"
+                                aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                           </div>
                         </div>
@@ -459,7 +485,8 @@
                     <strong>Region</strong>
                   </div>
                   <div class="card-body">
-                    <div class="map-box my-5" style="position:relative; max-width: 320px; max-height: 200px; margin:0 auto;">
+                    <div class="map-box my-5"
+                      style="position:relative; max-width: 320px; max-height: 200px; margin:0 auto;">
                       <div id="dataMapUSA"></div>
                     </div>
                     <div class="row align-items-bottom my-2">
@@ -470,7 +497,8 @@
                       <div class="col-auto text-right">
                         <p class="mb-0">118</p>
                         <div class="progress mt-2" style="height: 4px;">
-                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
                     </div>
@@ -482,7 +510,8 @@
                       <div class="col-auto text-right">
                         <p class="mb-0">1008</p>
                         <div class="progress mt-2" style="height: 4px;">
-                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
                     </div>
@@ -494,7 +523,8 @@
                       <div class="col-auto text-right">
                         <p class="mb-0">67</p>
                         <div class="progress mt-2" style="height: 4px;">
-                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
                     </div>
@@ -506,7 +536,8 @@
                       <div class="col-auto text-right">
                         <p class="mb-0">186</p>
                         <div class="progress mt-2" style="height: 4px;">
-                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
                     </div>
@@ -582,7 +613,8 @@
                         <div class="col-6 col-xl-3 my-3">
                           <span class="mb-0">Safari</span>
                           <div class="progress my-2" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10"
+                              aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                         <div class="col-6 col-xl-3 my-3 text-right">
@@ -592,7 +624,8 @@
                         <div class="col-6 col-xl-3 my-3">
                           <span class="mb-0">Chrome</span>
                           <div class="progress my-2" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: 36%" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 36%" aria-valuenow="36"
+                              aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                         <div class="col-6 col-xl-3 my-3 text-right">
@@ -602,7 +635,8 @@
                         <div class="col-6 col-xl-3 my-3">
                           <span class="mb-0">Opera</span>
                           <div class="progress my-2" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
+                              aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                         <div class="col-6 col-xl-3 my-3 text-right">
@@ -612,7 +646,8 @@
                         <div class="col-6 col-xl-3 my-3">
                           <span class="mb-0">Edge</span>
                           <div class="progress my-2" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
+                              aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                         <div class="col-6 col-xl-3 my-3 text-right">
@@ -628,11 +663,13 @@
           </div> <!-- /.col -->
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -645,11 +682,13 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">

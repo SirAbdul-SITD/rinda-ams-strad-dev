@@ -41,6 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_
       transform: scale(1.05);
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
   </style>
 </head>
 
