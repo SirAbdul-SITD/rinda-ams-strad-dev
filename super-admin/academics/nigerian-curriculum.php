@@ -25,6 +25,14 @@
     .card {
       border-radius: 8px;
     }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
   </style>
 </head>
 
@@ -35,7 +43,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -55,7 +64,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -81,7 +91,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.php">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -172,13 +183,13 @@
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -357,7 +368,8 @@
             </div> <!-- .col-12 -->
           </div> <!-- .row -->
         </div> <!-- .container-fluid -->
-        <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+        <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -424,7 +436,8 @@
             </div>
           </div>
         </div>
-        <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+        <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
+          aria-labelledby="defaultModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">

@@ -26,6 +26,14 @@
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -79,7 +87,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -99,7 +108,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -125,7 +135,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -208,13 +219,13 @@
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -298,7 +309,7 @@
                           echo '<option value="" disabled>No class added Yet!</option>';
                         } else {
                           echo '<option value="" disabled selected>Select Section</option>';
-                          foreach ($sections as $section) :
+                          foreach ($sections as $section):
                             $sectionId = $section['id'];
                             $sectionName = $section['section'];
                             echo "<option value='$sectionId'>$sectionName Section</option>";
@@ -320,7 +331,8 @@
                       </select>
                     </div>
                     <input type="hidden" name="name" id="name">
-                    <button type="submit" class="btn mb-2 btn-success w-100 info-form-button">Manage Student Class<span class="fe fe-chevron-right fe-16 ml-2"></span></button>
+                    <button type="submit" class="btn mb-2 btn-success w-100 info-form-button">Manage Student Class<span
+                        class="fe fe-chevron-right fe-16 ml-2"></span></button>
                   </form>
                 </div>
               </div>
@@ -333,11 +345,13 @@
 
 
       <!-- Notification Modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -350,12 +364,14 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
       <!-- Menu Modal -->
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -366,66 +382,66 @@
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
-                  <a href="../academics/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
+                  <a href="#" style="text-decoration: none;">
+                    <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-success">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -459,7 +475,7 @@
   <script src='../js/jquery.validate.min.js'></script>
 
   <script>
-    document.getElementById('sectionSelect').addEventListener('change', function() {
+    document.getElementById('sectionSelect').addEventListener('change', function () {
       var sectionSelect = this.value;
       var classSelect = document.getElementById('classSelect');
       var studentSelect = document.getElementById('studentSelect');
@@ -477,10 +493,10 @@
             section_id: sectionSelect
           },
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               // Populate the class select field with the retrieved classes
-              response.classes.forEach(function(classInfo) {
+              response.classes.forEach(function (classInfo) {
                 var option = document.createElement('option');
                 option.value = classInfo.id;
                 option.text = classInfo.class;
@@ -493,7 +509,7 @@
               // console.error('Failed to fetch classes:', response.message);
             }
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             // console.error('Error occurred during request:', error);
           }
         });
@@ -504,7 +520,7 @@
       }
     });
 
-    document.getElementById('classSelect').addEventListener('change', function() {
+    document.getElementById('classSelect').addEventListener('change', function () {
       var classSelect = this.value;
       var studentSelect = document.getElementById('studentSelect');
 
@@ -520,10 +536,10 @@
             class_id: classSelect
           },
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               // Populate the student select field with the retrieved students
-              response.students.forEach(function(student) {
+              response.students.forEach(function (student) {
                 var option = document.createElement('option');
                 option.value = student.id;
                 option.text = student.firstName + ' ' + student.lastName;
@@ -538,7 +554,7 @@
               // console.error('Failed to fetch students:', response.message);
             }
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             // console.error('Error occurred during request:', error);
           }
         });
@@ -566,7 +582,7 @@
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
@@ -654,42 +670,42 @@
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -704,14 +720,14 @@
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();

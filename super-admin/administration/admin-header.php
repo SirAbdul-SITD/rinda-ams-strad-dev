@@ -69,7 +69,12 @@ require_once('../settings.php');
           <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -82,8 +87,8 @@ require_once('../settings.php');
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -186,7 +191,7 @@ require_once('../settings.php');
               </a>
             </li>
           </ul>
-          
+
           <!-- Hostel -->
           <p class="nav-heading mt-4 mb-1">
             <span>Hostel</span>
@@ -214,123 +219,122 @@ require_once('../settings.php');
               </a>
             </li>
           </ul>
-        </nav>
-        
-      </aside>
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog"
-            aria-labelledby="defaultModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
-                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                </div>
-                <div class="modal-body">
-                  <div class="list-group list-group-flush my-n3">
-                    <div class="list-group-item bg-transparent">
-                      <div class="row align-items-center">
-                        <div class="col text-center"> <small><strong>You're well up to date</strong></small>
-                          <div class="my-0 text-muted small">No notifications available</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> <!-- / .list-group -->
-                </div>
-                <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block"
-                    data-dismiss="modal" disabled>Clear All</button> </div>
-              </div>
-            </div>
-          </div>
+      </nav>
 
-          <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
-            aria-labelledby="defaultModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="defaultModalLabel">Control Panel</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body px-5">
-                  <div class="row align-items-center">
-                    <div class="col-6 text-center">
-                      <!-- <a href="#" style="text-decoration: none;"> -->
-                      <div class="squircle bg-success justify-content-center">
-                        <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                      </div>
-                      <p class="text-success">Dashboard</p>
-                      <!-- </a> -->
-                    </div>
-                    <div class="col-6 text-center con-item">
-                      <a href="../academics/" style="text-decoration: none;">
-                        <div class="squircle bg-secondary justify-content-center">
-                          <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-secondary control-panel-text">Academics</p>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row align-items-center">
-                    <div class="col-6 text-center con-item">
-                      <a href="../lms" style="text-decoration: none;">
-                        <div class="squircle bg-secondary justify-content-center">
-                          <i class="fe fe-trello fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-secondary control-panel-text">E-Learning</p>
-                      </a>
-                    </div>
-                    <div class="col-6 text-center con-item">
-                      <a href="../messages" style="text-decoration: none;">
-                        <div class="squircle bg-secondary justify-content-center">
-                          <i class="fe fe-mail fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-secondary control-panel-text">Messages</p>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row align-items-center">
-                    <div class="col-6 text-center con-item">
-                      <a href="../shop" style="text-decoration: none;">
-                        <div class="squircle bg-secondary justify-content-center">
-                          <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-secondary control-panel-text">Shop</p>
-                      </a>
-                    </div>
-                    <div class="col-6 text-center con-item">
-                      <a href="../hr/" style="text-decoration: none;">
-                        <div class="squircle bg-secondary justify-content-center text-white">
-                          <i class="fe fe-users fe-32 align-self-center"></i>
-                        </div>
-                        <p class="text-secondary control-panel-text">HR</p>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row align-items-center">
-                    <div class="col-6 text-center con-item">
-                      <a href="../assessments" style="text-decoration: none;">
-                        <div class="squircle bg-secondary justify-content-center">
-                          <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
-                        </div>
-                        <p class="text-secondary control-panel-text">Assessments</p>
-                      </a>
-                    </div>
-                    <div class="col-6 text-center">
-                      <a href="#" style="text-decoration: none;">
-                        <div class="squircle bg-secondary justify-content-center">
-                          <i class="fe fe-settings fe-32 align-self-center text-muted"></i>
-                        </div>
-                        <p class="text-muted">Settings</p>
-                      </a>
-                    </div>
+    </aside>
+    <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+              data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          </div>
+          <div class="modal-body">
+            <div class="list-group list-group-flush my-n3">
+              <div class="list-group-item bg-transparent">
+                <div class="row align-items-center">
+                  <div class="col text-center"> <small><strong>You're well up to date</strong></small>
+                    <div class="my-0 text-muted small">No notifications available</div>
                   </div>
                 </div>
               </div>
+            </div> <!-- / .list-group -->
+          </div>
+          <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+              disabled>Clear All</button> </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="defaultModalLabel">Control Panel</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body px-5">
+            <div class="row align-items-center">
+              <div class="col-6 text-center">
+                <!-- <a href="#" style="text-decoration: none;"> -->
+                <div class="squircle bg-success justify-content-center">
+                  <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
+                </div>
+                <p class="text-success">Dashboard</p>
+                <!-- </a> -->
+              </div>
+              <div class="col-6 text-center con-item">
+                <a href="../academics/" style="text-decoration: none;">
+                  <div class="squircle bg-secondary justify-content-center">
+                    <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
+                  </div>
+                  <p class="text-secondary control-panel-text">Academics</p>
+                </a>
+              </div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-6 text-center con-item">
+                <a href="../lms" style="text-decoration: none;">
+                  <div class="squircle bg-secondary justify-content-center">
+                    <i class="fe fe-trello fe-32 align-self-center text-white"></i>
+                  </div>
+                  <p class="text-secondary control-panel-text">E-Learning</p>
+                </a>
+              </div>
+              <div class="col-6 text-center con-item">
+                <a href="../messages" style="text-decoration: none;">
+                  <div class="squircle bg-secondary justify-content-center">
+                    <i class="fe fe-mail fe-32 align-self-center text-white"></i>
+                  </div>
+                  <p class="text-secondary control-panel-text">Messages</p>
+                </a>
+              </div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-6 text-center con-item">
+                <a href="../shop" style="text-decoration: none;">
+                  <div class="squircle bg-secondary justify-content-center">
+                    <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
+                  </div>
+                  <p class="text-secondary control-panel-text">Shop</p>
+                </a>
+              </div>
+              <div class="col-6 text-center con-item">
+                <a href="../hr/" style="text-decoration: none;">
+                  <div class="squircle bg-secondary justify-content-center text-white">
+                    <i class="fe fe-users fe-32 align-self-center"></i>
+                  </div>
+                  <p class="text-secondary control-panel-text">HR</p>
+                </a>
+              </div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-6 text-center con-item">
+                <a href="../assessments" style="text-decoration: none;">
+                  <div class="squircle bg-secondary justify-content-center">
+                    <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
+                  </div>
+                  <p class="text-secondary control-panel-text">Assessments</p>
+                </a>
+              </div>
+              <div class="col-6 text-center">
+                <a href="#" style="text-decoration: none;">
+                  <div class="squircle bg-secondary justify-content-center">
+                    <i class="fe fe-settings fe-32 align-self-center text-muted"></i>
+                  </div>
+                  <p class="text-muted">Settings</p>
+                </a>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
     </main> <!-- main -->
   </div> <!-- .wrapper -->
 
-      <main role="main" class="main-content">
-        
+  <main role="main" class="main-content">

@@ -42,6 +42,14 @@ if (isset($_POST['id'])) {
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -95,7 +103,8 @@ if (isset($_POST['id'])) {
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -115,7 +124,8 @@ if (isset($_POST['id'])) {
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -141,7 +151,8 @@ if (isset($_POST['id'])) {
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -224,13 +235,13 @@ if (isset($_POST['id'])) {
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -326,15 +337,17 @@ if (isset($_POST['id'])) {
                         echo '<a href="parents.php" style="decoration: none"> <button type="button" class="btn mb-2 btn-primary btn-block">Add A Parent</button></a>';
                       } else {
 
-                      ?>
+                        ?>
 
                         <!-- Add Father -->
                         <div class="col-md-4">
                           <div class="form-group mb-3">
                             <p class="mb-3">Add Father</p>
                             <div class="custom-control custom-switch">
-                              <input type="checkbox" checked class="custom-control-input" id="customSwitch1" name="father" onchange="toggleParentInfo('father')">
-                              <label class="custom-control-label" for="customSwitch1"><span id="fatherLabel">No</span></label>
+                              <input type="checkbox" checked class="custom-control-input" id="customSwitch1" name="father"
+                                onchange="toggleParentInfo('father')">
+                              <label class="custom-control-label" for="customSwitch1"><span
+                                  id="fatherLabel">No</span></label>
                             </div>
                           </div>
                         </div>
@@ -343,13 +356,14 @@ if (isset($_POST['id'])) {
                           <div class="col-md-12 mb-4">
                             <div class="card-body">
                               <div class="list-group list-group-flush my-n3">
-                                <?php foreach ($parentsData as $parent) : ?>
+                                <?php foreach ($parentsData as $parent): ?>
                                   <div class="list-group-item">
                                     <div class="row">
                                       <div class="col-auto">
                                         <div class="avatar avatar-sm mt-2">
                                           <!-- Placeholder image for avatar -->
-                                          <img src="../assets/avatars/default-avatar.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                          <img src="../assets/avatars/default-avatar.jpg" alt="Avatar"
+                                            class="avatar-img rounded-circle">
                                         </div>
                                       </div>
 
@@ -377,7 +391,8 @@ if (isset($_POST['id'])) {
                                       </div>
                                       <div class="col-auto">
                                         <div class="custom-control custom-radio">
-                                          <input type="radio" id="father<?= $parent['id'] ?>" name="fatherId" value="<?= $parent['id'] ?>" class="custom-control-input" required>
+                                          <input type="radio" id="father<?= $parent['id'] ?>" name="fatherId"
+                                            value="<?= $parent['id'] ?>" class="custom-control-input" required>
                                           <label class="custom-control-label" for="father<?= $parent['id'] ?>"></label>
                                         </div>
                                       </div>
@@ -388,142 +403,150 @@ if (isset($_POST['id'])) {
                             </div> <!-- / .card-body -->
                           </div> <!-- / .col-md-3 -->
                         </div>
-                    </section>
+                      </section>
 
 
 
-                    <h3>Mother</h3>
-                    <section>
-                      <!-- Add Mother -->
-                      <div class="col-md-4">
-                        <div class="form-group mb-3">
-                          <p class="mb-3">Add Mother</p>
-                          <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch2" name="mother" onchange="toggleParentInfo('mother')">
-                            <label class="custom-control-label" for="customSwitch2"><span id="motherLabel">Yes</span></label>
+                      <h3>Mother</h3>
+                      <section>
+                        <!-- Add Mother -->
+                        <div class="col-md-4">
+                          <div class="form-group mb-3">
+                            <p class="mb-3">Add Mother</p>
+                            <div class="custom-control custom-switch">
+                              <input type="checkbox" class="custom-control-input" id="customSwitch2" name="mother"
+                                onchange="toggleParentInfo('mother')">
+                              <label class="custom-control-label" for="customSwitch2"><span
+                                  id="motherLabel">Yes</span></label>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div id="motherInfo" class="parent-info" style="display: none;">
+                        <div id="motherInfo" class="parent-info" style="display: none;">
 
-                        <div class="col-md-12 mb-4">
-                          <div class="card-body">
-                            <div class="list-group list-group-flush my-n3">
-                              <?php foreach ($parentsData as $parent) : ?>
-                                <div class="list-group-item">
-                                  <div class="row">
-                                    <div class="col-auto">
-                                      <div class="avatar avatar-sm mt-2">
-                                        <!-- Placeholder image for avatar -->
-                                        <img src="../assets/avatars/default-avatar.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                          <div class="col-md-12 mb-4">
+                            <div class="card-body">
+                              <div class="list-group list-group-flush my-n3">
+                                <?php foreach ($parentsData as $parent): ?>
+                                  <div class="list-group-item">
+                                    <div class="row">
+                                      <div class="col-auto">
+                                        <div class="avatar avatar-sm mt-2">
+                                          <!-- Placeholder image for avatar -->
+                                          <img src="../assets/avatars/default-avatar.jpg" alt="Avatar"
+                                            class="avatar-img rounded-circle">
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div class="col">
-                                      <small><strong>
-                                          <?= $parent['lastName'] . ', ' . $parent['firstName'] ?>
-                                        </strong></small>
-                                      <div class="my-0 text-muted small">Occupation:
-                                        <?= $parent['occupation'] ?>
+                                      <div class="col">
+                                        <small><strong>
+                                            <?= $parent['lastName'] . ', ' . $parent['firstName'] ?>
+                                          </strong></small>
+                                        <div class="my-0 text-muted small">Occupation:
+                                          <?= $parent['occupation'] ?>
+                                        </div>
+                                        <?php
+                                        // Fetch the number of dependants under this parent from the database
+                                        try {
+                                          $stmtDependants = $pdo->prepare("SELECT COUNT(*) FROM parent_student WHERE parent_id = ? AND status = 1");
+                                          $stmtDependants->execute([$parent['id']]);
+                                          $numDependants = $stmtDependants->fetchColumn();
+                                        } catch (PDOException $e) {
+                                          $numDependants = 'Error fetching data';
+                                        }
+                                        ?>
+                                        <small class="badge badge-light text-muted">
+                                          <?= $numDependants ?> dependant
+                                          <?= $numDependants != 1 ? 's' : '' ?> under this parent currently
+                                        </small>
                                       </div>
-                                      <?php
-                                      // Fetch the number of dependants under this parent from the database
-                                      try {
-                                        $stmtDependants = $pdo->prepare("SELECT COUNT(*) FROM parent_student WHERE parent_id = ? AND status = 1");
-                                        $stmtDependants->execute([$parent['id']]);
-                                        $numDependants = $stmtDependants->fetchColumn();
-                                      } catch (PDOException $e) {
-                                        $numDependants = 'Error fetching data';
-                                      }
-                                      ?>
-                                      <small class="badge badge-light text-muted">
-                                        <?= $numDependants ?> dependant
-                                        <?= $numDependants != 1 ? 's' : '' ?> under this parent currently
-                                      </small>
-                                    </div>
-                                    <div class="col-auto">
-                                      <div class="custom-control custom-radio">
-                                        <input type="radio" id="mother<?= $parent['id'] ?>" name="motherId" value="<?= $parent['id'] ?>" class="custom-control-input" required>
-                                        <label class="custom-control-label" for="mother<?= $parent['id'] ?>"></label>
+                                      <div class="col-auto">
+                                        <div class="custom-control custom-radio">
+                                          <input type="radio" id="mother<?= $parent['id'] ?>" name="motherId"
+                                            value="<?= $parent['id'] ?>" class="custom-control-input" required>
+                                          <label class="custom-control-label" for="mother<?= $parent['id'] ?>"></label>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              <?php endforeach; ?>
-                            </div> <!-- / .list-group -->
-                          </div> <!-- / .card-body -->
-                        </div> <!-- / .col-md-3 -->
-                      </div>
+                                <?php endforeach; ?>
+                              </div> <!-- / .list-group -->
+                            </div> <!-- / .card-body -->
+                          </div> <!-- / .col-md-3 -->
+                        </div>
 
-                    </section>
-
+                      </section>
 
 
 
-                    <h3>Guardian</h3>
-                    <section>
-                      <!-- Add Guardian -->
-                      <div class="col-md-4">
-                        <div class="form-group mb-3">
-                          <p class="mb-3">Add Guardian</p>
-                          <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch3" name="guardian" onchange="toggleParentInfo('guardian')">
-                            <label class="custom-control-label" for="customSwitch3"><span id="guardianLabel">Yes</span></label>
+
+                      <h3>Guardian</h3>
+                      <section>
+                        <!-- Add Guardian -->
+                        <div class="col-md-4">
+                          <div class="form-group mb-3">
+                            <p class="mb-3">Add Guardian</p>
+                            <div class="custom-control custom-switch">
+                              <input type="checkbox" class="custom-control-input" id="customSwitch3" name="guardian"
+                                onchange="toggleParentInfo('guardian')">
+                              <label class="custom-control-label" for="customSwitch3"><span
+                                  id="guardianLabel">Yes</span></label>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div id="guardianInfo" class="parent-info" style="display: none;">
+                        <div id="guardianInfo" class="parent-info" style="display: none;">
 
-                        <div class="col-md-12 mb-4">
-                          <div class="card-body">
-                            <div class="list-group list-group-flush my-n3">
-                              <?php foreach ($parentsData as $parent) : ?>
-                                <div class="list-group-item">
-                                  <div class="row">
-                                    <div class="col-auto">
-                                      <div class="avatar avatar-sm mt-2">
-                                        <!-- Placeholder image for avatar -->
-                                        <img src="../assets/avatars/default-avatar.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                          <div class="col-md-12 mb-4">
+                            <div class="card-body">
+                              <div class="list-group list-group-flush my-n3">
+                                <?php foreach ($parentsData as $parent): ?>
+                                  <div class="list-group-item">
+                                    <div class="row">
+                                      <div class="col-auto">
+                                        <div class="avatar avatar-sm mt-2">
+                                          <!-- Placeholder image for avatar -->
+                                          <img src="../assets/avatars/default-avatar.jpg" alt="Avatar"
+                                            class="avatar-img rounded-circle">
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div class="col">
-                                      <small><strong>
-                                          <?= $parent['lastName'] . ', ' . $parent['firstName'] ?>
-                                        </strong></small>
-                                      <div class="my-0 text-muted small">Occupation:
-                                        <?= $parent['occupation'] ?>
+                                      <div class="col">
+                                        <small><strong>
+                                            <?= $parent['lastName'] . ', ' . $parent['firstName'] ?>
+                                          </strong></small>
+                                        <div class="my-0 text-muted small">Occupation:
+                                          <?= $parent['occupation'] ?>
+                                        </div>
+                                        <?php
+                                        // Fetch the number of dependants under this parent from the database
+                                        try {
+                                          $stmtDependants = $pdo->prepare("SELECT COUNT(*) FROM parent_student WHERE parent_id = ? AND status = 1");
+                                          $stmtDependants->execute([$parent['id']]);
+                                          $numDependants = $stmtDependants->fetchColumn();
+                                        } catch (PDOException $e) {
+                                          $numDependants = 'Error fetching data';
+                                        }
+                                        ?>
+                                        <small class="badge badge-light text-muted">
+                                          <?= $numDependants ?> dependant
+                                          <?= $numDependants != 1 ? 's' : '' ?> under this parent currently
+                                        </small>
                                       </div>
-                                      <?php
-                                      // Fetch the number of dependants under this parent from the database
-                                      try {
-                                        $stmtDependants = $pdo->prepare("SELECT COUNT(*) FROM parent_student WHERE parent_id = ? AND status = 1");
-                                        $stmtDependants->execute([$parent['id']]);
-                                        $numDependants = $stmtDependants->fetchColumn();
-                                      } catch (PDOException $e) {
-                                        $numDependants = 'Error fetching data';
-                                      }
-                                      ?>
-                                      <small class="badge badge-light text-muted">
-                                        <?= $numDependants ?> dependant
-                                        <?= $numDependants != 1 ? 's' : '' ?> under this parent currently
-                                      </small>
-                                    </div>
-                                    <div class="col-auto">
-                                      <div class="custom-control custom-radio">
-                                        <input type="radio" id="guardian<?= $parent['id'] ?>" name="guardianId" value="<?= $parent['id'] ?>" class="custom-control-input" required>
-                                        <label class="custom-control-label" for="guardian<?= $parent['id'] ?>"></label>
+                                      <div class="col-auto">
+                                        <div class="custom-control custom-radio">
+                                          <input type="radio" id="guardian<?= $parent['id'] ?>" name="guardianId"
+                                            value="<?= $parent['id'] ?>" class="custom-control-input" required>
+                                          <label class="custom-control-label" for="guardian<?= $parent['id'] ?>"></label>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              <?php endforeach; ?>
-                            </div> <!-- / .list-group -->
-                          </div> <!-- / .card-body -->
-                        </div> <!-- / .col-md-3 -->
-                      </div>
+                                <?php endforeach; ?>
+                              </div> <!-- / .list-group -->
+                            </div> <!-- / .card-body -->
+                          </div> <!-- / .col-md-3 -->
+                        </div>
 
 
-                      <div class="help-text text-muted">(*) Mandatory</div>
-                    <?php } ?>
+                        <div class="help-text text-muted">(*) Mandatory</div>
+                      <?php } ?>
                     </section>
 
 
@@ -606,11 +629,13 @@ if (isset($_POST['id'])) {
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
       <!-- Notifications modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -623,13 +648,15 @@ if (isset($_POST['id'])) {
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
 
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -640,66 +667,66 @@ if (isset($_POST['id'])) {
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
-                  <a href="../academics/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
+                  <a href="#" style="text-decoration: none;">
+                    <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-success">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -866,42 +893,42 @@ if (isset($_POST['id'])) {
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -916,14 +943,14 @@ if (isset($_POST['id'])) {
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();
@@ -969,7 +996,7 @@ if (isset($_POST['id'])) {
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Define citiesByState object
       const citiesByState = {
         "FCT": [
@@ -1570,7 +1597,7 @@ if (isset($_POST['id'])) {
 
         document.body.appendChild(popup);
 
-        setTimeout(function() {
+        setTimeout(function () {
           popup.remove();
         }, 5000);
       }
@@ -1598,15 +1625,15 @@ if (isset($_POST['id'])) {
         headerTag: "h3",
         bodyTag: "section",
         transitionEffect: "slideLeft",
-        onStepChanging: function(event, currentIndex, newIndex) {
+        onStepChanging: function (event, currentIndex, newIndex) {
           form.validate().settings.ignore = ":disabled,:hidden";
           return form.valid();
         },
-        onFinishing: function(event, currentIndex) {
+        onFinishing: function (event, currentIndex) {
           form.validate().ignore;
           return form.valid();
         },
-        onFinished: function(event, currentIndex) {
+        onFinished: function (event, currentIndex) {
           console.log('printed');
           // Submit the form via AJAX
           $.ajax({
@@ -1616,12 +1643,12 @@ if (isset($_POST['id'])) {
             // beforeSend: function () {
             // $('#warningModel').modal('hide');
             // },
-            success: function(response) {
+            success: function (response) {
               // Handle success response
               displayPopup(response.message, response.success);
               console.log(response);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               // Handle error
               console.error(xhr.responseText);
             }
@@ -1630,22 +1657,22 @@ if (isset($_POST['id'])) {
       });
 
       // Event listener for student state dropdown change
-      $('#student_state').on('change', function() {
+      $('#student_state').on('change', function () {
         populateCities(this, document.getElementById("student_city"));
       });
 
       // Event listener for father state dropdown change
-      $('#father_state').on('change', function() {
+      $('#father_state').on('change', function () {
         populateCities(this, document.getElementById("father_city"));
       });
 
       // Event listener for mother state dropdown change
-      $('#mother_state').on('change', function() {
+      $('#mother_state').on('change', function () {
         populateCities(this, document.getElementById("mother_city"));
       });
 
       // Event listener for guardian state dropdown change
-      $('#guardian_state').on('change', function() {
+      $('#guardian_state').on('change', function () {
         populateCities(this, document.getElementById("guardian_city"));
       });
 

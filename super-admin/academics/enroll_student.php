@@ -30,6 +30,14 @@ require '../settings.php';
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -104,7 +112,8 @@ require '../settings.php';
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
@@ -310,7 +319,7 @@ require '../settings.php';
                                   echo '<option value="" selected disabled>You  Have No Dependant</option>';
                                 } else {
                                   echo "<option value='' selected disabled>Select Dependant</option>";
-                                  foreach ($students as $student) :
+                                  foreach ($students as $student):
                                     $dependant = $student['full_name'];
                                     $dependant_id = $student['id'];
                                     echo "<option value='$dependant_id'>$dependant</option>";
@@ -341,7 +350,7 @@ require '../settings.php';
                                   echo '<option value="" selected disabled>None</option>';
                                 } else {
                                   echo "<option value='' selected disabled>Select Class</option>";
-                                  foreach ($classes as $class) :
+                                  foreach ($classes as $class):
                                     $islamiyyah_class_id = $class['id'];
                                     $islamiyyah_class_name = $class['class'];
                                     echo "<option value='$islamiyyah_class_id'>$islamiyyah_class_name</option>";
@@ -382,7 +391,8 @@ require '../settings.php';
       </div> <!-- .container-fluid -->
 
       <!-- success Modal -->
-      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header justify-content-center">
@@ -390,7 +400,8 @@ require '../settings.php';
             </div>
             <form id="proceed-new" method="POST" action="islamiyyah.php">
               <div class="modal-body">
-                <p class="text-center">Below is the fare for your route configuration, please make this payment to the below account to enroll <span id="student_name"></span> on school islamiyyah</p>
+                <p class="text-center">Below is the fare for your route configuration, please make this payment to the
+                  below account to enroll <span id="student_name"></span> on school islamiyyah</p>
 
                 <div class="row">
                   <div class="col-md-6">
@@ -403,7 +414,8 @@ require '../settings.php';
                   <div class="col-md-6">
                     <div class="form-group mb-3">
                       <label for="account_name">Account Name:</label>
-                      <input type="text" name="account_name" disabled class="form-control" required value="Grithall Academy ltd">
+                      <input type="text" name="account_name" disabled class="form-control" required
+                        value="Grithall Academy ltd">
                     </div>
                   </div> <!-- /.col -->
                 </div>
@@ -411,7 +423,8 @@ require '../settings.php';
                   <div class="col-md-6">
                     <div class="form-group mb-3">
                       <label for="account_number">Account Number:</label>
-                      <input type="text" name="account_number" disabled class="form-control" required value="0003166996">
+                      <input type="text" name="account_number" disabled class="form-control" required
+                        value="0003166996">
                     </div>
 
                   </div> <!-- /.col -->
@@ -436,7 +449,8 @@ require '../settings.php';
 
 
       <!-- Loading Modal -->
-      <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalTitle" aria-hidden="true">
+      <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="card col-12 loader">
             <div class="mt-4" style="align-self: center">
@@ -458,7 +472,8 @@ require '../settings.php';
 
 
 
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -487,7 +502,8 @@ require '../settings.php';
         </div>
       </div>
       <!-- Menu Modal -->
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -590,7 +606,7 @@ require '../settings.php';
     function setCookie(name, value) {
       document.cookie = name + "=" + value + "; path=/";
 
-      setTimeout(function() {
+      setTimeout(function () {
         window.location.href = 'choose-templates.php';
       }, 1);
     }
@@ -623,14 +639,14 @@ require '../settings.php';
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 7000);
     }
 
 
-    $(document).ready(function() {
-      $('#results').submit(function(event) {
+    $(document).ready(function () {
+      $('#results').submit(function (event) {
         event.preventDefault(); // Prevent the default form submission
 
         // Serialize form data
@@ -642,21 +658,21 @@ require '../settings.php';
           type: 'POST',
           data: formData,
           dataType: 'json',
-          beforeSend: function() {
+          beforeSend: function () {
             $('#loadingModal').modal({
               backdrop: 'static',
               keyboard: false
             });
           },
-          success: function(response) {
-            setTimeout(function() {
+          success: function (response) {
+            setTimeout(function () {
               $('#loadingModal').modal('hide');
 
 
               if (response.success) {
                 displayPopup(response.message, true);
 
-                setTimeout(function() {
+                setTimeout(function () {
                   window.location.href = 'admissions.php';
                 }, 500);
 
@@ -665,7 +681,7 @@ require '../settings.php';
               }
             }, 500);
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             $('#loadingModal').modal('hide');
             displayPopup(response.message, false);
             console.error(xhr, status, error);

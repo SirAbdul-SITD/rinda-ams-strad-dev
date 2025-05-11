@@ -8,6 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
+<<<<<<< HEAD
   <title>Expenses - Admin | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
@@ -88,24 +89,85 @@
       .desktop {
         display: none;
         min-width: 720px;
-      }
-    }
 
-    @media (min-width: 768px) {
-      .mobile {
-        display: none;
-        min-width: 720px;
+  <title>School Expenses - Admin | Rinda AMS</titleSchool>
+    <!-- Simple bar CSS -->
+    <link rel="stylesheet" href="../css/simplebar.css">
+    <!-- Fonts CSS -->
+    <link href="overpass-font.css" rel="stylesheet">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="../css/feather.css">
+    <link rel="stylesheet" href="../css/dataTables.bootstrap4.css">
+    <!-- Date Range Picker CSS -->
+    <link rel="stylesheet" href="../css/daterangepicker.css">
+    <!-- App CSS -->
+    <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
+    <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
+    <style>
+      .card {
+        border-radius: 8px;
+
       }
-    }
-    
-    .filter-btn {
-      margin-right: 10px;
-    }
-    
-    .filter-form .form-group {
-      margin-bottom: 15px;
-    }
-  </style>
+
+      .modal-shortcut .con-item {
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+
+      .modal-shortcut .con-item:hover {
+        transform: scale(1.05);
+      }
+
+      .popup {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 14px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        background-color: rgba(0, 10, 5, 0.8);
+        /* Background color with opacity */
+        color: #fff;
+      }
+
+      .popup.success {
+        background-color: #4CAF50;
+        color: #fff;
+      }
+
+      .popup.error {
+        background-color: #F44336;
+        color: white;
+      }
+
+      .popup i {
+        margin-right: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .desktop {
+          display: none;
+          min-width: 720px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .mobile {
+          display: none;
+          min-width: 720px;
+        }
+      }
+
+      .filter-btn {
+        margin-right: 10px;
+      }
+
+      .filter-form .form-group {
+        margin-bottom: 15px;
+      }
+    </style>
 </head>
 
 <body class="vertical  light  ">
@@ -139,7 +201,12 @@
           <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -152,8 +219,8 @@
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -303,7 +370,8 @@
                     <h3 class="page-title">Expenses</h3>
                   </div>
                   <div class="col-auto">
-                    <button type="button" class="btn btn-secondary filter-btn" data-toggle="modal" data-target="#filterModal">
+                    <button type="button" class="btn btn-secondary filter-btn" data-toggle="modal"
+                      data-target="#filterModal">
                       <span class="fe fe-filter fe-16 mr-2"></span>Filter
                     </button>
                     <button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#newModal">
@@ -313,12 +381,12 @@
                 </div>
 
                 <div class="row align-items-center my-3">
-   
-    <div style="height:280px" class="col-md-6 mb-4">
-        <div class="card shadow h-100"> 
-            <div class="card-body d-flex flex-column"> 
+    <!-- Expenses Summary Card (Now same height as chart card) -->
+    <div style="height:280px;" class="col-md-6 mb-4">
+        <div class="card shadow h-100"> <!-- h-100 ensures full height -->
+            <div class="card-body d-flex flex-column"> <!-- flex-column for proper alignment -->
                 <h5 class="card-title">Expenses Summary</h5>
-                <div class="row flex-grow-1 align-items-center"> 
+                <div class="row flex-grow-1 align-items-center"> <!-- flex-grow-1 fills remaining space -->
                     <div class="col">
                         <?php
                         // Get total expenses
@@ -348,13 +416,13 @@
                         </div>
                         <div class="mb-3">
                             <p class="small text-muted mb-0">Total paid amount</p>
-                            <h1 class="">
+                            <p class="h1 mb-0">
                                 ₦<?= number_format($totalExpenses, 2) ?>
-  </h1>
+                            </p>
                         </div>
                         <div>
                             <p class="small text-muted mb-0">Expenses Count</p>
-                            <h1 class="">
+                            <p class="h1 mb-0">
                                 <?php
                                 $query = "SELECT COUNT(*) as count FROM expenses";
                                 $stmt = $pdo->prepare($query);
@@ -362,7 +430,7 @@
                                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                                 echo $result['count'];
                                 ?>
-                            </h1>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -435,21 +503,21 @@
                           <tbody>
                             <?php
                             $query = "SELECT * FROM `expenses`";
-                            
+
                             // Check if filter parameters are set
                             if (isset($_GET['start_date']) && !empty($_GET['start_date']) && isset($_GET['end_date']) && !empty($_GET['end_date'])) {
                               $start_date = $_GET['start_date'];
                               $end_date = $_GET['end_date'];
                               $query .= " WHERE date BETWEEN :start_date AND :end_date";
                             }
-                            
+
                             $stmt = $pdo->prepare($query);
-                            
+
                             if (isset($start_date) && isset($end_date)) {
                               $stmt->bindParam(':start_date', $start_date);
                               $stmt->bindParam(':end_date', $end_date);
                             }
-                            
+
                             $stmt->execute();
                             $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -491,16 +559,16 @@
             <div class="modal-dialog modal-sm" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> 
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
-                    <span aria-hidden="true">&times;</span> 
+                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <div class="list-group list-group-flush my-n3">
                     <div class="list-group-item bg-transparent">
                       <div class="row align-items-center">
-                        <div class="col text-center"> 
+                        <div class="col text-center">
                           <small><strong>You're well up to date</strong></small>
                           <div class="my-0 text-muted small">No notifications available</div>
                         </div>
@@ -508,13 +576,14 @@
                     </div>
                   </div> <!-- / .list-group -->
                 </div>
-                <div class="modal-footer"> 
-                  <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> 
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear
+                    All</button>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <!-- Shortcut Modal -->
           <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
             aria-labelledby="defaultModalLabel" aria-hidden="true">
@@ -645,7 +714,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Filter Modal -->
           <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
             aria-hidden="true">
@@ -833,12 +902,12 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
       });
-      
+
       // Apply filter button click handler
-      $('#applyFilter').on('click', function() {
+      $('#applyFilter').on('click', function () {
         var startDate = $('#start_date').val();
         var endDate = $('#end_date').val();
-        
+
         if (startDate && endDate) {
           // Submit the form to reload the page with filter parameters
           $('#filterForm').submit();
@@ -846,28 +915,29 @@ document.addEventListener('DOMContentLoaded', function() {
           alert('Please select both start and end dates');
         }
       });
-      
+
       // Set default dates in filter modal (current month)
       var today = new Date();
       var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
       var lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-      
+
       // Format dates as YYYY-MM-DD
-      var formatDate = function(date) {
+      var formatDate = function (date) {
         var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
 
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
 
         return [year, month, day].join('-');
       };
-      
+
       $('#start_date').val(formatDate(firstDay));
       $('#end_date').val(formatDate(lastDay));
     });
   </script>
 </body>
+
 </html>

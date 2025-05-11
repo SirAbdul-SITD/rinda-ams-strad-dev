@@ -26,6 +26,14 @@
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -100,7 +108,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
@@ -205,13 +214,13 @@
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -282,13 +291,15 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_firstName">First Name *</label>
-                            <input id="student_firstName" name="student_firstName" type="text" class="form-control required">
+                            <input id="student_firstName" name="student_firstName" type="text"
+                              class="form-control required">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_lastName">Last Name *</label>
-                            <input id="student_lastName" name="student_lastName" type="text" class="form-control required">
+                            <input id="student_lastName" name="student_lastName" type="text"
+                              class="form-control required">
                           </div>
                         </div>
                       </div>
@@ -547,7 +558,7 @@
                                 echo '<option value="" selected disabled>No Academic Year Added Yet!</option>';
                               } else {
                                 echo "<option value=''>Select Academic Year</option>";
-                                foreach ($sessions as $session) :
+                                foreach ($sessions as $session):
                                   $x = $session['id'];
                                   $y = $session['session'];
                                   echo "<option value=$y>$y</option>";
@@ -586,7 +597,7 @@
                                 echo '<option value="" selected disabled>No class added Yet!</option>';
                               } else {
                                 echo "<option value=''>Select Class</option>";
-                                foreach ($classes as $class) :
+                                foreach ($classes as $class):
                                   $x = $class['id'];
                                   $y = $class['class'];
                                   $z = $class['section'];
@@ -607,8 +618,10 @@
                         <div class="form-group mb-3">
                           <p class="mb-3">Multi-class student?</p>
                           <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch4" name="class" onchange="toggleClassInfo('class')">
-                            <label class="custom-control-label" for="customSwitch4"><span id="classLabel">No</span></label>
+                            <input type="checkbox" class="custom-control-input" id="customSwitch4" name="class"
+                              onchange="toggleClassInfo('class')">
+                            <label class="custom-control-label" for="customSwitch4"><span
+                                id="classLabel">No</span></label>
                           </div>
                         </div>
                       </div>
@@ -637,7 +650,7 @@
                                   echo '<option value="" selected disabled>No Academic Year Added Yet!</option>';
                                 } else {
                                   echo "<option value=''>Select Academic Year</option>";
-                                  foreach ($sessions as $session) :
+                                  foreach ($sessions as $session):
                                     $x = $session['id'];
                                     $y = $session['session'];
                                     echo "<option value=$y>$y</option>";
@@ -676,7 +689,7 @@
                                   echo '<option value="" selected disabled>No class added Yet!</option>';
                                 } else {
                                   echo "<option value=''>Select Class</option>";
-                                  foreach ($classes as $class) :
+                                  foreach ($classes as $class):
                                     $x = $class['id'];
                                     $y = $class['class'];
                                     $z = $class['section'];
@@ -705,7 +718,7 @@
 
                         $prefix = "GHA/2017/";
                         $numeric_part = substr($last_admission_no, strlen($prefix)); // Get the numeric part
-                        $numeric_part = (int)$numeric_part + 1; // Increment
+                        $numeric_part = (int) $numeric_part + 1; // Increment
                         $numeric_part = str_pad($numeric_part, 4, '0', STR_PAD_LEFT); // Pad with leading zeros
                         $new_admission_no = $prefix . $numeric_part;
                         ?>
@@ -795,11 +808,13 @@
       </div> <!-- .container-fluid -->
 
       <!-- Notifications modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -812,13 +827,15 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
 
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -829,66 +846,66 @@
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
-                  <a href="../academics/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
+                  <a href="#" style="text-decoration: none;">
+                    <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-success">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -1056,42 +1073,42 @@
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -1106,14 +1123,14 @@
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();
@@ -1159,7 +1176,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
       //Function to display a popup message
@@ -1178,7 +1195,7 @@
 
         document.body.appendChild(popup);
 
-        setTimeout(function() {
+        setTimeout(function () {
           popup.remove();
         }, 5000);
       }
@@ -1190,15 +1207,15 @@
         headerTag: "h3",
         bodyTag: "section",
         transitionEffect: "slideLeft",
-        onStepChanging: function(event, currentIndex, newIndex) {
+        onStepChanging: function (event, currentIndex, newIndex) {
           form.validate().settings.ignore = ":disabled,:hidden";
           return form.valid();
         },
-        onFinishing: function(event, currentIndex) {
+        onFinishing: function (event, currentIndex) {
           form.validate().ignore;
           return form.valid();
         },
-        onFinished: function(event, currentIndex) {
+        onFinished: function (event, currentIndex) {
           console.log('printed');
           // Submit the form via AJAX
           $.ajax({
@@ -1208,12 +1225,12 @@
             // beforeSend: function () {
             // $('#warningModel').modal('hide');
             // },
-            success: function(response) {
+            success: function (response) {
               // Handle success response
               displayPopup(response.message, response.success);
               console.log(response);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               // Handle error
               console.error(xhr.responseText);
             }
@@ -1222,22 +1239,22 @@
       });
 
       // Event listener for student state dropdown change
-      $('#student_state').on('change', function() {
+      $('#student_state').on('change', function () {
         populateCities(this, document.getElementById("student_city"));
       });
 
       // Event listener for father state dropdown change
-      $('#father_state').on('change', function() {
+      $('#father_state').on('change', function () {
         populateCities(this, document.getElementById("father_city"));
       });
 
       // Event listener for mother state dropdown change
-      $('#mother_state').on('change', function() {
+      $('#mother_state').on('change', function () {
         populateCities(this, document.getElementById("mother_city"));
       });
 
       // Event listener for guardian state dropdown change
-      $('#guardian_state').on('change', function() {
+      $('#guardian_state').on('change', function () {
         populateCities(this, document.getElementById("guardian_city"));
       });
 

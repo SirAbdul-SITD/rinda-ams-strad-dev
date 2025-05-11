@@ -114,7 +114,12 @@
           <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -127,8 +132,8 @@
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -309,46 +314,46 @@
                               echo '<p class="text-center">None added Yet!</p>';
                             } else {
                               foreach ($fees_type as $index => $iep): ?>
-                                    <tr>
+                                <tr>
 
-                                      <td>
-                                        <input type="hidden" value="<?= $iep['id']; ?>" class="edit-iep-id" ?>
-                                        <input type="hidden" value="<?= $iep['amount']; ?>" class="edit-iep-amount" ?>
-                                        <input type="hidden" value="<?= $iep['category']; ?>" class="edit-iep-category" ?>
-                                        <input type="hidden" value="<?= $iep['duration']; ?>" class="edit-iep-duration" ?>
+                                  <td>
+                                    <input type="hidden" value="<?= $iep['id']; ?>" class="edit-iep-id" ?>
+                                    <input type="hidden" value="<?= $iep['amount']; ?>" class="edit-iep-amount" ?>
+                                    <input type="hidden" value="<?= $iep['category']; ?>" class="edit-iep-category" ?>
+                                    <input type="hidden" value="<?= $iep['duration']; ?>" class="edit-iep-duration" ?>
 
-                                        <?= $index + 1 ?>
-                                      </td>
-                                      <td>
-                                        <p class="mb-0 text-muted"><strong>
-                                            <?= $iep['category'] ?>
-                                          </strong></p>
-                                      </td>
-                                      <td>
-                                        <p class="mb-0 text-muted">
-                                          <?php $formatted_amount = '₦ ' . number_format($iep['amount'], 2);
-                                          echo $formatted_amount;
-                                          ?>
-                                        </p>
-                                      </td>
+                                    <?= $index + 1 ?>
+                                  </td>
+                                  <td>
+                                    <p class="mb-0 text-muted"><strong>
+                                        <?= $iep['category'] ?>
+                                      </strong></p>
+                                  </td>
+                                  <td>
+                                    <p class="mb-0 text-muted">
+                                      <?php $formatted_amount = '₦ ' . number_format($iep['amount'], 2);
+                                      echo $formatted_amount;
+                                      ?>
+                                    </p>
+                                  </td>
 
-                                      <td>
-                                        <p class="mb-0 text-muted">
-                                          <?= $iep['duration'] ?>
-                                        </p>
-                                      </td>
-                                      <td>
-                                        <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
-                                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <span class="text-muted sr-only">Action</span>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                          <a class="dropdown-item edit">Edit</a>
-                                          <a class="dropdown-item remove">Delete</a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                <?php endforeach;
+                                  <td>
+                                    <p class="mb-0 text-muted">
+                                      <?= $iep['duration'] ?>
+                                    </p>
+                                  </td>
+                                  <td>
+                                    <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <span class="text-muted sr-only">Action</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                      <a class="dropdown-item edit">Edit</a>
+                                      <a class="dropdown-item remove">Delete</a>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <?php endforeach;
                             } ?>
 
                           </tbody>

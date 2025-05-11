@@ -77,7 +77,12 @@
           <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -90,8 +95,8 @@
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -361,36 +366,36 @@
                   </thead>
                   <tbody>
                     <?php foreach ($invoiceItems as $index => $item): ?>
-                        <tr>
-                          <th scope="row">
-                            <?= $index + 1 ?>
-                          </th>
-                          <td>
-                            <?= $item['description'] ?>
-                          </td>
-                          <td class="text-right">
-                            <?= '$' . number_format($item['unit_price'], 2) ?>
-                          </td>
-                          <td class="text-right">
-                            <?= $item['quantity'] ?>
-                          </td>
-                          <td class="text-right">
-                            <?= '$' . number_format($item['unit_price'] * $item['quantity'], 2) ?>
-                          </td>
-                          <td>
-                            <?php
-                            if ($item['status'] == 'paid') {
-                              $status = 'Paid';
-                              $badgeClass = 'badge-success';
-                            } else {
-                              $status = 'Pending';
-                              $badgeClass = 'badge-warning';
-                            }
-                            ?>
-                            <span class="badge <?= $badgeClass ?>"><?= $status ?></span>
-                          </td>
+                      <tr>
+                        <th scope="row">
+                          <?= $index + 1 ?>
+                        </th>
+                        <td>
+                          <?= $item['description'] ?>
+                        </td>
+                        <td class="text-right">
+                          <?= '$' . number_format($item['unit_price'], 2) ?>
+                        </td>
+                        <td class="text-right">
+                          <?= $item['quantity'] ?>
+                        </td>
+                        <td class="text-right">
+                          <?= '$' . number_format($item['unit_price'] * $item['quantity'], 2) ?>
+                        </td>
+                        <td>
+                          <?php
+                          if ($item['status'] == 'paid') {
+                            $status = 'Paid';
+                            $badgeClass = 'badge-success';
+                          } else {
+                            $status = 'Pending';
+                            $badgeClass = 'badge-warning';
+                          }
+                          ?>
+                          <span class="badge <?= $badgeClass ?>"><?= $status ?></span>
+                        </td>
 
-                        </tr>
+                      </tr>
                     <?php endforeach; ?>
                   </tbody>
                 </table>

@@ -118,7 +118,12 @@ require_once('../settings.php');
           <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -131,8 +136,8 @@ require_once('../settings.php');
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -349,33 +354,33 @@ require_once('../settings.php');
                           // Extract 'Weekdays & Weekends' or 'Weekends' from the type
                           $displayType = str_replace(['School Fees ', '(', ')'], '', $invoice['type']);
                           ?>
-                            <tr>
-                              <td>
-                                <?php if (in_array($invoice['student_id'], $inserted)) {
-                                  continue; // Skip this student if already inserted
-                                } else {
-                                  $index + 1;
-                                } ?>
-                              </td>
-                              <td>
-                                <?= $invoice['full_name'] ?>
-                              </td>
-                              <td>
-                                <?= $invoice['class'] ?>
-                              </td>
-                              <td>
-                                <?= $displayType ?>
-                              </td>
-                              <td>
-                                <?php if (in_array($invoice['student_id'], $inserted)) {
-                                  continue; // Skip this student if already inserted
-                                } else {
-                                  $formatted_amount = '₦' . number_format($invoice['total_amount'], 2);
-                                  echo
-                                    $formatted_amount;
-                                } ?>
-                              </td>
-                            </tr>
+                          <tr>
+                            <td>
+                              <?php if (in_array($invoice['student_id'], $inserted)) {
+                                continue; // Skip this student if already inserted
+                              } else {
+                                $index + 1;
+                              } ?>
+                            </td>
+                            <td>
+                              <?= $invoice['full_name'] ?>
+                            </td>
+                            <td>
+                              <?= $invoice['class'] ?>
+                            </td>
+                            <td>
+                              <?= $displayType ?>
+                            </td>
+                            <td>
+                              <?php if (in_array($invoice['student_id'], $inserted)) {
+                                continue; // Skip this student if already inserted
+                              } else {
+                                $formatted_amount = '₦' . number_format($invoice['total_amount'], 2);
+                                echo
+                                  $formatted_amount;
+                              } ?>
+                            </td>
+                          </tr>
                         <?php endforeach; ?>
                       </tbody>
 
