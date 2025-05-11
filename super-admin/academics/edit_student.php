@@ -39,6 +39,14 @@ if (!isset($_POST['admission_no'])) {
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -146,13 +154,15 @@ if (!isset($_POST['admission_no'])) {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="firstName">First Name *</label>
-                            <input id="firstName" name="firstName" value="<?= $firstName ?>" type="text" class="form-control ">
+                            <input id="firstName" name="firstName" value="<?= $firstName ?>" type="text"
+                              class="form-control ">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="lastName">Last Name *</label>
-                            <input id="lastName" name="lastName" value="<?= $lastName ?>" type="text" class="form-control ">
+                            <input id="lastName" name="lastName" value="<?= $lastName ?>" type="text"
+                              class="form-control ">
                           </div>
                         </div>
                       </div>
@@ -162,7 +172,8 @@ if (!isset($_POST['admission_no'])) {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="phoneNumber">Phone Number *</label>
-                            <input id="phoneNumber" name="phoneNumber" value="<?= $phoneNumber ?>" type="tel" class="form-control">
+                            <input id="phoneNumber" name="phoneNumber" value="<?= $phoneNumber ?>" type="tel"
+                              class="form-control">
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -189,7 +200,7 @@ if (!isset($_POST['admission_no'])) {
                                 echo '<option value="" selected disabled>No class added Yet!</option>';
                               } else {
                                 echo "<option value=''>Select Class</option>";
-                                foreach ($classes as $class) :
+                                foreach ($classes as $class):
                                   $x = $class['id'];
                                   $y = $class['class'];
                                   $z = $class['section'];
@@ -307,7 +318,8 @@ if (!isset($_POST['admission_no'])) {
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="health_info">All vital health information *</label>
-                            <textarea id="health_info" name="health_info" class="form-control "><?= $health_info ?></textarea>
+                            <textarea id="health_info" name="health_info"
+                              class="form-control "><?= $health_info ?></textarea>
                           </div>
                         </div>
                       </div>
@@ -325,19 +337,22 @@ if (!isset($_POST['admission_no'])) {
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_name1">Full Name *</label>
-                              <input id="pickup_name1" name="pickup_name1" value="<?= $pickup_name1 ?>" type="text" class="form-control ">
+                              <input id="pickup_name1" name="pickup_name1" value="<?= $pickup_name1 ?>" type="text"
+                                class="form-control ">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_relationship1">Relationship *</label>
-                              <input id="pickup_relationship1" name="pickup_relationship1" value="<?= $pickup_relationship1 ?>" type="text" class="form-control ">
+                              <input id="pickup_relationship1" name="pickup_relationship1"
+                                value="<?= $pickup_relationship1 ?>" type="text" class="form-control ">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_number1">Contact Number *</label>
-                              <input id="pickup_number1" name="pickup_number1" type="tel" value="<?= $pickup_number1 ?>" class="form-control ">
+                              <input id="pickup_number1" name="pickup_number1" type="tel" value="<?= $pickup_number1 ?>"
+                                class="form-control ">
                             </div>
                           </div>
                         </div>
@@ -350,19 +365,22 @@ if (!isset($_POST['admission_no'])) {
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_name2">Full Name </label>
-                              <input id="pickup_name2" name="pickup_name2" value="<?= $pickup_name2 ?>" type="text" class="form-control">
+                              <input id="pickup_name2" name="pickup_name2" value="<?= $pickup_name2 ?>" type="text"
+                                class="form-control">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_relationship2">Relationship </label>
-                              <input id="pickup_relationship2" name="pickup_relationship2" value="<?= $pickup_relationship2 ?>" type="text" class="form-control">
+                              <input id="pickup_relationship2" name="pickup_relationship2"
+                                value="<?= $pickup_relationship2 ?>" type="text" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_number2">Contact Number </label>
-                              <input id="pickup_number2" name="pickup_number2" value="<?= $pickup_number2 ?>" type="tel" class="form-control">
+                              <input id="pickup_number2" name="pickup_number2" value="<?= $pickup_number2 ?>" type="tel"
+                                class="form-control">
                             </div>
                           </div>
                         </div>
@@ -374,19 +392,22 @@ if (!isset($_POST['admission_no'])) {
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_name3">Full Name </label>
-                              <input id="pickup_name3" name="pickup_name3" value="<?= $pickup_name3 ?>" type="text" class="form-control">
+                              <input id="pickup_name3" name="pickup_name3" value="<?= $pickup_name3 ?>" type="text"
+                                class="form-control">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_relationship3">Relationship </label>
-                              <input id="pickup_relationship3" name="pickup_relationship3" value="<?= $pickup_relationship3 ?>" type="text" class="form-control">
+                              <input id="pickup_relationship3" name="pickup_relationship3"
+                                value="<?= $pickup_relationship3 ?>" type="text" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_number3">Contact Number </label>
-                              <input id="pickup_number3" name="pickup_number3" value="<?= $pickup_number3 ?>" type="tel" class="form-control">
+                              <input id="pickup_number3" name="pickup_number3" value="<?= $pickup_number3 ?>" type="tel"
+                                class="form-control">
                             </div>
                           </div>
                         </div>
@@ -411,7 +432,8 @@ if (!isset($_POST['admission_no'])) {
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                            <label for="student_photo">Update profile picture, The last upload will override the previous once
+                            <label for="student_photo">Update profile picture, The last upload will override the
+                              previous once
                             </label>
                             <div id="my-dropzone" class="dropzone">
 
@@ -430,7 +452,8 @@ if (!isset($_POST['admission_no'])) {
                                         <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
                                       </div>
                                       <div class="col pl-0">
-                                        <a href="javascript:void(0);" class="text-muted font-weight-bold" data-dz-name></a>
+                                        <a href="javascript:void(0);" class="text-muted font-weight-bold"
+                                          data-dz-name></a>
                                         <p class="mb-0" data-dz-size></p>
                                       </div>
                                       <div class="col-auto">
@@ -465,11 +488,13 @@ if (!isset($_POST['admission_no'])) {
       </div> <!-- .container-fluid -->
 
       <!-- Notifications modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -482,19 +507,22 @@ if (!isset($_POST['admission_no'])) {
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
       <!-- Application Form Submimitted -->
-      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header justify-content-center">
               <h5 class="modal-title text-center" id="successModalTitle">Application Form Submimitted</h5>
             </div>
-            <div class="modal-body">Your Application Was Submitted Successfully, Please Make the <span id='amount'></span> non-refundable application fee payment to the following account.</div>
+            <div class="modal-body">Your Application Was Submitted Successfully, Please Make the <span
+                id='amount'></span> non-refundable application fee payment to the following account.</div>
             <div class="modal-footer">
               <a href="application-status.php" class=" w-100">
                 <button type="button" class="btn mb-2 btn-primary w-100">View Application Status</button>
@@ -506,13 +534,15 @@ if (!isset($_POST['admission_no'])) {
 
 
       <!-- Application Form A;ready Submimitted -->
-      <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalTitle" aria-hidden="true">
+      <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header justify-content-center">
               <h5 class="modal-title text-center" id="errorModalTitle">Application Already Submimitted</h5>
             </div>
-            <div class="modal-body">You have already submitted this application before. Please make sure to pay the application fee. Use the button below to check your application status</div>
+            <div class="modal-body">You have already submitted this application before. Please make sure to pay the
+              application fee. Use the button below to check your application status</div>
             <div class="modal-footer">
               <a href="application-status.php" class=" w-100">
                 <button type="button" class="btn mb-2 btn-primary w-100">View Application Status</button>
@@ -658,42 +688,42 @@ if (!isset($_POST['admission_no'])) {
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -708,14 +738,14 @@ if (!isset($_POST['admission_no'])) {
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();
@@ -741,7 +771,7 @@ if (!isset($_POST['admission_no'])) {
   <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Define citiesByState object
       const citiesByState = {
         "FCT": [
@@ -1342,7 +1372,7 @@ if (!isset($_POST['admission_no'])) {
 
         document.body.appendChild(popup);
 
-        setTimeout(function() {
+        setTimeout(function () {
           popup.remove();
         }, 5000);
       }
@@ -1369,15 +1399,15 @@ if (!isset($_POST['admission_no'])) {
         headerTag: "h3",
         bodyTag: "section",
         transitionEffect: "slideLeft",
-        onStepChanging: function(event, currentIndex, newIndex) {
+        onStepChanging: function (event, currentIndex, newIndex) {
           form.validate().settings.ignore = ":disabled,:hidden";
           return form.valid();
         },
-        onFinishing: function(event, currentIndex) {
+        onFinishing: function (event, currentIndex) {
           form.validate().ignore;
           return form.valid();
         },
-        onFinished: function(event, currentIndex) {
+        onFinished: function (event, currentIndex) {
           // Submit the form via AJAX
           $.ajax({
             type: form.attr('method'),
@@ -1386,7 +1416,7 @@ if (!isset($_POST['admission_no'])) {
             // beforeSend: function () {
             // $('#warningModel').modal('hide');
             // },
-            success: function(response) {
+            success: function (response) {
               if (response.success) {
                 displayPopup(response.message, true);
 
@@ -1396,7 +1426,7 @@ if (!isset($_POST['admission_no'])) {
 
               }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               // Handle error
               console.error(xhr.responseText);
             }
@@ -1406,22 +1436,22 @@ if (!isset($_POST['admission_no'])) {
       });
 
       // Event listener for student state dropdown change
-      $('#student_state').on('change', function() {
+      $('#student_state').on('change', function () {
         populateCities(this, document.getElementById("student_city"));
       });
 
       // Event listener for father state dropdown change
-      $('#father_state').on('change', function() {
+      $('#father_state').on('change', function () {
         populateCities(this, document.getElementById("father_city"));
       });
 
       // Event listener for mother state dropdown change
-      $('#mother_state').on('change', function() {
+      $('#mother_state').on('change', function () {
         populateCities(this, document.getElementById("mother_city"));
       });
 
       // Event listener for guardian state dropdown change
-      $('#guardian_state').on('change', function() {
+      $('#guardian_state').on('change', function () {
         populateCities(this, document.getElementById("guardian_city"));
       });
 
@@ -1432,7 +1462,7 @@ if (!isset($_POST['admission_no'])) {
   <script>
     Dropzone.autoDiscover = false; // Disable auto initialization
 
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Initialize Dropzone on the specific element
       $("#my-dropzone").dropzone({
         url: "upload.php",

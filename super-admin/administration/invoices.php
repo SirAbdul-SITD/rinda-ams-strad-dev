@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['session']) || isset($_
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-  <title>Student Invoices | Rinda AMS</title>
+  <title>Student Invoices - Admin | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->

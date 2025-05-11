@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-  <title>Breakfast Categories | Rinda AMS</title>
+  <title>Breakfast Categories - Admin | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->

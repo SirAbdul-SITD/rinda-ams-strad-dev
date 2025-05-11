@@ -8,83 +8,83 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-  <title>Expenses - Admin | Rinda AMS</title>
-  <!-- Simple bar CSS -->
-  <link rel="stylesheet" href="../css/simplebar.css">
-  <!-- Fonts CSS -->
-  <link href="overpass-font.css" rel="stylesheet">
-  <!-- Icons CSS -->
-  <link rel="stylesheet" href="../css/feather.css">
-  <link rel="stylesheet" href="../css/dataTables.bootstrap4.css">
-  <!-- Date Range Picker CSS -->
-  <link rel="stylesheet" href="../css/daterangepicker.css">
-  <!-- App CSS -->
-  <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
-  <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
-  <style>
-    .card {
-      border-radius: 8px;
-    }
-
-    .modal-shortcut .con-item {
-      transition: transform 0.2s ease, color 0.2s ease;
-    }
-
-    .modal-shortcut .con-item:hover {
-      transform: scale(1.05);
-    }
-
-    .popup {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 14px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      background-color: rgba(0, 10, 5, 0.8);
-      /* Background color with opacity */
-      color: #fff;
-    }
-
-    .popup.success {
-      background-color: #4CAF50;
-      color: #fff;
-    }
-
-    .popup.error {
-      background-color: #F44336;
-      color: white;
-    }
-
-    .popup i {
-      margin-right: 5px;
-    }
-
-    @media (max-width: 768px) {
-      .desktop {
-        display: none;
-        min-width: 720px;
+  <title>School Expenses - Admin | Rinda AMS</titleSchool>
+    <!-- Simple bar CSS -->
+    <link rel="stylesheet" href="../css/simplebar.css">
+    <!-- Fonts CSS -->
+    <link href="overpass-font.css" rel="stylesheet">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="../css/feather.css">
+    <link rel="stylesheet" href="../css/dataTables.bootstrap4.css">
+    <!-- Date Range Picker CSS -->
+    <link rel="stylesheet" href="../css/daterangepicker.css">
+    <!-- App CSS -->
+    <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
+    <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
+    <style>
+      .card {
+        border-radius: 8px;
       }
-    }
 
-    @media (min-width: 768px) {
-      .mobile {
-        display: none;
-        min-width: 720px;
+      .modal-shortcut .con-item {
+        transition: transform 0.2s ease, color 0.2s ease;
       }
-    }
 
-    .filter-btn {
-      margin-right: 10px;
-    }
+      .modal-shortcut .con-item:hover {
+        transform: scale(1.05);
+      }
 
-    .filter-form .form-group {
-      margin-bottom: 15px;
-    }
-  </style>
+      .popup {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 14px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        background-color: rgba(0, 10, 5, 0.8);
+        /* Background color with opacity */
+        color: #fff;
+      }
+
+      .popup.success {
+        background-color: #4CAF50;
+        color: #fff;
+      }
+
+      .popup.error {
+        background-color: #F44336;
+        color: white;
+      }
+
+      .popup i {
+        margin-right: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .desktop {
+          display: none;
+          min-width: 720px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .mobile {
+          display: none;
+          min-width: 720px;
+        }
+      }
+
+      .filter-btn {
+        margin-right: 10px;
+      }
+
+      .filter-form .form-group {
+        margin-bottom: 15px;
+      }
+    </style>
 </head>
 
 <body class="vertical  light  ">

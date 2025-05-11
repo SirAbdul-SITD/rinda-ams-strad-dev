@@ -43,7 +43,7 @@ if (isset($_POST['shuttle_id'], $_POST['student_id'], $_POST['amount_fare'])) {
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-  <title>Shuttle Subscribers | Grithal Academy</title>
+  <title>Shuttle Subscribers - Admin | Grithal Academy</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->

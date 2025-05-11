@@ -35,6 +35,14 @@ if (isset($_POST['id'])) {
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -109,13 +117,14 @@ if (isset($_POST['id'])) {
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
-                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+                    <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
               <?php } else { ?>
-                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+                    <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
               <?php } ?>
             </span>
           </a>
@@ -319,42 +328,43 @@ if (isset($_POST['id'])) {
                         </tr>
                       </thead>
                       <tbody>
-                        <?php if (!empty($parents)) : ?>
-                          <?php foreach ($parents as $index => $parent) : ?>
-                            <tr>
-                              <td>
-                                <?= $index + 1 ?>
-                              </td>
-                              <td>
-                                <?= $parent['firstName'] . ' ' . $parent['lastName'] ?>
-                              </td>
-                              <td>
-                                <?= $parent['relationship_type'] ?>
-                              </td>
-                              <td>
-                                <?= $parent['email'] ?>
-                              </td>
-                              <td>
-                                <?= $parent['phoneNumber'] ?>
-                              </td>
-                              <td>
-                                <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <span class="text-muted sr-only">Action</span>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                  <form action="message-parent.php" method="post">
-                                    <input type="hidden" name="parent_id" value="<?= $parent['id'] ?>">
-                                    <button type="submit" class="dropdown-item">Send Message</button>
-                                  </form>
+                        <?php if (!empty($parents)): ?>
+                              <?php foreach ($parents as $index => $parent): ?>
+                                    <tr>
+                                      <td>
+                                        <?= $index + 1 ?>
+                                      </td>
+                                      <td>
+                                        <?= $parent['firstName'] . ' ' . $parent['lastName'] ?>
+                                      </td>
+                                      <td>
+                                        <?= $parent['relationship_type'] ?>
+                                      </td>
+                                      <td>
+                                        <?= $parent['email'] ?>
+                                      </td>
+                                      <td>
+                                        <?= $parent['phoneNumber'] ?>
+                                      </td>
+                                      <td>
+                                        <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <span class="text-muted sr-only">Action</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                          <form action="message-parent.php" method="post">
+                                            <input type="hidden" name="parent_id" value="<?= $parent['id'] ?>">
+                                            <button type="submit" class="dropdown-item">Send Message</button>
+                                          </form>
 
-                                </div>
-                              </td>
-                            </tr>
-                          <?php endforeach; ?>
-                        <?php else : ?>
-                          <tr>
-                            <td colspan="6" class="text-center">No parents found for this student.</td>
-                          </tr>
+                                        </div>
+                                      </td>
+                                    </tr>
+                              <?php endforeach; ?>
+                        <?php else: ?>
+                              <tr>
+                                <td colspan="6" class="text-center">No parents found for this student.</td>
+                              </tr>
                         <?php endif; ?>
                       </tbody>
                     </table>
@@ -369,11 +379,13 @@ if (isset($_POST['id'])) {
       </div>
 
       <!-- Notifications modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -386,14 +398,16 @@ if (isset($_POST['id'])) {
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
 
 
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -404,66 +418,66 @@ if (isset($_POST['id'])) {
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
-                  <a href="../academics/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
+                  <a href="#" style="text-decoration: none;">
+                    <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-success">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">

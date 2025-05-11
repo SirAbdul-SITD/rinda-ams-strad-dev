@@ -34,6 +34,14 @@ if (isset($_GET['ref'])) {
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -108,7 +116,8 @@ if (isset($_GET['ref'])) {
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
@@ -213,13 +222,13 @@ if (isset($_GET['ref'])) {
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item active">
               <a class="nav-link link-active" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -282,14 +291,21 @@ if (isset($_GET['ref'])) {
                   <div class="form-group col-12">
                     <p>Meanings of Application Statuses:</p>
 
-                    <p><strong>Initiated:</strong> Started the application process but has not yet completely filled out the form. This status is usually handled by the system.</p>
-                    <p><strong>Submitted:</strong> Completed and submitted the form. This status is also handled by the system.</p>
-                    <p><strong>Paid:</strong> Paid the application fees and will be or has been called in for an interview. This status is usually handled manually by the management.</p>
-                    <p><strong>Interviewed:</strong> The interview has been conducted successfully. This status is handled by the management.</p>
-                    <p><strong>Admitted:</strong> Admitted into the school and is now a student of Grithall Academy. This status is handled by the management as well.</p>
-                    <p><strong>Rejected:</strong> Admission was not successful. You can contact the school for further inquiry. This status is handled by the management.</p>
+                    <p><strong>Initiated:</strong> Started the application process but has not yet completely filled out
+                      the form. This status is usually handled by the system.</p>
+                    <p><strong>Submitted:</strong> Completed and submitted the form. This status is also handled by the
+                      system.</p>
+                    <p><strong>Paid:</strong> Paid the application fees and will be or has been called in for an
+                      interview. This status is usually handled manually by the management.</p>
+                    <p><strong>Interviewed:</strong> The interview has been conducted successfully. This status is
+                      handled by the management.</p>
+                    <p><strong>Admitted:</strong> Admitted into the school and is now a student of Grithall Academy.
+                      This status is handled by the management as well.</p>
+                    <p><strong>Rejected:</strong> Admission was not successful. You can contact the school for further
+                      inquiry. This status is handled by the management.</p>
                   </div>
-                  <p>Note: Upon changing the status of this application the person/parent incharge will receive an email notification update</p>
+                  <p>Note: Upon changing the status of this application the person/parent incharge will receive an email
+                    notification update</p>
                 </div>
 
 
@@ -318,12 +334,17 @@ if (isset($_GET['ref'])) {
 
                     <select id="status" class="form-control select2" required name="status">
 
-                      <option value='Initiated' <?= $currentStatus === 'Initiated' ? 'selected disabled' : '' ?>>Initiated</option>
-                      <option value='Submitted' <?= $currentStatus === 'Submitted' ? 'selected disabled' : '' ?>>Submitted</option>
+                      <option value='Initiated' <?= $currentStatus === 'Initiated' ? 'selected disabled' : '' ?>>Initiated
+                      </option>
+                      <option value='Submitted' <?= $currentStatus === 'Submitted' ? 'selected disabled' : '' ?>>Submitted
+                      </option>
                       <option value='Paid' <?= $currentStatus === 'Paid' ? 'selected disabled' : '' ?>>Paid</option>
-                      <option value='Interviewed' <?= $currentStatus === 'Interviewed' ? 'selected disabled' : '' ?>>Interviewed</option>
-                      <option value='Admitted' <?= $currentStatus === 'Admitted' ? 'selected disabled' : '' ?>>Admitted</option>
-                      <option value='Rejected' <?= $currentStatus === 'Rejected' ? 'selected disabled' : '' ?>>Rejected</option>
+                      <option value='Interviewed' <?= $currentStatus === 'Interviewed' ? 'selected disabled' : '' ?>>
+                        Interviewed</option>
+                      <option value='Admitted' <?= $currentStatus === 'Admitted' ? 'selected disabled' : '' ?>>Admitted
+                      </option>
+                      <option value='Rejected' <?= $currentStatus === 'Rejected' ? 'selected disabled' : '' ?>>Rejected
+                      </option>
                     </select>
 
                   </div>
@@ -340,11 +361,13 @@ if (isset($_GET['ref'])) {
 
 
 
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -357,11 +380,13 @@ if (isset($_GET['ref'])) {
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -483,7 +508,7 @@ if (isset($_GET['ref'])) {
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
@@ -491,8 +516,8 @@ if (isset($_GET['ref'])) {
 
 
     // Assign Class Teacher js
-    document.querySelectorAll(".change_status").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".change_status").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         $.ajax({
@@ -500,19 +525,19 @@ if (isset($_GET['ref'])) {
           url: 'change_application_status.php',
           data: $(this).serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             $('#eventModal').modal('hide');
             if (response.success) {
               displayPopup(response.message, true);
               // Refresh the page after 2 seconds
-              setTimeout(function() {
+              setTimeout(function () {
                 window.location.href = 'applications.php';
               }, 2000);
             } else {
               $('#warningModel').modal('show');
             }
           },
-          error: function(error, xhr) {
+          error: function (error, xhr) {
             displayPopup('Error occurred during request. Contact Admin', false);
           },
         });

@@ -101,6 +101,14 @@ if ($application_info['status'] == 'Initiated') {
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -171,14 +179,18 @@ if ($application_info['status'] == 'Initiated') {
                           <span class="text-muted"><?= $progress ?>%</span>
                         </div>
                         <div class="progress" style="height: 2px;">
-                          <div class="progress-bar" role="progressbar" style="width: <?= $progress ?>%; background-color: <?= $color ?>" aria-valuenow="<?= $progress ?>%" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar"
+                            style="width: <?= $progress ?>%; background-color: <?= $color ?>"
+                            aria-valuenow="<?= $progress ?>%" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
                     </div>
                     <div class="col">
                       <div class="row align-items-center">
                         <div class="col-md-7">
-                          <h4 class="mb-1"><?= $application_info['student_firstName'] . ' ' . $application_info['student_lastName']; ?></h4>
+                          <h4 class="mb-1">
+                            <?= $application_info['student_firstName'] . ' ' . $application_info['student_lastName']; ?>
+                          </h4>
                           <p class=" mb-3"><span class="badge badge-dark"><?= $class['class'] ?></span></p>
                         </div>
                         <div class="col">
@@ -192,12 +204,14 @@ if ($application_info['status'] == 'Initiated') {
                               <a href="application.php" class=" w-100">
                                 <button type="button" class="btn mb-2 btn-primary w-100">Fill Application Form</button>
                               </a> <?php } else { ?>
-                              <button type="button" class="btn btn-primary w-100" id="reveal">Reveal Application Form</button>
-                            <?php  } ?>
+                              <button type="button" class="btn btn-primary w-100" id="reveal">Reveal Application
+                                Form</button>
+                            <?php } ?>
                           </div>
                         </div>
                         <div class="col">
-                          <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>No. 1 JD Abubakar Close, Harmony Estate, Off Panaf Drive, Dawaki Abuja</p>
+                          <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>No. 1 JD Abubakar Close, Harmony
+                            Estate, Off Panaf Drive, Dawaki Abuja</p>
                           <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+234 809 907 2019</p>
                           <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+234 905 140 9256</p>
                           <p class="mb-2"><i class="fa fa-envelope me-3"></i>grithallacademy@gmail.com</p>
@@ -226,13 +240,15 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_firstName">First Name *</label>
-                            <input id="student_firstName" name="student_firstName" type="text" class="form-control" disabled required value="<?= $application_info['student_firstName'] ?>">
+                            <input id="student_firstName" name="student_firstName" type="text" class="form-control"
+                              disabled required value="<?= $application_info['student_firstName'] ?>">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_lastName">Last Name *</label>
-                            <input id="student_lastName" name="student_lastName" type="text" class="form-control" disabled required value="<?= $application_info['student_lastName'] ?>">
+                            <input id="student_lastName" name="student_lastName" type="text" class="form-control"
+                              disabled required value="<?= $application_info['student_lastName'] ?>">
                           </div>
                         </div>
                       </div>
@@ -243,7 +259,8 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="form-group">
                             <label for="student_gender">Gender *</label>
                             <select id="student_gender" name="student_gender" class="form-control" disabled required>
-                              <option selected value="<?= $application_info['student_gender'] ?>"><?= $application_info['student_gender'] ?></option>
+                              <option selected value="<?= $application_info['student_gender'] ?>">
+                                <?= $application_info['student_gender'] ?></option>
 
                             </select>
                           </div>
@@ -251,7 +268,8 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_dob">Date of Birth *</label>
-                            <input id="student_dob" name="student_dob" type="date" class="form-control" disabled required value="<?= $application_info['student_dob'] ?>">
+                            <input id="student_dob" name="student_dob" type="date" class="form-control" disabled
+                              required value="<?= $application_info['student_dob'] ?>">
                           </div>
                         </div>
                       </div>
@@ -272,7 +290,8 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="form-group">
                             <label for="student_state">State of origin*</label>
                             <select id="student_state" name="student_state" class="form-control" disabled required>
-                              <option selected value="<?= $application_info['student_state'] ?>"><?= $application_info['student_state'] ?></option>
+                              <option selected value="<?= $application_info['student_state'] ?>">
+                                <?= $application_info['student_state'] ?></option>
 
                             </select>
 
@@ -288,14 +307,16 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_origin">Place of origin *</label>
-                            <input id="student_origin" name="student_origin" type="text" class="form-control" disabled required value="<?= $application_info['student_origin'] ?>">
+                            <input id="student_origin" name="student_origin" type="text" class="form-control" disabled
+                              required value="<?= $application_info['student_origin'] ?>">
                           </div>
                         </div>
 
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_address">Residential address *</label>
-                            <input id="student_address" name="student_address" type="text" class="form-control" disabled required value="<?= $application_info['student_address'] ?>">
+                            <input id="student_address" name="student_address" type="text" class="form-control" disabled
+                              required value="<?= $application_info['student_address'] ?>">
                           </div>
                         </div>
                       </div>
@@ -306,13 +327,16 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_pos_in_family">Position in the family *</label>
-                            <input id="student_pos_in_family" name="student_pos_in_family" type="number" class="form-control" disabled required value="<?= $application_info['student_pos_in_family'] ?>">
+                            <input id="student_pos_in_family" name="student_pos_in_family" type="number"
+                              class="form-control" disabled required
+                              value="<?= $application_info['student_pos_in_family'] ?>">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_prev_school">Previous school</label>
-                            <input id="student_prev_school" name="student_prev_school" type="text" class="form-control" disabled value="<?= $application_info['student_prev_school'] ?>">
+                            <input id="student_prev_school" name="student_prev_school" type="text" class="form-control"
+                              disabled value="<?= $application_info['student_prev_school'] ?>">
                           </div>
                         </div>
                       </div>
@@ -331,7 +355,9 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_juz_memorised">Juz memorised *</label>
-                            <input id="student_juz_memorised" name="student_juz_memorised" type="text" class="form-control" disabled required value="<?= $application_info['student_juz_memorised'] ?>">
+                            <input id="student_juz_memorised" name="student_juz_memorised" type="text"
+                              class="form-control" disabled required
+                              value="<?= $application_info['student_juz_memorised'] ?>">
                           </div>
                         </div>
                       </div>
@@ -343,7 +369,8 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="form-group">
                             <label for="student_kyh">Know your huruf? *</label>
                             <select id="student_kyh" name="student_kyh" class="form-control" disabled required>
-                              <option value="<?= $application_info['student_kyh'] ?>"><?= $application_info['student_kyh'] ?></option>
+                              <option value="<?= $application_info['student_kyh'] ?>">
+                                <?= $application_info['student_kyh'] ?></option>
 
                             </select>
                           </div>
@@ -352,7 +379,8 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="form-group">
                             <label for="student_quran">Can blend the Qur'an? *</label>
                             <select id="student_quran" name="student_quran" class="form-control" disabled required>
-                              <option value="<?= $application_info['student_quran'] ?>"><?= $application_info['student_quran'] ?></option>
+                              <option value="<?= $application_info['student_quran'] ?>">
+                                <?= $application_info['student_quran'] ?></option>
 
                             </select>
                           </div>
@@ -365,14 +393,16 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_languages">Language(s) child can speak *</label>
-                            <textarea id="student_languages" name="student_languages" class="form-control" disabled required><?= $application_info['student_languages'] ?></textarea>
+                            <textarea id="student_languages" name="student_languages" class="form-control" disabled
+                              required><?= $application_info['student_languages'] ?></textarea>
                           </div>
                         </div>
 
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="referrer">How did you know about GHA? *</label>
-                            <textarea id="referrer" name="referrer" class="form-control" disabled required><?= $application_info['referrer'] ?></textarea>
+                            <textarea id="referrer" name="referrer" class="form-control" disabled
+                              required><?= $application_info['referrer'] ?></textarea>
                           </div>
                         </div>
                       </div>
@@ -383,7 +413,8 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="rfj">Reason(s) for joining GHA *</label>
-                            <textarea id="rfj" name="rfj" class="form-control" disabled required><?= $application_info['rfj'] ?></textarea>
+                            <textarea id="rfj" name="rfj" class="form-control" disabled
+                              required><?= $application_info['rfj'] ?></textarea>
                           </div>
                         </div>
                       </div>
@@ -394,14 +425,17 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_genotype">Genotype *</label>
-                            <input id="student_genotype" name="student_genotype" type="text" class="form-control" disabled required value="<?= $application_info['student_genotype'] ?>">
+                            <input id="student_genotype" name="student_genotype" type="text" class="form-control"
+                              disabled required value="<?= $application_info['student_genotype'] ?>">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_bloodGroup">Blood Group *</label>
-                            <select id="student_bloodGroup" name="student_bloodGroup" class="form-control" disabled required>
-                              <option value="<?= $application_info['student_bloodGroup'] ?>"><?= $application_info['student_bloodGroup'] ?></option>
+                            <select id="student_bloodGroup" name="student_bloodGroup" class="form-control" disabled
+                              required>
+                              <option value="<?= $application_info['student_bloodGroup'] ?>">
+                                <?= $application_info['student_bloodGroup'] ?></option>
 
                             </select>
                           </div>
@@ -414,13 +448,15 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_likes">Likes *</label>
-                            <textarea id="student_likes" name="student_likes" class="form-control" disabled required><?= $application_info['student_likes'] ?></textarea>
+                            <textarea id="student_likes" name="student_likes" class="form-control" disabled
+                              required><?= $application_info['student_likes'] ?></textarea>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_dislikes">Dislikes *</label>
-                            <textarea id="student_dislikes" name="student_dislikes" class="form-control" disabled required><?= $application_info['student_dislikes'] ?></textarea>
+                            <textarea id="student_dislikes" name="student_dislikes" class="form-control" disabled
+                              required><?= $application_info['student_dislikes'] ?></textarea>
                           </div>
                         </div>
                       </div>
@@ -431,13 +467,16 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_allergies">Allergies *</label>
-                            <textarea id="student_allergies" name="student_allergies" class="form-control" disabled required><?= $application_info['student_allergies'] ?></textarea>
+                            <textarea id="student_allergies" name="student_allergies" class="form-control" disabled
+                              required><?= $application_info['student_allergies'] ?></textarea>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="student_learning_disorder">Any Leaning difficulty? *</label>
-                            <textarea id="student_learning_disorder" name="student_learning_disorder" class="form-control" disabled required><?= $application_info['student_learning_disorder'] ?></textarea>
+                            <textarea id="student_learning_disorder" name="student_learning_disorder"
+                              class="form-control" disabled
+                              required><?= $application_info['student_learning_disorder'] ?></textarea>
                           </div>
                         </div>
                       </div>
@@ -448,7 +487,8 @@ if ($application_info['status'] == 'Initiated') {
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="student_health_info">All vital health information *</label>
-                            <textarea id="student_health_info" name="student_health_info" class="form-control" disabled required><?= $application_info['student_health_info'] ?></textarea>
+                            <textarea id="student_health_info" name="student_health_info" class="form-control" disabled
+                              required><?= $application_info['student_health_info'] ?></textarea>
                           </div>
                         </div>
                       </div>
@@ -471,13 +511,15 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="father_firstName">First Name *</label>
-                              <input id="father_firstName" name="father_firstName" type="text" class="form-control" disabled required value="<?= $application_info['father_firstName'] ?>">
+                              <input id="father_firstName" name="father_firstName" type="text" class="form-control"
+                                disabled required value="<?= $application_info['father_firstName'] ?>">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="father_lastName">Last Name *</label>
-                              <input id="father_lastName" name="father_lastName" type="text" class="form-control" disabled required value="<?= $application_info['father_lastName'] ?>">
+                              <input id="father_lastName" name="father_lastName" type="text" class="form-control"
+                                disabled required value="<?= $application_info['father_lastName'] ?>">
                             </div>
                           </div>
                         </div>
@@ -487,13 +529,15 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="father_number">Phone Number *</label>
-                              <input id="father_number" name="father_number" type="number" class="form-control" disabled required value="<?= $application_info['father_number'] ?>">
+                              <input id="father_number" name="father_number" type="number" class="form-control" disabled
+                                required value="<?= $application_info['father_number'] ?>">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="father_email">Email Address *</label>
-                              <input id="father_email" name="father_email" type="email" class="form-control" disabled required value="<?= $application_info['father_email'] ?>">
+                              <input id="father_email" name="father_email" type="email" class="form-control" disabled
+                                required value="<?= $application_info['father_email'] ?>">
                             </div>
                           </div>
                         </div>
@@ -505,7 +549,8 @@ if ($application_info['status'] == 'Initiated') {
                             <div class="form-group">
                               <label for="father_state">State of origin *</label>
                               <select id="father_state" name="father_state" class="form-control" disabled required>
-                                <option value="<?= $application_info['father_state'] ?>"><?= $application_info['father_state'] ?></option>
+                                <option value="<?= $application_info['father_state'] ?>">
+                                  <?= $application_info['father_state'] ?></option>
 
                               </select>
 
@@ -515,7 +560,8 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="father_job">Job description *</label>
-                              <input id="father_job" name="father_job" type="text" class="form-control" disabled required value="<?= $application_info['father_job'] ?>">
+                              <input id="father_job" name="father_job" type="text" class="form-control" disabled
+                                required value="<?= $application_info['father_job'] ?>">
                             </div>
                           </div>
                         </div>
@@ -525,13 +571,15 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="father_office">Office Address *</label>
-                              <textarea id="father_office" name="father_office" class="form-control" disabled required><?= $application_info['father_office'] ?></textarea>
+                              <textarea id="father_office" name="father_office" class="form-control" disabled
+                                required><?= $application_info['father_office'] ?></textarea>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="father_ps">Parenting style adopted at home *</label>
-                              <textarea id="father_ps" name="father_ps" class="form-control" disabled required><?= $application_info['father_ps'] ?></textarea>
+                              <textarea id="father_ps" name="father_ps" class="form-control" disabled
+                                required><?= $application_info['father_ps'] ?></textarea>
                             </div>
                           </div>
                         </div>
@@ -544,13 +592,15 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="mother_firstName">First Name *</label>
-                              <input id="mother_firstName" name="mother_firstName" type="text" class="form-control" disabled required value="<?= $application_info['mother_firstName'] ?>">
+                              <input id="mother_firstName" name="mother_firstName" type="text" class="form-control"
+                                disabled required value="<?= $application_info['mother_firstName'] ?>">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="mother_lastName">Last Name *</label>
-                              <input id="mother_lastName" name="mother_lastName" type="text" class="form-control" disabled required value="<?= $application_info['mother_lastName'] ?>">
+                              <input id="mother_lastName" name="mother_lastName" type="text" class="form-control"
+                                disabled required value="<?= $application_info['mother_lastName'] ?>">
                             </div>
                           </div>
                         </div>
@@ -560,13 +610,15 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="mother_number">Phone Number *</label>
-                              <input id="mother_number" name="mother_number" type="number" class="form-control" disabled required value="<?= $application_info['mother_number'] ?>">
+                              <input id="mother_number" name="mother_number" type="number" class="form-control" disabled
+                                required value="<?= $application_info['mother_number'] ?>">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="mother_email">Email Address *</label>
-                              <input id="mother_email" name="mother_email" type="email" class="form-control" disabled required value="<?= $application_info['mother_email'] ?>">
+                              <input id="mother_email" name="mother_email" type="email" class="form-control" disabled
+                                required value="<?= $application_info['mother_email'] ?>">
                             </div>
                           </div>
                         </div>
@@ -578,7 +630,8 @@ if ($application_info['status'] == 'Initiated') {
                             <div class="form-group">
                               <label for="mother_state">State of origin*</label>
                               <select id="mother_state" name="mother_state" class="form-control" disabled required>
-                                <option value="<?= $application_info['mother_state'] ?>"><?= $application_info['mother_state'] ?></option>
+                                <option value="<?= $application_info['mother_state'] ?>">
+                                  <?= $application_info['mother_state'] ?></option>
 
                               </select>
 
@@ -588,7 +641,8 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="mother_job">Job description *</label>
-                              <input id="mother_job" name="mother_job" type="text" class="form-control" disabled required value="<?= $application_info['mother_job'] ?>">
+                              <input id="mother_job" name="mother_job" type="text" class="form-control" disabled
+                                required value="<?= $application_info['mother_job'] ?>">
                             </div>
                           </div>
                         </div>
@@ -598,13 +652,15 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="mother_office">Office Address *</label>
-                              <textarea id="mother_office" name="mother_office" class="form-control" disabled required><?= $application_info['mother_office'] ?></textarea>
+                              <textarea id="mother_office" name="mother_office" class="form-control" disabled
+                                required><?= $application_info['mother_office'] ?></textarea>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="mother_ps">Parenting style adopted at home *</label>
-                              <textarea id="mother_ps" name="mother_ps" class="form-control" disabled required><?= $application_info['mother_ps'] ?></textarea>
+                              <textarea id="mother_ps" name="mother_ps" class="form-control" disabled
+                                required><?= $application_info['mother_ps'] ?></textarea>
                             </div>
                           </div>
                         </div>
@@ -619,13 +675,15 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="emergency_name">Emergency Contact Name *</label>
-                              <input id="emergency_name" name="emergency_name" type="number" class="form-control" disabled required value="<?= $application_info['emergency_name'] ?>">
+                              <input id="emergency_name" name="emergency_name" type="number" class="form-control"
+                                disabled required value="<?= $application_info['emergency_name'] ?>">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="emergency_number">Emergency Contact Number *</label>
-                              <input id="emergency_number" name="emergency_number" type="number" class="form-control" disabled required value="<?= $application_info['emergency_number'] ?>">
+                              <input id="emergency_number" name="emergency_number" type="number" class="form-control"
+                                disabled required value="<?= $application_info['emergency_number'] ?>">
                             </div>
                           </div>
                         </div>
@@ -643,19 +701,23 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_name1">Full Name *</label>
-                              <input id="pickup_name1" name="pickup_name1" type="number" class="form-control" disabled required value="<?= $application_info['pickup_name1'] ?>">
+                              <input id="pickup_name1" name="pickup_name1" type="number" class="form-control" disabled
+                                required value="<?= $application_info['pickup_name1'] ?>">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_relationship1">Relationship *</label>
-                              <input id="pickup_relationship1" name="pickup_relationship1" type="number" class="form-control" disabled required value="<?= $application_info['pickup_relationship1'] ?>">
+                              <input id="pickup_relationship1" name="pickup_relationship1" type="number"
+                                class="form-control" disabled required
+                                value="<?= $application_info['pickup_relationship1'] ?>">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="pickup_number1">Contact Number *</label>
-                              <input id="pickup_number1" name="pickup_number1" type="number" class="form-control" disabled required value="<?= $application_info['pickup_number1'] ?>">
+                              <input id="pickup_number1" name="pickup_number1" type="number" class="form-control"
+                                disabled required value="<?= $application_info['pickup_number1'] ?>">
                             </div>
                           </div>
                         </div>
@@ -668,19 +730,22 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="student_firstName">Full Name </label>
-                              <input id="student_firstName" name="pickup_name2" type="number" class="form-control" disabled value="<?= $application_info['pickup_name2'] ?>">
+                              <input id="student_firstName" name="pickup_name2" type="number" class="form-control"
+                                disabled value="<?= $application_info['pickup_name2'] ?>">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="student_firstName">Relationship </label>
-                              <input id="student_firstName" name="pickup_relationship2" type="number" class="form-control" disabled value="<?= $application_info['pickup_relationship2'] ?>">
+                              <input id="student_firstName" name="pickup_relationship2" type="number"
+                                class="form-control" disabled value="<?= $application_info['pickup_relationship2'] ?>">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="student_firstName">Contact Number </label>
-                              <input id="student_firstName" name="pickup_number2" type="number" class="form-control" disabled value="<?= $application_info['pickup_number2'] ?>">
+                              <input id="student_firstName" name="pickup_number2" type="number" class="form-control"
+                                disabled value="<?= $application_info['pickup_number2'] ?>">
                             </div>
                           </div>
                         </div>
@@ -692,19 +757,22 @@ if ($application_info['status'] == 'Initiated') {
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="student_firstName">Full Name </label>
-                              <input id="student_firstName" name="pickup_name3" type="number" class="form-control" disabled value="<?= $application_info['pickup_name3'] ?>">
+                              <input id="student_firstName" name="pickup_name3" type="number" class="form-control"
+                                disabled value="<?= $application_info['pickup_name3'] ?>">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="student_firstName">Relationship </label>
-                              <input id="student_firstName" name="pickup_relationship3" type="number" class="form-control" disabled value="<?= $application_info['pickup_relationship3'] ?>">
+                              <input id="student_firstName" name="pickup_relationship3" type="number"
+                                class="form-control" disabled value="<?= $application_info['pickup_relationship3'] ?>">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="student_firstName">Contact Number </label>
-                              <input id="student_firstName" name="pickup_number3" type="number" class="form-control" disabled value="<?= $application_info['pickup_number3'] ?>">
+                              <input id="student_firstName" name="pickup_number3" type="number" class="form-control"
+                                disabled value="<?= $application_info['pickup_number3'] ?>">
                             </div>
                           </div>
                         </div>
@@ -734,7 +802,8 @@ if ($application_info['status'] == 'Initiated') {
                                   <li>Child's passport photography</li>
                                   <li>Child's past result sheet</li>
                                   <li>Child's birth certificate</li>
-                                  <li>Child's health records (only from government or government accreditted hospital)</li>
+                                  <li>Child's health records (only from government or government accreditted hospital)
+                                  </li>
                                   <li>Both parents passport photography</li>
                                   <li>Both parents office ID Cards</li>
                                   <li>Both parents licence document (Driver's licence or International Passport)</li>
@@ -758,7 +827,8 @@ if ($application_info['status'] == 'Initiated') {
                                         <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
                                       </div>
                                       <div class="col pl-0">
-                                        <a href="javascript:void(0);" class="text-muted font-weight-bold" data-dz-name></a>
+                                        <a href="javascript:void(0);" class="text-muted font-weight-bold"
+                                          data-dz-name></a>
                                         <p class="mb-0" data-dz-size></p>
                                       </div>
                                       <div class="col-auto">
@@ -858,15 +928,18 @@ if ($application_info['status'] == 'Initiated') {
 
 
       <!--Assign Warning Modal -->
-      <div class="modal fade" id="successModel" tabindex="-1" role="dialog" aria-labelledby="successModelTitle" aria-hidden="true">
+      <div class="modal fade" id="successModel" tabindex="-1" role="dialog" aria-labelledby="successModelTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header justify-content-center">
               <h5 class="modal-title text-center" id="successModelTitle">Application Form Submimitted</h5>
             </div>
-            <div class="modal-body">Your Application Was Submitted Successfully, Please Make the <span id='amount'></span> non-refundable application fee payment to the following account.</div>
+            <div class="modal-body">Your Application Was Submitted Successfully, Please Make the <span
+                id='amount'></span> non-refundable application fee payment to the following account.</div>
             <div class="modal-footer">
-              <button type="button" class="btn mb-2 btn-primary w-100" id="force_assign">View Application Status</button>
+              <button type="button" class="btn mb-2 btn-primary w-100" id="force_assign">View Application
+                Status</button>
             </div>
           </div>
         </div>
@@ -1009,42 +1082,42 @@ if ($application_info['status'] == 'Initiated') {
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -1059,14 +1132,14 @@ if ($application_info['status'] == 'Initiated') {
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();
@@ -1092,7 +1165,7 @@ if ($application_info['status'] == 'Initiated') {
   <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Define citiesByState object
 
       //Function to display a popup message
@@ -1111,7 +1184,7 @@ if ($application_info['status'] == 'Initiated') {
 
         document.body.appendChild(popup);
 
-        setTimeout(function() {
+        setTimeout(function () {
           popup.remove();
         }, 5000);
       }
@@ -1138,11 +1211,11 @@ if ($application_info['status'] == 'Initiated') {
         headerTag: "h3",
         bodyTag: "section",
         transitionEffect: "slideLeft",
-        onStepChanging: function(event, currentIndex, newIndex) {
+        onStepChanging: function (event, currentIndex, newIndex) {
           form.validate().settings.ignore = ":disabled,:hidden";
           return form.valid();
         },
-        onFinishing: function(event, currentIndex) {
+        onFinishing: function (event, currentIndex) {
           form.validate().ignore;
           return form.valid();
         },
@@ -1150,22 +1223,22 @@ if ($application_info['status'] == 'Initiated') {
       });
 
       // Event listener for student state dropdown change
-      $('#student_state').on('change', function() {
+      $('#student_state').on('change', function () {
         populateCities(this, document.getElementById("student_city"));
       });
 
       // Event listener for father state dropdown change
-      $('#father_state').on('change', function() {
+      $('#father_state').on('change', function () {
         populateCities(this, document.getElementById("father_city"));
       });
 
       // Event listener for mother state dropdown change
-      $('#mother_state').on('change', function() {
+      $('#mother_state').on('change', function () {
         populateCities(this, document.getElementById("mother_city"));
       });
 
       // Event listener for guardian state dropdown change
-      $('#guardian_state').on('change', function() {
+      $('#guardian_state').on('change', function () {
         populateCities(this, document.getElementById("guardian_city"));
       });
 
@@ -1190,7 +1263,7 @@ if ($application_info['status'] == 'Initiated') {
     const reveal = $('#reveal');
     const revealDetails = $('#revealDetails');
 
-    reveal.click(function() {
+    reveal.click(function () {
       if (revealDetails.is(':hidden')) {
         // Show the add class form
         revealDetails.slideDown();

@@ -26,6 +26,14 @@
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -227,7 +235,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
@@ -332,13 +341,13 @@
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item active">
               <a class="nav-link text-primary" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -440,7 +449,7 @@
                           die();
                         }
 
-                        foreach ($applications as $index => $application) : ?>
+                        foreach ($applications as $index => $application): ?>
                           <tr>
                             <td>
                               <?= $index + 1 ?>
@@ -470,14 +479,17 @@
                             <td>
                               <?= $application['status'] ?>
                             </td>
-                            <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="text-muted sr-only">Action</span>
                               </button>
                               <div class="dropdown-menu dropdown-menu-right">
                                 <?php if ($application['status'] != 'Admitted') { ?>
-                                  <a class="dropdown-item" href="update-application-status.php?ref=<?= $application['ref'] ?>">Change status</a>
+                                  <a class="dropdown-item"
+                                    href="update-application-status.php?ref=<?= $application['ref'] ?>">Change status</a>
                                 <?php } ?>
-                                <a class="dropdown-item" href="application-status.php?ref=<?= $application['ref'] ?>">View application</a>
+                                <a class="dropdown-item" href="application-status.php?ref=<?= $application['ref'] ?>">View
+                                  application</a>
                                 <?php if ($application['status'] != 'Admitted') { ?>
                                   <form class='update_form' action="grant-admission.php" method="post">
                                     <input type='hidden' name='ref' value='<?= $application['ref'] ?>'>
@@ -688,11 +700,13 @@
       </div> <!-- .container-fluid -->
 
       <!-- Notifications modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -705,13 +719,15 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
 
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -722,66 +738,66 @@
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
-                  <a href="../academics/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
+                  <a href="#" style="text-decoration: none;">
+                    <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-success">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -801,7 +817,8 @@
 
 
       <!-- Assign Class Teacher Modal -->
-      <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+      <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -817,12 +834,16 @@
                   <div class="form-group col-12">
                     <p>Meanings to Application Status:</p>
 
-                    <p>Initiated: Satrted application process but not yet completely filled the form. This is usually handled by the system</p>
+                    <p>Initiated: Satrted application process but not yet completely filled the form. This is usually
+                      handled by the system</p>
                     <p>Submitted: Completed filling sand submitted the form. This is also handled by the system</p>
-                    <p>Paid: Paid the application fees and will?has been called in for interview. This is usually handled manually by the management</p>
+                    <p>Paid: Paid the application fees and will?has been called in for interview. This is usually
+                      handled manually by the management</p>
                     <p>Interviewed: Interview had been conducted successfully. All handled by the management</p>
-                    <p>Admitted: Admitted into te school, now a student of Grithall Academy. Handled by the managemnt also</p>
-                    <p>Rejected: Admission was not successful, can contact school for furtherenquiry, handled by the management</p>
+                    <p>Admitted: Admitted into te school, now a student of Grithall Academy. Handled by the managemnt
+                      also</p>
+                    <p>Rejected: Admission was not successful, can contact school for furtherenquiry, handled by the
+                      management</p>
                   </div>
                 </div>
 
@@ -858,7 +879,8 @@
       </div> <!-- new event modal -->
 
       <!-- Assign Warning Modal -->
-      <div class="modal fade" id="warningModel" tabindex="-1" role="dialog" aria-labelledby="warningModelTitle" aria-hidden="true">
+      <div class="modal fade" id="warningModel" tabindex="-1" role="dialog" aria-labelledby="warningModelTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header justify-content-center">
@@ -877,7 +899,8 @@
 
 
       <!-- Loading Modal -->
-      <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalTitle" aria-hidden="true">
+      <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="card col-12 loader">
             <div class="mt-4" style="align-self: center">
@@ -949,15 +972,15 @@
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 3000);
     }
 
 
     // Assign Class Teacher js
-    document.querySelectorAll(".change_status").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".change_status").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         $.ajax({
@@ -965,19 +988,19 @@
           url: 'change_application_status.php',
           data: $(this).serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             $('#eventModal').modal('hide');
             if (response.success) {
               displayPopup(response.message, true);
               // Refresh the page after 2 seconds
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
               }, 3000);
             } else {
               displayPopup(response.message, false);
             }
           },
-          error: function(error, xhr) {
+          error: function (error, xhr) {
             displayPopup('Error occurred during request. Contact Admin', false);
           },
         });
@@ -985,8 +1008,8 @@
     });
 
 
-    $(document).ready(function() {
-      $('.update_form').submit(function(event) {
+    $(document).ready(function () {
+      $('.update_form').submit(function (event) {
         event.preventDefault(); // Prevent the default form submission
 
         // Serialize form data
@@ -996,28 +1019,28 @@
         $('#warningModel').modal('show');
 
         // Add click event listener to the confirmation button
-        $('#link_button').off('click').on('click', function() {
+        $('#link_button').off('click').on('click', function () {
           // Submit form data via AJAX
           $.ajax({
             url: 'grant-admission.php',
             type: 'POST',
             data: formData,
             dataType: 'json',
-            beforeSend: function() {
+            beforeSend: function () {
               $('#loadingModal').modal({
                 backdrop: 'static',
                 keyboard: false
               });
             },
-            success: function(response) {
-              setTimeout(function() {
+            success: function (response) {
+              setTimeout(function () {
                 $('#loadingModal').modal('hide');
 
                 // Handle the response
                 if (response.success) {
                   $('#warningModel').modal('hide');
                   displayPopup(response.message, true);
-                  setTimeout(function() {
+                  setTimeout(function () {
                     location.reload();
                   }, 3000);
                 } else {
@@ -1025,7 +1048,7 @@
                 }
               }, 500)
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               console.error(xhr.responseText);
               // Handle errors if any
             }

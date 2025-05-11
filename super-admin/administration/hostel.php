@@ -1,3 +1,4 @@
+<?php require_once '../settings.php'; ?>
 <!doctype html>
 <html lang="en">
 

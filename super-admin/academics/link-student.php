@@ -29,6 +29,14 @@ $id = $_POST['id'];
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -103,7 +111,8 @@ $id = $_POST['id'];
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
@@ -208,13 +217,13 @@ $id = $_POST['id'];
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -308,7 +317,7 @@ $id = $_POST['id'];
                           die();
                         }
 
-                        foreach ($students as $index => $student) : ?>
+                        foreach ($students as $index => $student): ?>
 
                           <tr>
                             <td>
@@ -333,7 +342,8 @@ $id = $_POST['id'];
                               </td>
                               <input type='hidden' name='id' value='<?= $student['id'] ?>'>
                               <input type='hidden' name='parent_id' value='<?= $parent_id ?>'>
-                              <td><button type='submit' class='btn btn-sm w-100 btn-success'>Link As Dependant</button></td>
+                              <td><button type='submit' class='btn btn-sm w-100 btn-success'>Link As Dependant</button>
+                              </td>
                             </form>
                           </tr>
                         <?php endforeach; ?>
@@ -352,11 +362,13 @@ $id = $_POST['id'];
 
 
       <!-- Notifications modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -369,13 +381,15 @@ $id = $_POST['id'];
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
 
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -386,66 +400,66 @@ $id = $_POST['id'];
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
-                  <a href="../academics/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
+                  <a href="#" style="text-decoration: none;">
+                    <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-success">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -463,13 +477,15 @@ $id = $_POST['id'];
       </div>
 
       <!-- Assign Warning Modal -->
-      <div class="modal fade" id="warningModel" tabindex="-1" role="dialog" aria-labelledby="warningModelTitle" aria-hidden="true">
+      <div class="modal fade" id="warningModel" tabindex="-1" role="dialog" aria-labelledby="warningModelTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header justify-content-center">
               <h5 class="modal-title text-center" id="warningModelTitle">Confirm Link</h5>
             </div>
-            <div class="modal-body">Are you sure you want to link this student as a dependant? Parents are able to manage all dependant info and manage invoices</div>
+            <div class="modal-body">Are you sure you want to link this student as a dependant? Parents are able to
+              manage all dependant info and manage invoices</div>
             <div class="modal-footer">
               <button type="button" class="btn mb-2 btn-secondary" data-dismiss="modal">Cancel</button>
               <button type="button" class="btn mb-2 btn-primary" id="link_button">Link Dependant</button>
@@ -510,53 +526,53 @@ $id = $_POST['id'];
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 1000);
     }
 
 
-   $(document).ready(function () {
-  // Listen for submission of any form with class 'update_form'
-  $(document).on('submit', '.update_form', function (event) {
-    event.preventDefault(); // Prevent default form submission
+    $(document).ready(function () {
+      // Listen for submission of any form with class 'update_form'
+      $(document).on('submit', '.update_form', function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-    var $form = $(this); // Get the specific form instance
-    var formData = $form.serialize(); // Serialize form data
+        var $form = $(this); // Get the specific form instance
+        var formData = $form.serialize(); // Serialize form data
 
-    // Show confirmation modal
-    $('#warningModel').modal('show');
+        // Show confirmation modal
+        $('#warningModel').modal('show');
 
-    // Handle confirmation click
-    $('#link_button').off('click').on('click', function () {
-      // Send data via AJAX
-      $.ajax({
-        url: 'proccess_link.php', // Update to your actual processing script
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        success: function (response) {
-          // Handle the server response
-          if (response.success) {
-            displayPopup(response.message, true);
-            setTimeout(function () {
-              location.reload(); // Reload the page after 1 second
-            }, 1000);
-          } else {
-            displayPopup(response.message, false);
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX Error:', xhr.responseText);
-          displayPopup('An error occurred. Please try again.', false);
-        }
+        // Handle confirmation click
+        $('#link_button').off('click').on('click', function () {
+          // Send data via AJAX
+          $.ajax({
+            url: 'proccess_link.php', // Update to your actual processing script
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+              // Handle the server response
+              if (response.success) {
+                displayPopup(response.message, true);
+                setTimeout(function () {
+                  location.reload(); // Reload the page after 1 second
+                }, 1000);
+              } else {
+                displayPopup(response.message, false);
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error('AJAX Error:', xhr.responseText);
+              displayPopup('An error occurred. Please try again.', false);
+            }
+          });
+
+          // Close the modal (optional)
+          $('#warningModel').modal('hide');
+        });
       });
-
-      // Close the modal (optional)
-      $('#warningModel').modal('hide');
     });
-  });
-});
 
   </script>
   <script>

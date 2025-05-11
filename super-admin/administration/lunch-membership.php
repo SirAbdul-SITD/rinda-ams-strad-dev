@@ -43,7 +43,7 @@ if (isset($_POST['lunch_id'], $_POST['student_id'], $_POST['amount_fare'])) {
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-  <title>Lunch Subscribers | Grithal Academy</title>
+  <title>Lunch Subscribers - Admin | Grithal Academy</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->

@@ -26,6 +26,14 @@
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
 
     .popup {
       position: fixed;
@@ -101,7 +109,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
@@ -206,13 +215,13 @@
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -291,7 +300,7 @@
                       <tbody>
                         <?php
                         // Assuming you have already established a PDO connection named $pdo
-
+                        
                         // SQL query to fetch student data along with class information
                         $sql = "SELECT s.*, c.class
                         FROM students s
@@ -303,7 +312,7 @@
 
                         // Output the student data in the table
                         foreach ($students as $index => $student) {
-                        ?>
+                          ?>
                           <tr>
                             <td>
                               <?= $index + 1; ?>
@@ -322,12 +331,14 @@
                             </td>
                             <td>
                               <div class="custom-control custom-switch">
-                                <input type="checkbox" <?= $student['status'] == 1 ? 'checked' : ''; ?> class="custom-control-input student-status-toggle" id="student-<?= $student['id']; ?>" data-student-id="<?= $student['id']; ?>">
+                                <input type="checkbox" <?= $student['status'] == 1 ? 'checked' : ''; ?>
+                                  class="custom-control-input student-status-toggle" id="student-<?= $student['id']; ?>"
+                                  data-student-id="<?= $student['id']; ?>">
                                 <label class="custom-control-label" for="student-<?= $student['id']; ?>"></label>
                               </div>
                             </td>
                           </tr>
-                        <?php
+                          <?php
                         }
                         ?>
 
@@ -343,11 +354,13 @@
       </div> <!-- .container-fluid -->
 
       <!-- Notifications modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -360,13 +373,15 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
 
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -377,66 +392,66 @@
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
-                  <a href="../academics/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
+                  <a href="#" style="text-decoration: none;">
+                    <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-success">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../messages" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-mail fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Messages</p>
+                    <p class="text-secondary control-panel-text">Messages</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -483,48 +498,48 @@
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
 
 
-   document.addEventListener("DOMContentLoaded", function () {
-  // Use event delegation to handle dynamically added checkboxes
-  document.addEventListener('change', function (event) {
-    // Check if the event target is a checkbox with the class 'student-status-toggle'
-    if (event.target.classList.contains('student-status-toggle')) {
-      const checkbox = event.target;
-      const studentId = checkbox.dataset.studentId; // Get the student ID from the data attribute
-      const status = checkbox.checked ? 1 : 0; // Get the new status of the student
+    document.addEventListener("DOMContentLoaded", function () {
+      // Use event delegation to handle dynamically added checkboxes
+      document.addEventListener('change', function (event) {
+        // Check if the event target is a checkbox with the class 'student-status-toggle'
+        if (event.target.classList.contains('student-status-toggle')) {
+          const checkbox = event.target;
+          const studentId = checkbox.dataset.studentId; // Get the student ID from the data attribute
+          const status = checkbox.checked ? 1 : 0; // Get the new status of the student
 
-      // Send AJAX request to switch student status
-      $.ajax({
-        type: 'POST',
-        url: 'switch_student_status.php',
-        data: {
-          studentId: studentId,
-          status: status
-        },
-        dataType: 'json',
-        success: function (response) {
-          if (response.success) {
-            displayPopup(response.message, true);
-          } else {
-            // If the request fails, revert the checkbox to its previous state
-            checkbox.checked = !checkbox.checked;
-            displayPopup(response.message, false);
-          }
-        },
-        error: function () {
-          // If an error occurs, revert the checkbox to its previous state
-          checkbox.checked = !checkbox.checked;
-          alert('Error occurred during request. Please try again.');
+          // Send AJAX request to switch student status
+          $.ajax({
+            type: 'POST',
+            url: 'switch_student_status.php',
+            data: {
+              studentId: studentId,
+              status: status
+            },
+            dataType: 'json',
+            success: function (response) {
+              if (response.success) {
+                displayPopup(response.message, true);
+              } else {
+                // If the request fails, revert the checkbox to its previous state
+                checkbox.checked = !checkbox.checked;
+                displayPopup(response.message, false);
+              }
+            },
+            error: function () {
+              // If an error occurs, revert the checkbox to its previous state
+              checkbox.checked = !checkbox.checked;
+              alert('Error occurred during request. Please try again.');
+            }
+          });
         }
       });
-    }
-  });
-});
+    });
 
   </script>
 

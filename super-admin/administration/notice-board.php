@@ -26,8 +26,8 @@ $otherNotices = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="favicon.ico">
-  <title>Rinda AMS - Rinda AMS</title>
+  <link rel="icon" href="../assets/images/logo.jpg">
+  <title>Notice Board - Admin | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->

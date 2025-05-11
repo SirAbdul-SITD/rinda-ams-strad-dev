@@ -38,6 +38,14 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
       border-radius: 8px;
     }
 
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
       top: 20px;
@@ -112,7 +120,8 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
@@ -217,13 +226,13 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
                 </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="enroll_student.php">
                 <i class="fe fe-user-plus fe-16"></i>
                 <span class="ml-3 item-text">Enroll into Islamiyyah</span>
                 </i>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="applications.php">
                 <i class="fe fe-file-plus fe-16"></i>
@@ -287,7 +296,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
                   <div class="row align-items-center">
                     <?php
                     // Assuming you have already established a PDO connection named $pdo
-
+                    
 
 
                     // SQL query to fetch student data based on admission number
@@ -342,11 +351,12 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
                         }
                       }
                       // Output the student data in the form
-                    ?>
+                      ?>
                       <div class="col-md-3 text-center mb-5">
                         <a href="#!" class="avatar avatar-xl">
                           <?php if (!empty($student['photo'])) { ?>
-                            <img src="../../uploads/student-profiles/<?= $student['photo'] ?>" alt="..." class="avatar-img rounded-circle">
+                            <img src="../../uploads/student-profiles/<?= $student['photo'] ?>" alt="..."
+                              class="avatar-img rounded-circle">
                           <?php } else { ?>
                             <img src="../../uploads/student-profiles/1.png" alt="..." class="avatar-img rounded-circle">
                           <?php } ?>
@@ -495,14 +505,16 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
                               <form class="m-1" id="change-student-status" method="post">
                                 <input type="hidden" name="studentId" value="<?= $student['id']; ?>">
                                 <input type="hidden" name="status" value="0">
-                                <button type="submit" class="change-status btn mb-2 btn-outline-danger change-status">Disable Student</button>
+                                <button type="submit"
+                                  class="change-status btn mb-2 btn-outline-danger change-status">Disable Student</button>
                               </form>
 
                             <?php } else { ?>
                               <form class="m-1" id="change-student-status" method="post">
                                 <input type="hidden" name="studentId" value="<?= $student['id']; ?>">
                                 <input type="hidden" name="status" value="1">
-                                <button type="submit" class="change-status btn mb-2 btn-outline-success">Enable Student</button>
+                                <button type="submit" class="change-status btn mb-2 btn-outline-success">Enable
+                                  Student</button>
                               </form>
 
                             <?php } ?>
@@ -513,7 +525,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
                           </div>
                         </div>
                       </div>
-                    <?php
+                      <?php
                     } else {
                       // If student data not found, display a message
                       echo "Student data not found.";
@@ -533,7 +545,8 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
 
 
   <!-- RemoveConfirmModal -->
-  <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -554,11 +567,13 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
   </div>
 
   <!-- Notification Modal -->
-  <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+  <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+          <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+            data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
         </div>
         <div class="modal-body">
           <div class="list-group list-group-flush my-n3">
@@ -571,13 +586,15 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
             </div>
           </div> <!-- / .list-group -->
         </div>
-        <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+        <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+            disabled>Clear All</button> </div>
       </div>
     </div>
   </div>
 
   <!-- Menu Modal -->
-  <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+  <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -648,7 +665,8 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
   </div>
 
   <!-- Assign Warning Modal -->
-  <div class="modal fade" id="warningModel" tabindex="-1" role="dialog" aria-labelledby="warningModelTitle" aria-hidden="true">
+  <div class="modal fade" id="warningModel" tabindex="-1" role="dialog" aria-labelledby="warningModelTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header justify-content-center">
@@ -680,7 +698,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
   <script src='../js/jquery.validate.min.js'></script>
 
   <script>
-    document.getElementById('sectionSelect').addEventListener('change', function() {
+    document.getElementById('sectionSelect').addEventListener('change', function () {
       var sectionSelect = this.value;
       var classSelect = document.getElementById('classSelect');
       var studentSelect = document.getElementById('studentSelect');
@@ -698,10 +716,10 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
             section_id: sectionSelect
           },
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               // Populate the class select field with the retrieved classes
-              response.classes.forEach(function(classInfo) {
+              response.classes.forEach(function (classInfo) {
                 var option = document.createElement('option');
                 option.value = classInfo.id;
                 option.text = classInfo.class;
@@ -714,7 +732,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
               // console.error('Failed to fetch classes:', response.message);
             }
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             // console.error('Error occurred during request:', error);
           }
         });
@@ -725,7 +743,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
       }
     });
 
-    document.getElementById('classSelect').addEventListener('change', function() {
+    document.getElementById('classSelect').addEventListener('change', function () {
       var classSelect = this.value;
       var studentSelect = document.getElementById('studentSelect');
 
@@ -741,10 +759,10 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
             class_id: classSelect
           },
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               // Populate the student select field with the retrieved students
-              response.students.forEach(function(student) {
+              response.students.forEach(function (student) {
                 var option = document.createElement('option');
                 option.value = student.id;
                 option.text = student.firstName + " " + student.lastName;
@@ -757,7 +775,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
               // console.error('Failed to fetch students:', response.message);
             }
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             // console.error('Error occurred during request:', error);
           }
         });
@@ -770,34 +788,34 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
 
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       const removeButtons = document.querySelectorAll('.change-status');
 
 
 
-      removeButtons.forEach(function(button) {
-        button.addEventListener('click', function(event) {
+      removeButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
           event.preventDefault();
 
           // Show confirmation modal
           $('#confirmationModal').modal('show');
 
           // Add click event listener to the confirmation button
-          $('.confirm-remove').off('click').on('click', function() {
+          $('.confirm-remove').off('click').on('click', function () {
             // Send AJAX request to remove the subject
             $.ajax({
               type: 'POST',
               url: 'switch_student_status.php',
               data: $('#change-student-status').serialize(),
               dataType: 'json',
-              success: function(response) {
+              success: function (response) {
                 if (response.success) {
                   // button.classList.remove('text-muted');
                   // button.classList.Add('text-muted');
                   // button.innerText = 'Enable';
 
                   displayPopup(response.message, true);
-                  setTimeout(function() {
+                  setTimeout(function () {
                     document.getElementById('hiddenForm').submit()
                   }, 2000);
 
@@ -805,7 +823,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
                   displayPopup(response.message, false);
                 }
               },
-              error: function(error, xhr) {
+              error: function (error, xhr) {
                 displayPopup('Error occurred during request. Contact Admin', false);
               },
             });
@@ -837,7 +855,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
@@ -846,8 +864,8 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
 
 
     // Add class form js
-    document.querySelectorAll(".add_subject_form").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".add_subject_form").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         $.ajax({
@@ -855,11 +873,11 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
           url: 'add_subject.php',
           data: $(this).serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               displayPopup(response.message, true);
               // Refresh the page after 2 seconds
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
               }, 2000);
             } else {
@@ -867,7 +885,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
             }
 
           },
-          error: function(error, xhr) {
+          error: function (error, xhr) {
             displayPopup('Error occurred during request. Contact Admin', false);
           },
         });
@@ -876,8 +894,8 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
 
 
     // Assign Class Teacher js
-    document.querySelectorAll(".assign_subject_form").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".assign_subject_form").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         $.ajax({
@@ -885,19 +903,19 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
           url: 'assign_subject_form.php',
           data: $(this).serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             $('#assignTeacher').modal('hide');
             if (response.success) {
               displayPopup(response.message, true);
               // Refresh the page after 2 seconds
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
               }, 2000);
             } else {
               $('#warningModel').modal('show');
             }
           },
-          error: function(error, xhr) {
+          error: function (error, xhr) {
             displayPopup('Error occurred during request. Contact Admin', false);
           },
         });
@@ -905,27 +923,27 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
     });
 
 
-    document.getElementById("force_assign").addEventListener("click", function() {
+    document.getElementById("force_assign").addEventListener("click", function () {
       $.ajax({
         type: 'POST',
         url: 'force_assign_subject_teacher.php',
         data: $('.assign_subject_form').serialize(),
         dataType: 'json',
-        beforeSend: function() {
+        beforeSend: function () {
           $('#warningModel').modal('hide');
         },
-        success: function(response) {
+        success: function (response) {
           if (response.success) {
             displayPopup(response.message, true);
             // Refresh the page after 2 seconds
-            setTimeout(function() {
+            setTimeout(function () {
               location.reload();
             }, 2000);
           } else {
             displayPopup(response.message, false);
           }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           displayPopup('Error occurred during request. Contact Admin', false);
           // console.error('Error:', error); // Log the error to the console for debugging
         },
@@ -933,8 +951,8 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
     });
 
 
-    document.querySelectorAll(".student-info-form").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".student-info-form").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         var studentInfoWindow = document.getElementById('studentInfoWindow');
@@ -944,11 +962,11 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
           url: 'get_student_info.php',
           data: $(this).serialize(),
           dataType: 'json',
-          beforeSend: function() {
+          beforeSend: function () {
             // $('#warningModel').modal('hide');
           },
           // Update student info window with received data
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               // Display student information
               var student = response.student;
@@ -968,7 +986,7 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
             }
 
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             studentInfoWindow.style.display = 'block';
             displayPopup('Error occurred during request. Contact Admin', false);
             // console.error('Error:', error); // Log the error to the console for debugging
@@ -1060,42 +1078,42 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -1110,14 +1128,14 @@ if (isset($_POST['admission_no']) || isset($_GET['admission_no'])) {
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();
