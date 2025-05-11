@@ -114,7 +114,12 @@
           <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -127,8 +132,8 @@
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -354,97 +359,97 @@
                             }
 
                             foreach ($invoices as $index => $invoice): ?>
-                                <tr>
-                                  <td>
-                                    <?= $index + 1 ?>
-                                  </td>
+                              <tr>
+                                <td>
+                                  <?= $index + 1 ?>
+                                </td>
 
-                                  <td>
-                                    <?= $invoice['full_name'] ?>
-                                  </td>
-                                  <td>
-                                    <?= $invoice['class'] ?>
-                                  </td>
-                                  <td>
-                                    <?= $invoice['type'] ?>
-                                  </td>
-                                  <td>
-                                    <?= $invoice['term'] ?>
-                                  </td>
-                                  <td>
-                                    <?php
-                                    $formatted_amount = '₦' . number_format($invoice['amount'], 2);
-                                    echo
-                                      $formatted_amount;
-                                    ?>
-                                  </td>
-                                  <td>
-                                    <?php
-                                    $formatted_amount = '₦' . number_format($invoice['paid_amount'], 2);
-                                    echo
-                                      $formatted_amount;
-                                    ?>
-                                  </td>
-                                  <td>
-                                    <?php
-                                    if ($invoice['status'] !== 'Paid' && $invoice['status'] !== 'Paid (Discounted)') {
-                                      $defaulting_balance = $invoice['amount'] - $invoice['paid_amount'];
-                                      if ($defaulting_balance == 0) {
-                                        echo "<p class='text-success'>₦ " . number_format($defaulting_balance, 2) . "</p>";
-                                      } else {
-                                        echo "<p class='text-danger'>₦ " . number_format($defaulting_balance, 2) . "</p>";
-                                      }
+                                <td>
+                                  <?= $invoice['full_name'] ?>
+                                </td>
+                                <td>
+                                  <?= $invoice['class'] ?>
+                                </td>
+                                <td>
+                                  <?= $invoice['type'] ?>
+                                </td>
+                                <td>
+                                  <?= $invoice['term'] ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  $formatted_amount = '₦' . number_format($invoice['amount'], 2);
+                                  echo
+                                    $formatted_amount;
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  $formatted_amount = '₦' . number_format($invoice['paid_amount'], 2);
+                                  echo
+                                    $formatted_amount;
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  if ($invoice['status'] !== 'Paid' && $invoice['status'] !== 'Paid (Discounted)') {
+                                    $defaulting_balance = $invoice['amount'] - $invoice['paid_amount'];
+                                    if ($defaulting_balance == 0) {
+                                      echo "<p class='text-success'>₦ " . number_format($defaulting_balance, 2) . "</p>";
                                     } else {
-                                      echo "<p class='text-success'>₦ 0.00</p>";
+                                      echo "<p class='text-danger'>₦ " . number_format($defaulting_balance, 2) . "</p>";
                                     }
-                                    ?>
-                                  </td>
-                                  <td>
-                                    <?php
-                                    if ($invoice['status'] === 'Paid') {
-                                      echo "<p class='text-success'>Paid in full</p>";
-                                    } elseif ($invoice['status'] == 'Unpaid') {
-                                      echo "<p class='text-danger'>Unpaid</p>";
-                                    } elseif ($defaulting_balance == 0) {
-                                      echo "<p class='text-success'>Paid in full</p>";
-                                    } elseif ($invoice['status'] == 'Paid (Discounted)') {
-                                      echo "<p class='text-success'>Paid (Discounted)</p>";
-                                    } else {
-                                      $statusUnpaid = $invoice['status'];
-                                      echo "<p class='text-warning'>$statusUnpaid</p>";
-                                    }
-                                    ?>
-                                  </td>
-                                  <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
-                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <span class="text-muted sr-only">Action</span>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                      <a class="dropdown-item"
-                                        href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change
-                                        status</a>
+                                  } else {
+                                    echo "<p class='text-success'>₦ 0.00</p>";
+                                  }
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  if ($invoice['status'] === 'Paid') {
+                                    echo "<p class='text-success'>Paid in full</p>";
+                                  } elseif ($invoice['status'] == 'Unpaid') {
+                                    echo "<p class='text-danger'>Unpaid</p>";
+                                  } elseif ($defaulting_balance == 0) {
+                                    echo "<p class='text-success'>Paid in full</p>";
+                                  } elseif ($invoice['status'] == 'Paid (Discounted)') {
+                                    echo "<p class='text-success'>Paid (Discounted)</p>";
+                                  } else {
+                                    $statusUnpaid = $invoice['status'];
+                                    echo "<p class='text-warning'>$statusUnpaid</p>";
+                                  }
+                                  ?>
+                                </td>
+                                <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="text-muted sr-only">Action</span>
+                                  </button>
+                                  <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item"
+                                      href="update-invoice-status.php?ref=<?= $invoice['invoice_ref'] ?>">Change
+                                      status</a>
 
-                                      <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                        echo 'disabled';
-                                      } ?>"
-                                        href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>"
-                                        <?php if (empty($invoice['parent_id'])) {
-                                          echo 'title="Student not linked to any parent"';
-                                        } ?>>
-                                        Send Reminder
-                                      </a>
+                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
+                                      echo 'disabled';
+                                    } ?>"
+                                      href="invoice-reminder.php?parent=<?= $invoice['parent_id'] ?>&student=<?= $invoice['id'] ?>"
+                                      <?php if (empty($invoice['parent_id'])) {
+                                        echo 'title="Student not linked to any parent"';
+                                      } ?>>
+                                      Send Reminder
+                                    </a>
 
-                                      <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
-                                        echo 'disabled';
-                                      } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
-                                           echo 'title="Student not linked to any parent"';
-                                         } ?>>
-                                        Parent Profile
-                                      </a>
-                                    </div>
+                                    <a class="dropdown-item <?php if (empty($invoice['parent_id'])) {
+                                      echo 'disabled';
+                                    } ?>" href="../academics/parent.php?parent_id=<?= $invoice['parent_id'] ?>" <?php if (empty($invoice['parent_id'])) {
+                                         echo 'title="Student not linked to any parent"';
+                                       } ?>>
+                                      Parent Profile
+                                    </a>
+                                  </div>
 
-                                  </td>
-                                </tr>
+                                </td>
+                              </tr>
                             <?php endforeach; ?>
 
                           </tbody>

@@ -120,7 +120,12 @@ if (isset($_POST['ref']) && isset($_POST['student_id'])) {
           <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -133,8 +138,8 @@ if (isset($_POST['ref']) && isset($_POST['student_id'])) {
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
