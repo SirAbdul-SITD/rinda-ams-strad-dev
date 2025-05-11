@@ -70,12 +70,19 @@
       }
     }
 
-
     @media (min-width: 768px) {
       .mobile {
         display: none;
         min-width: 720px;
       }
+    }
+    
+    .filter-btn {
+      margin-right: 10px;
+    }
+    
+    .filter-form .form-group {
+      margin-bottom: 15px;
     }
   </style>
 </head>
@@ -163,8 +170,6 @@
             </a>
           </li>
 
-
-
           <li class="nav-item">
             <a class="nav-link" href="invoices.php">
               <i class="fe fe-users fe-16"></i>
@@ -208,7 +213,6 @@
                 </i>
               </a>
             </li>
-
 
           </ul>
 
@@ -260,7 +264,6 @@
               </a>
             </li>
 
-
           </ul>
 
           <!-- Extra -->
@@ -279,10 +282,105 @@
                     <h3 class="page-title">Expenses</h3>
                   </div>
                   <div class="col-auto">
-                    <button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#newModal"><span
-                        class="fe fe-plus fe-16 mr-3"></span>New</button>
+                    <button type="button" class="btn btn-secondary filter-btn" data-toggle="modal" data-target="#filterModal">
+                      <span class="fe fe-filter fe-16 mr-2"></span>Filter
+                    </button>
+                    <button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#newModal">
+                      <span class="fe fe-plus fe-16 mr-2"></span>New
+                    </button>
                   </div>
                 </div>
+
+                <div class="row align-items-center my-3">
+    <div class="col-md-6 mb-6">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row align-items-center mb-6">
+                    <div class="col">
+                        <?php
+                        // Get total expenses
+                        $query = "SELECT SUM(amount) as total FROM expenses";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->execute();
+                        $totalExpenses = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+                        
+                        // Get this month's expenses
+                        $currentMonth = date('m');
+                        $currentYear = date('Y');
+                        $query = "SELECT SUM(amount) as total FROM expenses WHERE MONTH(date) = :month AND YEAR(date) = :year";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->bindParam(':month', $currentMonth, PDO::PARAM_INT);
+                        $stmt->bindParam(':year', $currentYear, PDO::PARAM_INT);
+                        $stmt->execute();
+                        $monthlyExpenses = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+                        
+                        // Calculate percentage (avoid division by zero)
+                        $percentage = ($totalExpenses > 0) ? round(($monthlyExpenses / $totalExpenses) * 100, 2) : 0;
+                        ?>
+                        <span class="badge badge-pill badge-success" style="background-color: #93bb84">
+                            <?= $percentage ?>%
+                        </span>
+                        <p class="small text-muted mb-0">Total paid amount</p>
+                        <p class="h2 mb-0">
+                            ₦<?= number_format($totalExpenses, 2) ?>
+                        </p>
+                    </div>
+                    <div class="col-auto">
+                        <br>
+                        <p class="small text-muted mb-0">Expenses Count</p>
+                        <p class="h2 mb-0">
+                            <?php
+                            $query = "SELECT COUNT(*) as count FROM expenses";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                            echo $result['count'];
+                            ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-6">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <?php
+                        // Calculate percentage of monthly vs total
+                        $monthlyPercentage = ($totalExpenses > 0) ? round(($monthlyExpenses / $totalExpenses) * 100, 2) : 0;
+                        ?>
+                        <span class="badge badge-pill badge-success" style="background-color: #FB1010">
+                            <?= $monthlyPercentage ?>%
+                        </span>
+                        <p class="small text-muted mb-0">This Month's Expenses</p>
+                        <p class="h2 mb-0">
+                            ₦<?= number_format($monthlyExpenses, 2) ?>
+                        </p>
+                    </div>
+                    <div class="col-auto">
+                        <br>
+                        <p class="small text-muted mb-0">This Month's Count</p>
+                        <p class="h2 mb-0">
+                            <?php
+                            $query = "SELECT COUNT(*) as count FROM expenses WHERE MONTH(date) = :month AND YEAR(date) = :year";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->bindParam(':month', $currentMonth, PDO::PARAM_INT);
+                            $stmt->bindParam(':year', $currentYear, PDO::PARAM_INT);
+                            $stmt->execute();
+                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                            echo $result['count'];
+                            ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
                 <div class="row">
                   <!-- Striped rows -->
                   <div class="col-md-12 my-4">
@@ -300,13 +398,23 @@
                             </tr>
                           </thead>
                           <tbody>
-
-
-
-
                             <?php
                             $query = "SELECT * FROM `expenses`";
+                            
+                            // Check if filter parameters are set
+                            if (isset($_GET['start_date']) && !empty($_GET['start_date']) && isset($_GET['end_date']) && !empty($_GET['end_date'])) {
+                              $start_date = $_GET['start_date'];
+                              $end_date = $_GET['end_date'];
+                              $query .= " WHERE date BETWEEN :start_date AND :end_date";
+                            }
+                            
                             $stmt = $pdo->prepare($query);
+                            
+                            if (isset($start_date) && isset($end_date)) {
+                              $stmt->bindParam(':start_date', $start_date);
+                              $stmt->bindParam(':end_date', $end_date);
+                            }
+                            
                             $stmt->execute();
                             $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -316,15 +424,9 @@
                             } else {
                               foreach ($expenses as $index => $expense): ?>
                                 <tr>
-
+                                  <td><?= $index + 1 ?></td>
                                   <td>
-                                    <?= $index + 1 ?>
-                                  </td>
-
-                                  <td>
-                                    <p class="mb-0"><strong>
-                                        <?= $expense['description'] ?></strong>
-                                    </p>
+                                    <p class="mb-0"><strong><?= $expense['description'] ?></strong></p>
                                   </td>
                                   <td>
                                     <p class="mb-0 text-muted">
@@ -333,23 +435,13 @@
                                       ?>
                                     </p>
                                   </td>
-
-                                  <td class="text-muted">
-                                    <?= $expense['date'] ?>
-                                  </td>
-                                  <td class="text-muted">
-                                    <?= $expense['note'] ?>
-                                  </td>
-
+                                  <td class="text-muted"><?= $expense['date'] ?></td>
+                                  <td class="text-muted"><?= $expense['note'] ?></td>
                                 </tr>
                               <?php endforeach;
                             } ?>
-
-
-
                           </tbody>
                         </table>
-
                       </div>
                     </div>
                   </div> <!-- simple table -->
@@ -358,31 +450,37 @@
             </div> <!-- .row -->
           </div> <!-- .container-fluid -->
 
-
+          <!-- Notifications Modal -->
           <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog"
             aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
-                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                  <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> 
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+                    <span aria-hidden="true">&times;</span> 
+                  </button>
                 </div>
                 <div class="modal-body">
                   <div class="list-group list-group-flush my-n3">
                     <div class="list-group-item bg-transparent">
                       <div class="row align-items-center">
-                        <div class="col text-center"> <small><strong>You're well up to date</strong></small>
+                        <div class="col text-center"> 
+                          <small><strong>You're well up to date</strong></small>
                           <div class="my-0 text-muted small">No notifications available</div>
                         </div>
                       </div>
                     </div>
                   </div> <!-- / .list-group -->
                 </div>
-                <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block"
-                    data-dismiss="modal" disabled>Clear All</button> </div>
+                <div class="modal-footer"> 
+                  <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> 
+                </div>
               </div>
             </div>
           </div>
+          
+          <!-- Shortcut Modal -->
           <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
             aria-labelledby="defaultModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -471,11 +569,7 @@
             </div>
           </div>
 
-
-
-
-
-          <!-- new Modal-->
+          <!-- New Expense Modal -->
           <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -504,17 +598,45 @@
                       </div>
                     </div>
 
-
                     <div class="form-group">
                       <label for="third_term" class="col-form-label">Additional Note:</label>
                       <textarea name="note" class="form-control"></textarea>
                     </div>
-
                   </form>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn mb-2 btn-primary w-100" id="saveBtn">Add
-                    Expense</button>
+                  <button type="button" class="btn mb-2 btn-primary w-100" id="saveBtn">Add Expense</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Filter Modal -->
+          <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="filterModalLabel">Filter Expenses</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="filterForm" method="GET" action="">
+                    <div class="form-group">
+                      <label for="start_date">Start Date:</label>
+                      <input type="date" class="form-control" id="start_date" name="start_date">
+                    </div>
+                    <div class="form-group">
+                      <label for="end_date">End Date:</label>
+                      <input type="date" class="form-control" id="end_date" name="end_date">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" id="applyFilter">Apply Filter</button>
                 </div>
               </div>
             </div>
@@ -554,12 +676,9 @@
     gtag('config', 'UA-56159088-1');
   </script>
 
-
-  <!-- add fee -->
   <script>
     $(document).ready(function () {
-
-      //Function to display a popup message
+      // Function to display a popup message
       function displayPopup(message, success) {
         var popup = document.createElement('div');
         popup.className = 'popup ' + (success ? 'success' : 'error');
@@ -582,7 +701,6 @@
 
       // Event listener for saving changes
       $('#saveBtn').on('click', function () {
-
         form = $('#newForm');
         // Perform AJAX request to update fee information in the database
         $.ajax({
@@ -608,9 +726,41 @@
           }
         });
       });
+      
+      // Apply filter button click handler
+      $('#applyFilter').on('click', function() {
+        var startDate = $('#start_date').val();
+        var endDate = $('#end_date').val();
+        
+        if (startDate && endDate) {
+          // Submit the form to reload the page with filter parameters
+          $('#filterForm').submit();
+        } else {
+          alert('Please select both start and end dates');
+        }
+      });
+      
+      // Set default dates in filter modal (current month)
+      var today = new Date();
+      var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+      var lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      
+      // Format dates as YYYY-MM-DD
+      var formatDate = function(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+      };
+      
+      $('#start_date').val(formatDate(firstDay));
+      $('#end_date').val(formatDate(lastDay));
     });
   </script>
-
 </body>
-
 </html>
