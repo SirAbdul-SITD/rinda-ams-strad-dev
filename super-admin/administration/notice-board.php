@@ -1,3 +1,23 @@
+<?php
+require_once '../settings.php'; // your PDO connection
+$today = date('Y-m-d');
+
+// Get the latest updated notice
+$latestNotice = $pdo->query("
+    SELECT * FROM notices 
+    ORDER BY update_datetime DESC 
+    LIMIT 1
+")->fetch(PDO::FETCH_ASSOC);
+
+// Get all active notices (excluding the latest one)
+$stmt = $pdo->prepare("
+   SELECT * FROM notices WHERE start_date <= CURDATE() AND (end_date IS NULL OR end_date >= CURDATE()) ORDER BY start_date DESC;
+");
+$stmt->execute([
+
+]);
+$otherNotices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!doctype html>
 <html lang="en">
 
@@ -22,6 +42,14 @@
   <style>
     .card {
       border-radius: 8px;
+    }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
     }
 
     .popup {
@@ -51,6 +79,28 @@
 
     .popup i {
       margin-right: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .desktop {
+        display: none;
+        min-width: 720px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .mobile {
+        display: none;
+        min-width: 720px;
+      }
+    }
+
+    .filter-btn {
+      margin-right: 10px;
+    }
+
+    .filter-form .form-group {
+      margin-bottom: 15px;
     }
   </style>
 </head>
@@ -258,105 +308,51 @@
             <div class="row">
               <div class="col-md-8 mb-4">
                 <div class="col-12 mb-4">
-                  <div class="card shadow">
-
+                  <div class="card shadow latest-notice">
                     <div class="card-body">
-
                       <div class="" role="alert">
                         <div class="d-flex w-100 justify-content-between mb-3">
-                          <h4 class="alert-heading">Well done!</h4>
-                          <span>Tue 04/07/2025</span>
+                          <h4 class="alert-heading"><?= htmlspecialchars($latestNotice['subject']) ?></h4>
+                          <span><?= date('D d/m/Y', strtotime($latestNotice['start_date'])) ?></span>
                         </div>
                         <div style="max-height: 53vh; overflow-y: auto;">
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
-                          </p>
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
-                          </p>
-
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
-                          </p>
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
-                          </p>
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
-                          </p>
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
-                          </p>
-
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
-                          </p>
-                          <p>Aww yeah, you successfully read this important alert message. This example text is going to
-                            run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.
+                          <p>
+                            <?= nl2br(htmlspecialchars($latestNotice['content'])) ?>
                           </p>
                         </div>
-
-
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
 
               <div class="col-md-4 mb-4">
-                <div class="card shadow">
+                <div class="card shadow other-notice">
                   <div class="card-header">
                     <div class="d-flex w-100 justify-content-between">
-                      <strong class="card-title mb-0">Previous Notices</strong>
-                      <span>2024/2025</span>
+                      <strong class="card-title mb-0">Upcoming Notices</strong>
+                      <!-- <span> </span> -->
                     </div>
                   </div>
                   <div class="card-body">
                     <div style="max-height: 54vh; overflow-y: auto;">
-                      <div class="alert alert-success" role="alert">
-                        <div class="d-flex w-100 justify-content-between">
-                          <span class="fe fe-bell fe-16 mr-2"></span>
-                          <span>Tue 04/07/2025</span>
-                        </div> A simple primary alert—check it out!
-                      </div>
-                      <div class="alert alert-secondary" role="alert">
-                        <div class="d-flex w-100 justify-content-between">
-                          <span class="fe fe-bell fe-16 mr-2"></span>
-                          <span>Tue 01/03/2025</span>
-                        </div> A simple primary alert—check it out!
-                      </div>
-                      <div class="alert alert-secondary" role="alert">
-                        <div class="d-flex w-100 justify-content-between">
-                          <span class="fe fe-bell fe-16 mr-2"></span>
-                          <span>Tue 15/05/2025</span>
-                        </div> A simple primary alert—check it out!
-                      </div>
-                      <div class="alert alert-secondary" role="alert">
-                        <div class="d-flex w-100 justify-content-between">
-                          <span class="fe fe-bell fe-16 mr-2"></span>
-                          <span>Tue 18/02/2025</span>
-                        </div> A simple primary alert—check it out!
-                      </div>
-                      <div class="alert alert-secondary" role="alert">
-                        <div class="d-flex w-100 justify-content-between">
-                          <span class="fe fe-bell fe-16 mr-2"></span>
-                          <span>Tue 18/02/2025</span>
-                        </div> A simple primary alert—check it out!
-                      </div>
+                      <?php foreach ($otherNotices as $notice): ?>
+                        <div class="  mr-1 alert alert-secondary other-notice-item"
+                          data-subject="<?= htmlspecialchars($notice['subject']) ?>"
+                          data-content="<?= htmlspecialchars($notice['content']) ?>"
+                          data-date="<?= date('D d/m/Y', strtotime($notice['start_date'])) ?>">
+                          <div class="d-flex w-100 justify-content-between">
+                            <span class="fe fe-bell fe-16 mr-2"></span>
+                            <small><?= date('D d/m/Y', strtotime($notice['start_date'])) ?></small>
+                          </div>
+                          <?= htmlspecialchars($notice['subject']) ?>
+                        </div>
+                      <?php endforeach; ?>
+
                     </div>
                   </div>
                 </div>
               </div>
-
             </div> <!-- end section -->
 
           </div> <!-- .row -->
@@ -442,74 +438,83 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form id="noticeForm" class="needs-validation" novalidate>
+                <form id="newForm" class="needs-validation" novalidate>
                   <div class="form-group">
-                    <label for="subject" class="col-form-label">Subject:*</label>
+                    <label for="subject">Subject:*</label>
                     <input type="text" class="form-control" name="subject" id="subject" required>
                   </div>
 
                   <div class="form-group">
-                    <label for="content" class="col-form-label">Content:*</label>
+                    <label for="content">Content:*</label>
                     <textarea class="form-control" name="content" id="content" rows="4" required></textarea>
                   </div>
 
                   <div class="form-row align-items-end">
                     <div class="form-group col-5">
-                      <label for="start_date" class="col-form-label">Start Date:*</label>
+                      <label for="start_date">Start Date:*</label>
                       <input type="date" class="form-control" name="start_date" id="start_date" required>
                     </div>
 
                     <div class="form-group col-2 text-center">
                       <div class="custom-control custom-switch mt-4">
-                        <label class="custom-control-label" for="toggleEndDate">End</label>
                         <input type="checkbox" class="custom-control-input" id="toggleEndDate">
-
+                        <label class="custom-control-label" for="toggleEndDate">End</label>
                       </div>
                     </div>
 
-                    <div class="form-group col-5" id="endDateGroup" style="display: none;">
-                      <label for="end_date" class="col-form-label">End Date:</label>
-                      <input type="date" class="form-control" name="end_date" id="end_date">
+                    <div class="form-group col-5">
+                      <label for="end_date">End Date:</label>
+                      <input type="date" class="form-control" name="end_date" id="end_date" disabled>
                     </div>
                   </div>
-                  <p>Notification settings</p>
 
-                  <div class="form-row col-12">
-                    <div class="form-group col-6" id="parents">
-                      <div class="custom-control custom-switch">
-                        <label class="custom-control-label" for="toggleParents">Parents</label>
+
+                  <hr>
+                  <p><strong>Notification Settings</strong></p>
+
+                  <div class="form-row">
+                    <!-- Parents Group -->
+                    <div class="form-group col-6">
+                      <div class="custom-control custom-switch mb-2">
                         <input type="checkbox" class="custom-control-input" id="toggleParents">
+                        <label class="custom-control-label" for="toggleParents">Parents</label>
                       </div>
                       <div>
-                        <label class="custom-control-label" for="parentEmail">Send Email</label>
-                        <input type="checkbox" class="custom-control-input" id="parentEmail">
-                      </div>
-                      <div>
-                        <label class="custom-control-label" for="parentWhatsApp">Send to Whatsapp</label>
-                        <input type="checkbox" class="custom-control-input" id="parentWhatsApp">
-                      </div>
-                      <div>
-                        <label class="custom-control-label" for="parentSMS">Send to SMS</label>
-                        <input type="checkbox" class="custom-control-input" id="parentSMS">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="parentEmail" disabled>
+                          <label class="custom-control-label" for="parentEmail">Send Email</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="parentWhatsApp" disabled>
+                          <label class="custom-control-label" for="parentWhatsApp">Send to WhatsApp</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="parentSMS" disabled>
+                          <label class="custom-control-label" for="parentSMS">Send to SMS</label>
+                        </div>
                       </div>
                     </div>
 
-                    <div class="form-group col-6" id="staffs">
-                      <label class="custom-control-label" for="Staffs">Staffs</label>
-                      <input type="checkbox" class="custom-control-input" id="staffs">
-                      <div>
-                        <label class="custom-control-label" for="parentEmail">Send Email</label>
-                        <input type="checkbox" class="custom-control-input" id="parentEmail">
+                    <!-- Staffs Group -->
+                    <div class="form-group col-6">
+                      <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="toggleStaffs">
+                        <label class="custom-control-label" for="toggleStaffs">Staffs</label>
                       </div>
                       <div>
-                        <label class="custom-control-label" for="parentWhatsApp">Send to Whatsapp</label>
-                        <input type="checkbox" class="custom-control-input" id="parentWhatsApp">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="staffEmail" disabled>
+                          <label class="custom-control-label" for="staffEmail">Send Email</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="staffWhatsApp" disabled>
+                          <label class="custom-control-label" for="staffWhatsApp">Send to WhatsApp</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="staffSMS" disabled>
+                          <label class="custom-control-label" for="staffSMS">Send to SMS</label>
+                        </div>
                       </div>
-                      <div>
-                        <label class="custom-control-label" for="staffsMS">Send to SMS</label>
-                        <input type="checkbox" class="custom-control-input" id="staffsMS">
-                      </div>
-
                     </div>
                   </div>
                 </form>
@@ -522,29 +527,42 @@
         </div>
 
         <script>
-          // Toggle visibility of end date field based on switch
+          // End Date enable/disable
           document.getElementById('toggleEndDate').addEventListener('change', function () {
-            const endDateGroup = document.getElementById('endDateGroup');
-            const endDateInput = document.getElementById('end_date');
+            const endInput = document.getElementById('end_date');
+            endInput.disabled = !this.checked;
+            this.checked ? endInput.setAttribute('required', 'required') : endInput.removeAttribute('required');
+          });
 
-            if (this.checked) {
-              endDateGroup.style.display = 'block';
-              endDateInput.setAttribute('required', 'required');
-            } else {
-              endDateGroup.style.display = 'none';
-              endDateInput.removeAttribute('required');
-            }
+          // Parents options enable/disable
+          document.getElementById('toggleParents').addEventListener('change', function () {
+            const enabled = this.checked;
+            document.getElementById('parentEmail').disabled = !enabled;
+            document.getElementById('parentWhatsApp').disabled = !enabled;
+            document.getElementById('parentSMS').disabled = !enabled;
+          });
+
+          // Staffs options enable/disable
+          document.getElementById('toggleStaffs').addEventListener('change', function () {
+            const enabled = this.checked;
+            document.getElementById('staffEmail').disabled = !enabled;
+            document.getElementById('staffWhatsApp').disabled = !enabled;
+            document.getElementById('staffSMS').disabled = !enabled;
           });
         </script>
 
 
 
+
+
+
+        <!-- Shortcut Modal -->
         <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog"
           aria-labelledby="defaultModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="defaultModalLabel">Shortcuts</h5>
+                <h5 class="modal-title" id="defaultModalLabel">Control Panel</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -552,44 +570,74 @@
               <div class="modal-body px-5">
                 <div class="row align-items-center">
                   <div class="col-6 text-center">
+                    <!-- <a href="#" style="text-decoration: none;"> -->
                     <div class="squircle bg-success justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p>Control area</p>
+                    <p class="text-success">Dashboard</p>
+                    <!-- </a> -->
                   </div>
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-activity fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Activity</p>
-                  </div>
-                </div>
-                <div class="row align-items-center">
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-droplet fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Droplet</p>
-                  </div>
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-upload-cloud fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Upload</p>
+                  <div class="col-6 text-center con-item">
+                    <a href="../academics/" style="text-decoration: none;">
+                      <div class="squircle bg-secondary justify-content-center">
+                        <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-secondary control-panel-text">Academics</p>
+                    </a>
                   </div>
                 </div>
                 <div class="row align-items-center">
-                  <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-users fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Users</p>
+                  <div class="col-6 text-center con-item">
+                    <a href="../lms" style="text-decoration: none;">
+                      <div class="squircle bg-secondary justify-content-center">
+                        <i class="fe fe-trello fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-secondary control-panel-text">E-Learning</p>
+                    </a>
+                  </div>
+                  <div class="col-6 text-center con-item">
+                    <a href="../messages" style="text-decoration: none;">
+                      <div class="squircle bg-secondary justify-content-center">
+                        <i class="fe fe-mail fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-secondary control-panel-text">Messages</p>
+                    </a>
+                  </div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-6 text-center con-item">
+                    <a href="../shop" style="text-decoration: none;">
+                      <div class="squircle bg-secondary justify-content-center">
+                        <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-secondary control-panel-text">Shop</p>
+                    </a>
+                  </div>
+                  <div class="col-6 text-center con-item">
+                    <a href="../hr/" style="text-decoration: none;">
+                      <div class="squircle bg-secondary justify-content-center text-white">
+                        <i class="fe fe-users fe-32 align-self-center"></i>
+                      </div>
+                      <p class="text-secondary control-panel-text">HR</p>
+                    </a>
+                  </div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-6 text-center con-item">
+                    <a href="../assessments" style="text-decoration: none;">
+                      <div class="squircle bg-secondary justify-content-center">
+                        <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
+                      </div>
+                      <p class="text-secondary control-panel-text">Assessments</p>
+                    </a>
                   </div>
                   <div class="col-6 text-center">
-                    <div class="squircle bg-primary justify-content-center">
-                      <i class="fe fe-settings fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p>Settings</p>
+                    <a href="#" style="text-decoration: none;">
+                      <div class="squircle bg-secondary justify-content-center">
+                        <i class="fe fe-settings fe-32 align-self-center text-muted"></i>
+                      </div>
+                      <p class="text-muted">Settings</p>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -622,6 +670,29 @@
 
   <!-- add notice -->
   <!-- add fee -->
+
+  <script>
+    $(document).ready(function () {
+      $('.other-notice-item').on('click', function () {
+        // Reset styling
+        $('.other-notice-item').removeClass('alert-success').addClass('alert-secondary');
+
+        // Highlight this one
+        $(this).removeClass('alert-secondary').addClass('alert-success');
+
+        // Get data
+        const subject = $(this).data('subject');
+        const content = $(this).data('content');
+        const date = $(this).data('date');
+
+        // Update main notice area
+        $('.latest-notice .alert-heading').text(subject);
+        $('.latest-notice span').last().text(date);
+        $('.latest-notice p').html(content.replace(/\n/g, '<br>'));
+      });
+    });
+  </script>
+
   <script>
     $(document).ready(function () {
 
@@ -679,100 +750,3 @@
 </body>
 
 </html>
-
-
-
-
-improve the model, i want when any of the swtcih is clicked then the options under will be visible, like when parent is
-on then the options below it are visible
-
-
-<!-- New Notice Modal -->
-<div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="newModalLabel">Add New Notice</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="noticeForm" class="needs-validation" novalidate>
-          <div class="form-group">
-            <label for="subject" class="col-form-label">Subject:*</label>
-            <input type="text" class="form-control" name="subject" id="subject" required>
-          </div>
-
-          <div class="form-group">
-            <label for="content" class="col-form-label">Content:*</label>
-            <textarea class="form-control" name="content" id="content" rows="4" required></textarea>
-          </div>
-
-          <div class="form-row align-items-end">
-            <div class="form-group col-5">
-              <label for="start_date" class="col-form-label">Start Date:*</label>
-              <input type="date" class="form-control" name="start_date" id="start_date" required>
-            </div>
-
-            <div class="form-group col-2 text-center">
-              <div class="custom-control custom-switch mt-4">
-                <label class="custom-control-label" for="toggleEndDate">End</label>
-                <input type="checkbox" class="custom-control-input" id="toggleEndDate">
-
-              </div>
-            </div>
-
-            <div class="form-group col-5" id="endDateGroup" style="display: none;">
-              <label for="end_date" class="col-form-label">End Date:</label>
-              <input type="date" class="form-control" name="end_date" id="end_date">
-            </div>
-          </div>
-          <p>Notification settings</p>
-
-          <div class="form-row col-12">
-            <div class="form-group col-6" id="parents">
-              <div class="custom-control custom-switch">
-                <label class="custom-control-label" for="toggleParents">Parents</label>
-                <input type="checkbox" class="custom-control-input" id="toggleParents">
-              </div>
-              <div>
-                <label class="custom-control-label" for="parentEmail">Send Email</label>
-                <input type="checkbox" class="custom-control-input" id="parentEmail">
-              </div>
-              <div>
-                <label class="custom-control-label" for="parentWhatsApp">Send to Whatsapp</label>
-                <input type="checkbox" class="custom-control-input" id="parentWhatsApp">
-              </div>
-              <div>
-                <label class="custom-control-label" for="parentSMS">Send to SMS</label>
-                <input type="checkbox" class="custom-control-input" id="parentSMS">
-              </div>
-            </div>
-
-            <div class="form-group col-6" id="staffs">
-              <label class="custom-control-label" for="Staffs">Staffs</label>
-              <input type="checkbox" class="custom-control-input" id="staffs">
-              <div>
-                <label class="custom-control-label" for="parentEmail">Send Email</label>
-                <input type="checkbox" class="custom-control-input" id="parentEmail">
-              </div>
-              <div>
-                <label class="custom-control-label" for="parentWhatsApp">Send to Whatsapp</label>
-                <input type="checkbox" class="custom-control-input" id="parentWhatsApp">
-              </div>
-              <div>
-                <label class="custom-control-label" for="staffsMS">Send to SMS</label>
-                <input type="checkbox" class="custom-control-input" id="staffsMS">
-              </div>
-
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary w-100" id="saveBtn">Add Notice</button>
-      </div>
-    </div>
-  </div>
-</div>
