@@ -1,3 +1,141 @@
+<?php require_once '../settings.php'; ?>
+<?php
+
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Add new hostel
+    if (isset($_POST['add_hostel'])) {
+        $hostel_name = $_POST['hostel_name'];
+        $hostel_type = $_POST['hostel_type'];
+        $capacity = (int)$_POST['capacity'];
+        $current_students = (int)$_POST['current_students'];
+        $description = $_POST['description'];
+        $occupancy_percentage = ($capacity > 0) ? ($current_students / $capacity) * 100 : 0;
+
+        try {
+            $sql = "INSERT INTO hostels 
+                        (hostel_name, hostel_type, capacity, current_students, occupancy_percentage, description) 
+                    VALUES 
+                        (:hostel_name, :hostel_type, :capacity, :current_students, :occupancy_percentage, :description)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':hostel_name' => $hostel_name,
+                ':hostel_type' => $hostel_type,
+                ':capacity' => $capacity,
+                ':current_students' => $current_students,
+                ':occupancy_percentage' => $occupancy_percentage,
+                ':description' => $description
+            ]);
+            $success_msg = "Hostel added successfully!";
+        } catch (PDOException $e) {
+            $error_msg = "Add Error: " . $e->getMessage();
+        }
+    }
+
+    // Update hostel
+    if (isset($_POST['update_hostel'])) {
+        $id = (int)$_POST['hostel_id'];
+        $hostel_name = $_POST['hostel_name'];
+        $hostel_type = $_POST['hostel_type'];
+        $capacity = (int)$_POST['capacity'];
+        $current_students = (int)$_POST['current_students'];
+        $description = $_POST['description'];
+        $occupancy_percentage = ($capacity > 0) ? ($current_students / $capacity) * 100 : 0;
+
+        try {
+            $sql = "UPDATE hostels SET 
+                        hostel_name = :hostel_name,
+                        hostel_type = :hostel_type,
+                        capacity = :capacity,
+                        current_students = :current_students,
+                        occupancy_percentage = :occupancy_percentage,
+                        description = :description
+                    WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':hostel_name' => $hostel_name,
+                ':hostel_type' => $hostel_type,
+                ':capacity' => $capacity,
+                ':current_students' => $current_students,
+                ':occupancy_percentage' => $occupancy_percentage,
+                ':description' => $description,
+                ':id' => $id
+            ]);
+            $success_msg = "Hostel updated successfully!";
+        } catch (PDOException $e) {
+            $error_msg = "Update Error: " . $e->getMessage();
+        }
+    }
+}
+
+// Handle delete action
+if (isset($_GET['delete_id'])) {
+    $id = (int)$_GET['delete_id'];
+
+    try {
+        $sql = "DELETE FROM hostels WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $success_msg = "Hostel deleted successfully!";
+    } catch (PDOException $e) {
+        $error_msg = "Delete Error: " . $e->getMessage();
+    }
+
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Get hostel statistics
+$total_hostels = 0;
+$total_boys = 0;
+$total_girls = 0;
+
+try {
+    $sql = "SELECT 
+                COUNT(*) AS total_hostels,
+                SUM(CASE WHEN hostel_type = 'Boys' THEN current_students ELSE 0 END) AS total_boys,
+                SUM(CASE WHEN hostel_type = 'Girls' THEN current_students ELSE 0 END) AS total_girls
+            FROM hostels";
+    $stmt = $pdo->query($sql);
+    $stats = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($stats) {
+        $total_hostels = $stats['total_hostels'];
+        $total_boys = $stats['total_boys'];
+        $total_girls = $stats['total_girls'];
+    }
+} catch (PDOException $e) {
+    $error_msg = "Stats Error: " . $e->getMessage();
+}
+
+// Get all hostels
+$hostels = [];
+
+try {
+    $sql = "SELECT * FROM hostels ORDER BY hostel_name";
+    $stmt = $pdo->query($sql);
+    $hostels = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $error_msg = "Fetch Error: " . $e->getMessage();
+}
+
+// Get hostel data for editing
+$edit_hostel = null;
+if (isset($_GET['edit_id'])) {
+    $id = (int)$_GET['edit_id'];
+
+    try {
+        $sql = "SELECT * FROM hostels WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $edit_hostel = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        $error_msg = "Edit Fetch Error: " . $e->getMessage();
+    }
+}
+?>
+
+
 <!doctype html>
 <html lang="en">
 
@@ -31,6 +169,25 @@
 
     .modal-shortcut .con-item:hover {
       transform: scale(1.05);
+    }
+    
+    .progress {
+      height: 10px;
+    }
+    
+    .capacity-info {
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+    
+    .badge-boys {
+      background-color: #467fd0;
+      color: white;
+    }
+    
+    .badge-girls {
+      background-color: #d63384;
+      color: white;
     }
   </style>
 </head>
@@ -118,8 +275,6 @@
             </a>
           </li>
 
-
-
           <li class="nav-item">
             <a class="nav-link" href="invoices.php">
               <i class="fe fe-users fe-16"></i>
@@ -163,8 +318,6 @@
                 </i>
               </a>
             </li>
-
-
           </ul>
 
           <!-- Extras -->
@@ -214,12 +367,7 @@
                 </i>
               </a>
             </li>
-
-
           </ul>
-
-          <!-- Extra -->
-
       </nav>
     </aside>
     <main role="main" class="main-content">
@@ -227,38 +375,129 @@
         <div class="row justify-content-center">
           <div class="col-12">
             <div class="row">
-              <!-- Small table -->
+              <!-- Summary Cards -->
+              <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-8">
+                        <h4 class="mb-0"><?= $total_hostels ?></h4>
+                        <p class="mb-0 text-muted">Total Hostels</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <span class="fe fe-home fe-24 text-primary"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-8">
+                        <h4 class="mb-0"><?= $total_boys ?></h4>
+                        <p class="mb-0 text-muted">Boys in Hostels</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <span class="fe fe-users fe-24 text-info"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-8">
+                        <h4 class="mb-0"><?= $total_girls ?></h4>
+                        <p class="mb-0 text-muted">Girls in Hostels</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <span class="fe fe-users fe-24 text-danger"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Hostel Table -->
               <div class="col-md-12 my-4">
                 <div class="row align-items-center my-3">
                   <div class="col">
                     <h3 class="page-title">Hostel</h3>
                   </div>
                   <div class="col-auto">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventModal"><span
-                        class="fe fe-plus fe-16 mr-3"></span>New</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#hostelModal">
+                      <span class="fe fe-plus fe-16 mr-3"></span>New Hostel
+                    </button>
                   </div>
                 </div>
+                
+                <?php if (isset($success_msg)): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <?= $success_msg ?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <?php endif; ?>
+                
+                <?php if (isset($error_msg)): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <?= $error_msg ?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <?php endif; ?>
+                
                 <div class="card shadow">
                   <div class="card-body">
-                    <!-- table -->
-                    <table class="table table-borderless table-hover">
+                    <table class="table table-borderless table-hover" id="hostelTable">
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Hostel</th>
+                          <th>Hostel Name</th>
                           <th>Type</th>
+                          <th>Capacity</th>
+                          <th>Occupancy</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- Row 1 -->
+                        <?php foreach ($hostels as $index => $hostel): ?>
                         <tr>
-                          <td>1</td>
+                          <td><?= $index + 1 ?></td>
                           <td>
-                            <p class="mb-0 text-muted"><strong>Liberty Hostel</strong></p>
+                            <p class="mb-0 text-muted"><strong><?= htmlspecialchars($hostel['hostel_name']) ?></strong></p>
+                            <small class="text-muted"><?= htmlspecialchars($hostel['description']) ?></small>
                           </td>
                           <td>
-                            <p class="mb-0 text-muted">Boys</p>
+                            <?php if ($hostel['hostel_type'] == 'Boys'): ?>
+                              <span class="badge badge-boys">Boys</span>
+                            <?php else: ?>
+                              <span class="badge badge-girls">Girls</span>
+                            <?php endif; ?>
+                          </td>
+                          <td>
+                            <?= $hostel['current_students'] ?> / <?= $hostel['capacity'] ?>
+                            <div class="progress mt-1">
+                              <div class="progress-bar 
+                                <?= ($hostel['occupancy_percentage'] > 90) ? 'bg-danger' : 
+                                   (($hostel['occupancy_percentage'] > 70) ? 'bg-warning' : 'bg-success') ?>" 
+                                role="progressbar" style="width: <?= $hostel['occupancy_percentage'] ?>%" 
+                                aria-valuenow="<?= $hostel['occupancy_percentage'] ?>" 
+                                aria-valuemin="0" aria-valuemax="100">
+                              </div>
+                            </div>
+                            <small class="capacity-info"><?= round($hostel['occupancy_percentage'], 2) ?>% occupied</small>
+                          </td>
+                          <td>
+                            <?= $hostel['current_students'] ?>
                           </td>
                           <td>
                             <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
@@ -266,61 +505,83 @@
                               <span class="text-muted sr-only">Action</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                              <a class="dropdown-item" href="#">Edit</a>
-                              <a class="dropdown-item" href="#">Remove</a>
+                              <a class="dropdown-item" href="?edit_id=<?= $hostel['id'] ?>">Edit</a>
+                              <a class="dropdown-item delete-hostel" href="?delete_id=<?= $hostel['id'] ?>" onclick="return confirm('Are you sure you want to delete this hostel?')">Remove</a>
                             </div>
                           </td>
                         </tr>
-                        <!-- Row 2 -->
-                        <tr>
-                          <td>2</td>
-                          <td>
-                            <p class="mb-0 text-muted"><strong>Heritage Hostel</strong></p>
-                          </td>
-                          <td>
-                            <p class="mb-0 text-muted">Girls</p>
-                          </td>
-                          <td>
-                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <span class="text-muted sr-only">Action</span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                              <a class="dropdown-item" href="#">Edit</a>
-                              <a class="dropdown-item" href="#">Remove</a>
-                            </div>
-                          </td>
-                        </tr>
-
-                        <!-- Row 3 -->
-                        <tr>
-                          <td>3</td>
-                          <td>
-                            <p class="mb-0 text-muted"><strong>Pioneer Hostel</strong></p>
-                          </td>
-                          <td>
-                            <p class="mb-0 text-muted">Boys</p>
-                          </td>
-                          <td>
-                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <span class="text-muted sr-only">Action</span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                              <a class="dropdown-item" href="#">Edit</a>
-                              <a class="dropdown-item" href="#">Remove</a>
-                            </div>
-                          </td>
-                        </tr>
+                        <?php endforeach; ?>
                       </tbody>
                     </table>
                   </div>
                 </div>
-              </div> <!-- customized table -->
-            </div> <!-- end section -->
-          </div> <!-- .col-12 -->
-        </div> <!-- .row -->
-      </div> <!-- .container-fluid -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Add/Edit Hostel Modal -->
+      <div class="modal fade" id="hostelModal" tabindex="-1" role="dialog" aria-labelledby="hostelModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="hostelModalLabel"><?= isset($edit_hostel) ? 'Edit' : 'Add New' ?> Hostel</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST" action="">
+              <div class="modal-body">
+                <?php if (isset($edit_hostel)): ?>
+                <input type="hidden" name="hostel_id" value="<?= $edit_hostel['id'] ?>">
+                <?php endif; ?>
+                
+                <div class="form-group">
+                  <label for="hostel_name">Hostel Name</label>
+                  <input type="text" class="form-control" id="hostel_name" name="hostel_name" 
+                    value="<?= isset($edit_hostel) ? htmlspecialchars($edit_hostel['hostel_name']) : '' ?>" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="hostel_type">Hostel Type</label>
+                  <select class="form-control" id="hostel_type" name="hostel_type" required>
+                    <option value="">Select Type</option>
+                    <option value="Boys" <?= (isset($edit_hostel) && $edit_hostel['hostel_type'] == 'Boys') ? 'selected' : '' ?>>Boys</option>
+                    <option value="Girls" <?= (isset($edit_hostel) && $edit_hostel['hostel_type'] == 'Girls') ? 'selected' : '' ?>>Girls</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="capacity">Total Capacity</label>
+                  <input type="number" class="form-control" id="capacity" name="capacity" 
+                    value="<?= isset($edit_hostel) ? $edit_hostel['capacity'] : '' ?>" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="current_students">Current Students</label>
+                  <input type="number" class="form-control" id="current_students" name="current_students" 
+                    value="<?= isset($edit_hostel) ? $edit_hostel['current_students'] : '' ?>" min="0" required>
+                  <small class="form-text text-muted">Number of students currently in this hostel</small>
+                </div>
+                
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea class="form-control" id="description" name="description" rows="2"><?= isset($edit_hostel) ? htmlspecialchars($edit_hostel['description']) : '' ?></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="<?= isset($edit_hostel) ? 'update_hostel' : 'add_hostel' ?>" class="btn btn-primary">
+                  <?= isset($edit_hostel) ? 'Update' : 'Save' ?> Hostel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Existing Notification Modal -->
       <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
@@ -345,6 +606,8 @@
           </div>
         </div>
       </div>
+      
+      <!-- Existing Shortcut Modal -->
       <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -358,12 +621,10 @@
             <div class="modal-body px-5">
               <div class="row align-items-center">
                 <div class="col-6 text-center">
-                  <!-- <a href="#" style="text-decoration: none;"> -->
                   <div class="squircle bg-success justify-content-center">
                     <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                   </div>
                   <p class="text-success">Dashboard</p>
-                  <!-- </a> -->
                 </div>
                 <div class="col-6 text-center con-item">
                   <a href="../academics/" style="text-decoration: none;">
@@ -432,8 +693,10 @@
           </div>
         </div>
       </div>
-    </main> <!-- main -->
-  </div> <!-- .wrapper -->
+    </main>
+  </div>
+  
+  <!-- Existing JavaScript Includes -->
   <script src="../js/jquery.min.js"></script>
   <script src="../js/popper.min.js"></script>
   <script src="../js/moment.min.js"></script>
@@ -446,12 +709,53 @@
   <script src='../js/jquery.dataTables.min.js'></script>
   <script src='../js/dataTables.bootstrap4.min.js'></script>
   <script>
-    $('#dataTable-1').DataTable({
-      autoWidth: true,
-      "lengthMenu": [
-        [16, 32, 64, -1],
-        [16, 32, 64, "All"]
-      ]
+    $(document).ready(function() {
+      // Initialize DataTable
+      $('#hostelTable').DataTable({
+        autoWidth: true,
+        "lengthMenu": [
+          [10, 25, 50, -1],
+          [10, 25, 50, "All"]
+        ]
+      });
+      
+      // Validate current students doesn't exceed capacity
+      $('#current_students').on('change', function() {
+        var capacity = parseInt($('#capacity').val());
+        var current = parseInt($(this).val());
+        
+        if (current > capacity) {
+          alert('Current students cannot exceed capacity!');
+          $(this).val(capacity);
+        }
+      });
+      
+      // Capacity must be at least 1
+      $('#capacity').on('change', function() {
+        if (parseInt($(this).val()) < 1) {
+          alert('Capacity must be at least 1');
+          $(this).val(1);
+        }
+      });
+      
+      // Auto-calculate percentage when values change
+      $('#capacity, #current_students').on('input', function() {
+        var capacity = parseInt($('#capacity').val()) || 0;
+        var current = parseInt($('#current_students').val()) || 0;
+        
+        if (capacity > 0 && current >= 0) {
+          var percentage = (current / capacity) * 100;
+          if (percentage > 100) {
+            $('#current_students').val(capacity);
+            percentage = 100;
+          }
+        }
+      });
+      
+      // Auto-open modal if in edit mode
+      <?php if (isset($edit_hostel)): ?>
+        $('#hostelModal').modal('show');
+      <?php endif; ?>
     });
   </script>
   <script src="../js/apps.js"></script>
@@ -467,5 +771,4 @@
     gtag('config', 'UA-56159088-1');
   </script>
 </body>
-
 </html>

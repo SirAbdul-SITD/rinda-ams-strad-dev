@@ -22,9 +22,30 @@
   <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
   <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
   <style>
+.card {
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1) !important;
+}
+
+.card-title {
+    font-weight: 800;
+    margin-bottom: 1.25rem;
+    color: #343a40;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+/* 
     .card {
       border-radius: 8px;
-    }
+    } */
 
     .modal-shortcut .con-item {
       transition: transform 0.2s ease, color 0.2s ease;
@@ -292,10 +313,12 @@
                 </div>
 
                 <div class="row align-items-center my-3">
-    <div class="col-md-6 mb-6">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row align-items-center mb-6">
+   
+    <div style="height:280px" class="col-md-6 mb-4">
+        <div class="card shadow h-100"> 
+            <div class="card-body d-flex flex-column"> 
+                <h5 class="card-title">Expenses Summary</h5>
+                <div class="row flex-grow-1 align-items-center"> 
                     <div class="col">
                         <?php
                         // Get total expenses
@@ -317,70 +340,82 @@
                         // Calculate percentage (avoid division by zero)
                         $percentage = ($totalExpenses > 0) ? round(($monthlyExpenses / $totalExpenses) * 100, 2) : 0;
                         ?>
-                        <span class="badge badge-pill badge-success" style="background-color: #93bb84">
-                            <?= $percentage ?>%
-                        </span>
-                        <p class="small text-muted mb-0">Total paid amount</p>
-                        <p class="h2 mb-0">
-                            ₦<?= number_format($totalExpenses, 2) ?>
-                        </p>
-                    </div>
-                    <div class="col-auto">
-                        <br>
-                        <p class="small text-muted mb-0">Expenses Count</p>
-                        <p class="h2 mb-0">
-                            <?php
-                            $query = "SELECT COUNT(*) as count FROM expenses";
-                            $stmt = $pdo->prepare($query);
-                            $stmt->execute();
-                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                            echo $result['count'];
-                            ?>
-                        </p>
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge badge-pill badge-success" style="background-color: #93bb84">
+                                <?= $percentage ?>%
+                            </span>
+                            <span class="ml-2 small text-muted">This Month vs Total</span>
+                        </div>
+                        <div class="mb-3">
+                            <p class="small text-muted mb-0">Total paid amount</p>
+                            <h1 class="">
+                                ₦<?= number_format($totalExpenses, 2) ?>
+  </h1>
+                        </div>
+                        <div>
+                            <p class="small text-muted mb-0">Expenses Count</p>
+                            <h1 class="">
+                                <?php
+                                $query = "SELECT COUNT(*) as count FROM expenses";
+                                $stmt = $pdo->prepare($query);
+                                $stmt->execute();
+                                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                                echo $result['count'];
+                                ?>
+                            </h1>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6 mb-6">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col">
+    <!-- Monthly Expenses Chart Card (Same height as summary card) -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100"> <!-- h-100 ensures full height -->
+            <div class="card-body d-flex flex-column"> <!-- flex-column for proper alignment -->
+                <h5 class="card-title">Monthly Expenses Overview</h5>
+                <div class="row flex-grow-1 align-items-center"> <!-- flex-grow-1 fills remaining space -->
+                    <div class="col-md-8">
+                        <canvas id="monthlyExpensesChart" height="200"></canvas>
+                    </div>
+                    <div class="col-md-4">
                         <?php
                         // Calculate percentage of monthly vs total
                         $monthlyPercentage = ($totalExpenses > 0) ? round(($monthlyExpenses / $totalExpenses) * 100, 2) : 0;
+                        
+                        // Get monthly expenses count
+                        $query = "SELECT COUNT(*) as count FROM expenses WHERE MONTH(date) = :month AND YEAR(date) = :year";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->bindParam(':month', $currentMonth, PDO::PARAM_INT);
+                        $stmt->bindParam(':year', $currentYear, PDO::PARAM_INT);
+                        $stmt->execute();
+                        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $monthlyCount = $result['count'];
                         ?>
-                        <span class="badge badge-pill badge-success" style="background-color: #FB1010">
-                            <?= $monthlyPercentage ?>%
-                        </span>
-                        <p class="small text-muted mb-0">This Month's Expenses</p>
-                        <p class="h2 mb-0">
-                            ₦<?= number_format($monthlyExpenses, 2) ?>
-                        </p>
-                    </div>
-                    <div class="col-auto">
-                        <br>
-                        <p class="small text-muted mb-0">This Month's Count</p>
-                        <p class="h2 mb-0">
-                            <?php
-                            $query = "SELECT COUNT(*) as count FROM expenses WHERE MONTH(date) = :month AND YEAR(date) = :year";
-                            $stmt = $pdo->prepare($query);
-                            $stmt->bindParam(':month', $currentMonth, PDO::PARAM_INT);
-                            $stmt->bindParam(':year', $currentYear, PDO::PARAM_INT);
-                            $stmt->execute();
-                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                            echo $result['count'];
-                            ?>
-                        </p>
+                        <div class="text-center">
+                            <span class="badge badge-pill badge-danger mb-2" style="background-color: #FB1010; font-size: 1rem;">
+                                <?= $monthlyPercentage ?>%
+                            </span>
+                            <div class="mb-3">
+                                <p class="small text-muted mb-0">This Month</p>
+                                <p class="h4 mb-0">
+                                    ₦<?= number_format($monthlyExpenses, 2) ?>
+                                </p>
+                            </div>
+                            <div>
+                                <p class="small text-muted mb-0">Transactions</p>
+                                <p class="h4 mb-0">
+                                    <?= $monthlyCount ?>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
                 <div class="row">
                   <!-- Striped rows -->
                   <div class="col-md-12 my-4">
@@ -663,6 +698,78 @@
       ]
     });
   </script>
+  <!-- Add Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Fetch data for the chart (you might want to get this via AJAX for dynamic data)
+<?php
+// Get monthly expenses data for the chart (last 6 months)
+$chartQuery = "SELECT 
+    MONTH(date) as month, 
+    YEAR(date) as year, 
+    SUM(amount) as total 
+    FROM expenses 
+    WHERE date >= DATE_SUB(CURRENT_DATE(), INTERVAL 5 MONTH) 
+    GROUP BY YEAR(date), MONTH(date) 
+    ORDER BY year, month";
+$chartStmt = $pdo->query($chartQuery);
+$chartData = $chartStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Prepare labels and data for the chart
+$labels = [];
+$data = [];
+foreach ($chartData as $row) {
+    $monthName = date('M', mktime(0, 0, 0, $row['month'], 1));
+    $labels[] = $monthName . ' ' . $row['year'];
+    $data[] = $row['total'];
+}
+?>
+
+// Create the chart
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('monthlyExpensesChart').getContext('2d');
+    const monthlyExpensesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: <?= json_encode($labels) ?>,
+            datasets: [{
+                label: 'Monthly Expenses',
+                data: <?= json_encode($data) ?>,
+                backgroundColor: 'rgba(251, 16, 16, 0.7)',
+                borderColor: 'rgba(251, 16, 16, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₦' + value.toLocaleString();
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return '₦' + context.raw.toLocaleString();
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
   <script src="../js/apps.js"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
