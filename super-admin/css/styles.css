@@ -1,16 +1,21 @@
-body {
+/* body {
     font-family: 'Overpass', sans-serif;
     background-color: #f5f7fb;
   }
-  
+   */
   .calendar-container {
-    background-color: white;
+    /* background-color: white; */
     border-radius: 8px;
     box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
     padding: 20px;
     margin-bottom: 20px;
   }
-  
+  .day-number.today-circle {
+    border: 1px solid #4e73df;
+    color: #4e73df;
+    background-color: transparent;
+ 
+  }
   .calendar-header {
     display: flex;
     justify-content: space-between;

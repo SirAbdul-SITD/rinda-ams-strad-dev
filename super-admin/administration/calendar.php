@@ -231,57 +231,84 @@ $weekEvents = getEvents($pdo, $firstDayOfWeek->format('Y-m-d'), $lastDayOfWeek->
                 
                 <!-- Today's Calendar View -->
                 <div class="calendar-container">
-                  <div class="calendar-header">
-                    <h3 class="calendar-title">TODAY - <?= $currentDate->format('F j, Y') ?></h3>
-                  </div>
-                  
-                  <div class="calendar-week">
-                    <div class="calendar-day-header">Sun</div>
-                    <div class="calendar-day-header">Mon</div>
-                    <div class="calendar-day-header">Tue</div>
-                    <div class="calendar-day-header">Wed</div>
-                    <div class="calendar-day-header">Thu</div>
-                    <div class="calendar-day-header">Fri</div>
-                    <div class="calendar-day-header">Sat</div>
-                  </div>
-                  
-                  <div class="calendar-days">
-                    <?php
-                    // Display current week
-                    $weekStart = clone $firstDayOfWeek;
-                    for ($i = 0; $i < 7; $i++) {
-                        $day = clone $weekStart;
-                        $day->add(new DateInterval("P{$i}D"));
-                        $dayNumber = $day->format('j');
-                        $isToday = $day->format('Y-m-d') === $currentDate->format('Y-m-d');
-                        
-                        // Get events for this day
-                        $dayEvents = array_filter($todayEvents, function($event) use ($day) {
-                            $eventDate = new DateTime($event['start_date']);
-                            return $eventDate->format('Y-m-d') === $day->format('Y-m-d');
-                        });
-                        
-                        echo '<div class="calendar-day' . ($isToday ? ' today' : '') . '">';
-                        echo '<div class="day-number">' . $dayNumber . '</div>';
-                        
-                        // Display events for this day
-                        foreach ($dayEvents as $event) {
-                            $eventClass = 'event-' . $event['event_type'];
-                            echo '<div class="event-item ' . $eventClass . '" data-id="' . $event['id'] . '">';
-                            echo htmlspecialchars($event['title']);
-                            echo '</div>';
-                        }
-                        
-                        // Show event count badge if there are events
-                        if (count($dayEvents) > 0) {
-                            echo '<div class="event-count-badge">' . count($dayEvents) . '</div>';
-                        }
-                        
-                        echo '</div>';
-                    }
-                    ?>
-                  </div>
-                </div>
+  <div class="calendar-header">
+    <h3 class="calendar-title">Week <?= $currentWeek ?> (<?= $firstDayOfWeek->format('M j') ?> - <?= $lastDayOfWeek->modify('+13 days')->format('M j, Y') ?>)</h3>
+  </div>
+  
+  <div class="calendar-week">
+    <div class="calendar-day-header">Mon</div>
+    <div class="calendar-day-header">Tue</div>
+    <div class="calendar-day-header">Wed</div>
+    <div class="calendar-day-header">Thu</div>
+    <div class="calendar-day-header">Fri</div>
+    <div class="calendar-day-header">Sat</div>
+    <div class="calendar-day-header">Sun</div>
+  </div>
+  
+  <div class="calendar-days">
+    <?php
+    // Reset the lastDayOfWeek after modifying it for the title
+    $lastDayOfWeek = clone $firstDayOfWeek;
+    $lastDayOfWeek->modify('+13 days');
+    
+    // Get all events for this two-week period
+    $periodEvents = getEvents($pdo, $firstDayOfWeek->format('Y-m-d'), $lastDayOfWeek->format('Y-m-d'));
+    
+    // Display 14 days (2 weeks)
+    for ($i = 0; $i < 14; $i++) {
+        $day = clone $firstDayOfWeek;
+        $day->add(new DateInterval("P{$i}D"));
+        $dayNumber = $day->format('j');
+        $isToday = $day->format('Y-m-d') === $currentDate->format('Y-m-d');
+        $isPast = $day < $currentDate && !$isToday;
+        
+        // Get events for this day
+        $dayEvents = array_filter($periodEvents, function($event) use ($day, $currentDate, $isPast) {
+            $eventDate = new DateTime($event['start_date']);
+            $isSameDay = $eventDate->format('Y-m-d') === $day->format('Y-m-d');
+            
+            // For past days, only show if it's an all-day event
+            if ($isPast) {
+                return $isSameDay && $event['all_day'] == 1;
+            }
+            // For current/future days, show all events
+            return $isSameDay;
+        });
+        
+        echo '<div class="calendar-day' . ($isToday ? ' today' : '') . ($isPast ? ' past-day' : '') . '">';
+        echo '<div class="day-number">' . $dayNumber . '</div>';
+        
+        // Display events for this day
+        foreach ($dayEvents as $event) {
+            $eventClass = 'event-' . $event['event_type'];
+            $isUpcoming = new DateTime($event['start_date']) > $currentDate;
+            
+            echo '<div class="event-item ' . $eventClass . ($isUpcoming ? ' upcoming-event' : '') . '" data-id="' . $event['id'] . '">';
+            echo htmlspecialchars($event['title']);
+            
+            // Add icon for upcoming events
+            if ($isUpcoming) {
+                echo ' <i class="fe fe-arrow-up-circle" title="Upcoming Event"></i>';
+            }
+            
+            // Add all-day indicator if needed
+            if ($event['all_day'] == 1) {
+                echo ' <i class="fe fe-clock" title="All Day Event"></i>';
+            }
+            
+            echo '</div>';
+        }
+        
+        // Show event count badge if there are events
+        if (count($dayEvents) > 0) {
+            echo '<div class="event-count-badge">' . count($dayEvents) . '</div>';
+        }
+        
+        echo '</div>';
+    }
+    ?>
+  </div>
+</div>
                 
                 <!-- All Events Section -->
                 <div class="calendar-container">
@@ -347,22 +374,31 @@ $weekEvents = getEvents($pdo, $firstDayOfWeek->format('Y-m-d'), $lastDayOfWeek->
                 
                 <!-- Week View -->
                 <div class="calendar-container">
-                  <div class="calendar-header">
-                    <h3 class="calendar-title">Week <?= $currentWeek ?> (<?= $firstDayOfWeek->format('M j') ?> - <?= $lastDayOfWeek->format('M j, Y') ?>)</h3>
-                  </div>
-                  
-                  <div class="calendar-week">
-                    <?php
-                    // Display week days with day numbers
-                    $weekStart = clone $firstDayOfWeek;
-                    for ($i = 0; $i < 7; $i++) {
-                        $day = clone $weekStart;
-                        $day->add(new DateInterval("P{$i}D"));
-                        echo '<div class="calendar-day-header">' . $day->format('D') . '<br>' . $day->format('j') . '</div>';
-                    }
-                    ?>
-                  </div>
-                </div>
+  <div class="calendar-header">
+    <h3 class="calendar-title">Week <?= $currentWeek ?> (<?= $firstDayOfWeek->format('M j') ?> - <?= $lastDayOfWeek->format('M j, Y') ?>)</h3>
+  </div>
+  
+  <div class="calendar-week">
+    <?php
+    // Get today's date for comparison
+    $today = new DateTime();
+    $todayFormatted = $today->format('Y-m-d');
+    
+    // Display week days with day numbers
+    $weekStart = clone $firstDayOfWeek;
+    for ($i = 0; $i < 30; $i++) {
+        $day = clone $weekStart;
+        $day->add(new DateInterval("P{$i}D"));
+        $isToday = ($day->format('Y-m-d') === $todayFormatted);
+        
+        echo '<div class="calendar-day-header' . ($isToday ? ' today' : '') . '">';
+        echo '<div class="day-name">' . $day->format('D') . '</div>';
+        echo '<div class="day-number' . ($isToday ? ' today-circle' : '') . '">' . $day->format('j') . '</div>';
+        echo '</div>';
+    }
+    ?>
+  </div>
+</div>
               </div>
             </div>
           </div>
