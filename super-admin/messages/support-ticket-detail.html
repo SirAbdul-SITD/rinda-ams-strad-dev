@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+   <link rel="icon" href="../assets/images/logo.jpg">
     <title>Rinda AMS - Rinda AMS</title>
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="../css/simplebar.css">
@@ -25,8 +25,60 @@
     <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
     <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
   <style>
-       .card {
+        .card {
       border-radius: 8px;
+    }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      background-color: rgba(0, 10, 5, 0.8);
+      /* Background color with opacity */
+      color: #fff;
+    }
+
+    .popup.success {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .popup.error {
+      background-color: #F44336;
+      color: white;
+    }
+
+    .popup i {
+      margin-right: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .desktop {
+        display: none;
+        min-width: 720px;
+      }
+    }
+
+
+    @media (min-width: 768px) {
+      .mobile {
+        display: none;
+        min-width: 720px;
+      }
     }
   </style>
 </head>

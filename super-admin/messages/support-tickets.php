@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="favicon.ico">
+  <link rel="icon" href="../assets/images/logo.jpg">
   <title>Rinda AMS - Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
@@ -24,6 +24,58 @@
     .card {
       border-radius: 8px;
     }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      background-color: rgba(0, 10, 5, 0.8);
+      /* Background color with opacity */
+      color: #fff;
+    }
+
+    .popup.success {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .popup.error {
+      background-color: #F44336;
+      color: white;
+    }
+
+    .popup i {
+      margin-right: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .desktop {
+        display: none;
+        min-width: 720px;
+      }
+    }
+
+
+    @media (min-width: 768px) {
+      .mobile {
+        display: none;
+        min-width: 720px;
+      }
+    }
   </style>
 </head>
 
@@ -34,7 +86,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -54,9 +107,15 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                  <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                  <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -69,8 +128,8 @@
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -84,7 +143,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -104,10 +164,12 @@
                 <a class="nav-link pl-3" href="./index.html"><span class="ml-1 item-text">Default</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./dashboard-analytics.html"><span class="ml-1 item-text">Analytics</span></a>
+                <a class="nav-link pl-3" href="./dashboard-analytics.html"><span
+                    class="ml-1 item-text">Analytics</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./dashboard-sales.html"><span class="ml-1 item-text">E-commerce</span></a>
+                <a class="nav-link pl-3" href="./dashboard-sales.html"><span
+                    class="ml-1 item-text">E-commerce</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./dashboard-saas.html"><span class="ml-1 item-text">Saas
@@ -143,7 +205,8 @@
                 <a class="nav-link pl-3" href="./ui-buttons.html"><span class="ml-1 item-text">Buttons</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./ui-notification.html"><span class="ml-1 item-text">Notifications</span></a>
+                <a class="nav-link pl-3" href="./ui-notification.html"><span
+                    class="ml-1 item-text">Notifications</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./ui-modals.html"><span class="ml-1 item-text">Modals</span></a>
@@ -179,7 +242,8 @@
                     Elements</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./form_validation.html"><span class="ml-1 item-text">Validation</span></a>
+                <a class="nav-link pl-3" href="./form_validation.html"><span
+                    class="ml-1 item-text">Validation</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./form_wizard.html"><span class="ml-1 item-text">Wizard</span></a>
@@ -224,7 +288,8 @@
                 <a class="nav-link pl-3" href="./chart-chartjs.html"><span class="ml-1 item-text">Chartjs</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link pl-3" href="./chart-apexcharts.html"><span class="ml-1 item-text">ApexCharts</span></a>
+                <a class="nav-link pl-3" href="./chart-apexcharts.html"><span
+                    class="ml-1 item-text">ApexCharts</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link pl-3" href="./datamaps.html"><span class="ml-1 item-text">Datamaps</span></a>
@@ -374,7 +439,8 @@
           </li>
         </ul>
         <div class="btn-box w-100 mt-4 mb-1">
-          <a href="https://themeforest.net/item/tinydash-bootstrap-html-admin-dashboard-template/27511269" target="_blank" class="btn mb-2 btn-primary btn-lg btn-block">
+          <a href="https://themeforest.net/item/tinydash-bootstrap-html-admin-dashboard-template/27511269"
+            target="_blank" class="btn mb-2 btn-primary btn-lg btn-block">
             <i class="fe fe-shopping-cart fe-12 mx-2"></i><span class="small">Buy now</span>
           </a>
         </div>
@@ -402,7 +468,8 @@
                   </div>
                   <div class="col-3">
                     <div class="progress" style="height: 4px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
                 </div>
@@ -416,7 +483,8 @@
                   </div>
                   <div class="col-3">
                     <div class="progress" style="height: 4px;">
-                      <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="75"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
                 </div>
@@ -430,7 +498,8 @@
                   </div>
                   <div class="col-3">
                     <div class="progress" style="height: 4px;">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
                 </div>
@@ -444,7 +513,8 @@
                   </div>
                   <div class="col-3">
                     <div class="progress" style="height: 4px;">
-                      <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0"
+                        aria-valuemax="100"></div>
                     </div>
                   </div>
                 </div>
@@ -454,16 +524,20 @@
               <div class="col-md">
                 <ul class="nav nav-pills justify-content-start">
                   <li class="nav-item">
-                    <a class="nav-link active bg-transparent pr-2 pl-0 text-primary" href="#">All <span class="badge badge-pill bg-primary text-white ml-2">164</span></a>
+                    <a class="nav-link active bg-transparent pr-2 pl-0 text-primary" href="#">All <span
+                        class="badge badge-pill bg-primary text-white ml-2">164</span></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-muted px-2" href="#">Pending <span class="badge badge-pill bg-white border text-muted ml-2">64</span></a>
+                    <a class="nav-link text-muted px-2" href="#">Pending <span
+                        class="badge badge-pill bg-white border text-muted ml-2">64</span></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-muted px-2" href="#">Processing <span class="badge badge-pill bg-white border text-muted ml-2">48</span></a>
+                    <a class="nav-link text-muted px-2" href="#">Processing <span
+                        class="badge badge-pill bg-white border text-muted ml-2">48</span></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-muted px-2" href="#">Completed <span class="badge badge-pill bg-white border text-muted ml-2">52</span></a>
+                    <a class="nav-link text-muted px-2" href="#">Completed <span
+                        class="badge badge-pill bg-white border text-muted ml-2">52</span></a>
                   </li>
                 </ul>
               </div>
@@ -476,7 +550,8 @@
                   <a href="#" class="text-muted"><i class="fe fe-x mx-1"></i></a>
                   <span class="text-muted">April 14, 2020 - May 13, 2020</span>
                 </span>
-                <button type="button" class="btn" data-toggle="modal" data-target=".modal-slide"><span class="fe fe-filter fe-16 text-muted"></span></button>
+                <button type="button" class="btn" data-toggle="modal" data-target=".modal-slide"><span
+                    class="fe fe-filter fe-16 text-muted"></span></button>
                 <button type="button" class="btn"><span class="fe fe-refresh-ccw fe-16 text-muted"></span></button>
               </div>
             </div>
@@ -504,11 +579,13 @@
                       <td>
                         <span class="small text-muted">Completed</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 9, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -526,11 +603,13 @@
                       <td>
                         <span class="small text-muted">Completed</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 2, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -548,11 +627,13 @@
                       <td>
                         <span class="small text-muted">Pending</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 9, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -570,11 +651,13 @@
                       <td>
                         <span class="small text-muted">Processing</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">Apr 27, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -592,11 +675,13 @@
                       <td>
                         <span class="small text-muted">Assigned</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 4, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -614,11 +699,13 @@
                       <td>
                         <span class="small text-muted">Processing</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 3, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -636,11 +723,13 @@
                       <td>
                         <span class="small text-muted">Completed</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 8, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -658,11 +747,13 @@
                       <td>
                         <span class="small text-muted">Assigned</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">Apr 30, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -680,11 +771,13 @@
                       <td>
                         <span class="small text-muted">Completed</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 6, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -702,11 +795,13 @@
                       <td>
                         <span class="small text-muted">Processing</span>
                         <div class="progress mt-2" style="height: 3px;">
-                          <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50"
+                            aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </td>
                       <td class="text-muted small">May 14, 2020</td>
-                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="text-muted sr-only">Action</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -732,7 +827,8 @@
           </div> <!-- .col-12 -->
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -760,7 +856,9 @@
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <!-- Menu Modal -->
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -771,30 +869,30 @@
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
-                  <a href="#" style="text-decoration: none;">
+                <div class="col-6 text-center con-item">
+                  <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../academics" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-secondary control-panel-text">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -807,30 +905,30 @@
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">

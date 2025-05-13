@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     // Get the POST data from the AJAX request
+    $type = $_POST['type'];
     $whom = $_POST['whom'];
     $sendOption = $_POST['sendOption'];
     $subject = $_POST['subject'];
@@ -29,18 +30,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Convert the recipient IDs into a format for SQL IN clause
             $recipient_ids_str = implode(',', $recipient_ids);
 
-            // Query the database to get the emails of the parents
-            if ($whom == '1') {
-                $sql = "SELECT email FROM parents WHERE id NOT IN ($recipient_ids_str)";
-                $result = $pdo->query($sql);
-                $emails = $result->fetchAll(PDO::FETCH_COLUMN);
-            } else {
-                $sql = "SELECT email FROM parents WHERE id IN ($recipient_ids_str)";
-                $result = $pdo->query($sql);
-                $emails = $result->fetchAll(PDO::FETCH_COLUMN);
+
+            // Define default table and condition
+            $table = 'parents';
+            $extra_condition = '';
+
+            switch ($type) {
+                case 'student':
+                    $table = 'students';
+                    break;
+                case 'teacher':
+                    $table = 'staffs';
+                    $extra_condition = ' AND designation_id = 1';
+                    break;
+                case 'staffs':
+                    $table = 'staffs';
+                    $extra_condition = ' AND designation_id != 1';
+                    break;
+                case 'parent':
+                default:
+                    $table = 'parents';
+                    break;
             }
-            
-           
+
+            // Query logic
+            if ($whom == '1') {
+                $sql = "SELECT email FROM {$table} WHERE id NOT IN ($recipient_ids_str) $extra_condition";
+            } else {
+                $sql = "SELECT email FROM {$table} WHERE id IN ($recipient_ids_str) $extra_condition";
+            }
+
+            $result = $pdo->query($sql);
+            $emails = $result->fetchAll(PDO::FETCH_COLUMN);
 
 
             // Loop through each email and send the message
@@ -106,9 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             ";
 
                 // Additional headers
-                $headers .= 'From: Grithall Academy <support@grithallacademy.com.ng>' . "\r\n";
+                $headers .= 'From: RINDA AMS <support@grithallacademy.com.ng>' . "\r\n";
                 $headers .= 'Reply-To: support@grithallacademy.com.ng' . "\r\n";
-                $headers .= "Content-Type: text/html; charset=UTF-8\r\n";;
+                $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+                ;
 
 
                 if (mail($email, $subject, $message, $headers)) {
