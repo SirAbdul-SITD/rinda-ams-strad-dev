@@ -105,7 +105,7 @@
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="index.php">
+            <a class="nav-link" href="dashboard.php">
               <i class="fe fe-codesandbox fe-16"></i>
               <span class="ml-3 item-text">Dashboard</span>
               </i>
@@ -127,7 +127,7 @@
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item">
-              <a class="nav-link" href="index.php">
+              <a class="nav-link" href="dashboard.php">
                 <i class="fe fe-globe fe-16"></i>
                 <span class="ml-3 item-text">Default</span>
                 </i>

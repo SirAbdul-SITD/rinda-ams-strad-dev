@@ -100,126 +100,95 @@
       </a>
     </div> -->
         <!-- Dashboard -->
-        <p class="text-muted nav-heading mt-4 mb-1">
+          <!-- Dashboard -->
+          <p class="text-muted nav-heading mt-4 mb-1">
           <span>Dashboard</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="index.php">
-              <i class="fe fe-codesandbox fe-16"></i>
+            <a class="nav-link" href="dashboard.php">
+              <i class="fe fe-home fe-16"></i>
               <span class="ml-3 item-text">Dashboard</span>
-              </i>
             </a>
           </li>
-          <!-- <li class="nav-item active">
-        <a class="nav-link text-primary" href="#">
-          <i class="fe fe-users fe-16"></i>
-          <span class="ml-3 item-text">Students</span>
-          </i>
-        </a>
-      </li> -->
+        </ul>
 
+        <!-- LMS -->
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="courses.php">
+              <i class="fe fe-book fe-16"></i>
+              <span class="ml-3 item-text">Courses</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="classes.php">
+              <i class="fe fe-users fe-16"></i>
+              <span class="ml-3 item-text">Classes</span>
+            </a>
+          </li> -->
+          <li class="nav-item active">
+            <a class="nav-link text-primary" href="nigerian-curriculum.php">
+              <i class="fe fe-layers fe-16"></i>
+              <span class="ml-3 item-text">curriculums</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="assignments.php">
+              <i class="fe fe-edit fe-16"></i>
+              <span class="ml-3 item-text">Assignments</span>
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="chat.php">
+              <i class="fe fe-refresh-cw fe-16"></i>
+              <span class="ml-3 item-text">Generate</span>
+            </a>
+          </li>
+        </ul>
 
+        <!-- Lesson Materials -->
+        <p class="text-muted nav-heading mt-4 mb-1">
+          <span>Lesson Materials</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="audio.php">
+              <i class="fe fe-music fe-16"></i>
+              <span class="ml-3 item-text">Audio</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="videos.php">
+              <i class="fe fe-film fe-16"></i>
+              <span class="ml-3 item-text">Video</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="documents.php">
+              <i class="fe fe-file-text fe-16"></i>
+              <span class="ml-3 item-text">Documents</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="file-manager.php">
+              <i class="fe fe-folder fe-16"></i>
+              <span class="ml-3 item-text">File Manager</span>
+            </a>
+          </li>
+        </ul>
 
-          <!-- Curriculum -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Curriculum</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item">
-              <a class="nav-link" href="index.php">
-                <i class="fe fe-globe fe-16"></i>
-                <span class="ml-3 item-text">Default</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="nigerian-curriculum.php">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">Nigerian</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">British</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">American</span>
-                </i>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-refresh-cw fe-16"></i>
-                <span class="ml-3 item-text">Generate</span>
-                </i>
-              </a>
-            </li>
-          </ul>
-          <!-- Lesson Materials -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Lesson Materials</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-
-            <li class="nav-item">
-              <a class="nav-link" href="audio.php">
-                <i class="fe fe-music fe-16"></i>
-                <span class="ml-3 item-text">Audio</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="videos.php">
-                <i class="fe fe-film fe-16"></i>
-                <span class="ml-3 item-text">Video</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="documents.php">
-                <i class="fe fe-file-text fe-16"></i>
-                <span class="ml-3 item-text">Documents</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="file-manager.php">
-                <i class="fe fe-folder fe-16"></i>
-                <span class="ml-3 item-text">File Manager</span>
-                </i>
-              </a>
-            </li>
-
-          </ul>
-
-          <!-- Extra -->
-          <!-- <p class="text-muted nav-heading mt-4 mb-1">
-        <span>Extra</span>
-      </p>
-      <ul class="navbar-nav flex-fill w-100 mb-2">
-        <li class="nav-item">
-          <a class="nav-link" href="disable-student.php">
-            <i class="fe fe-slash fe-16"></i>
-            <span class="ml-3 item-text">Disable Students</span>
-            </i>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="export-data.php">
-            <i class="fe fe-printer fe-16"></i>
-            <span class="ml-3 item-text">Students Export</span>
-            </i>
-          </a>
-        </li> -->
+        <!-- Reports -->
+        <p class="text-muted nav-heading mt-4 mb-1">
+          <span>Reports</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="reports.php">
+              <i class="fe fe-pie-chart fe-16"></i>
+              <span class="ml-3 item-text">Analytics</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </aside>

@@ -32,10 +32,74 @@ if (isset($_GET['class'])) {
     .card {
       border-radius: 8px;
     }
+    /* Loading overlay styles */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    
+    /* Progress bar container */
+    .progress-container {
+      width: 80%;
+      max-width: 400px;
+      background-color: #f1f1f1;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    
+    /* Progress bar */
+    .progress-bar {
+      width: 0%;
+      height: 10px;
+      background-color: #4CAF50;
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+    
+    /* Loading text */
+    .loading-text {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #333;
+    }
+    
+    /* Spinner animation */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 
 <body class="vertical  light  ">
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="spinner"></div>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="loading-text">Generating lesson content...</div>
+  </div>
+
   <div class="wrapper">
     <nav class="topnav navbar navbar-light">
       <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
@@ -101,132 +165,96 @@ if (isset($_GET['class'])) {
             </svg>
           </a>
         </div>
-        <!-- <div class="btn-box w-100 mt-4 mb-1">
-      <a href="../" class="btn mb-2 btn-primary btn-lg btn-block">
-        <i class="fe fe-arrow-left fe-12 mx-2"></i><span class="small">Back To Dashboard</span>
-      </a>
-    </div> -->
         <!-- Dashboard -->
-        <p class="text-muted nav-heading mt-4 mb-1">
+           <!-- Dashboard -->
+           <p class="text-muted nav-heading mt-4 mb-1">
           <span>Dashboard</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="index.php">
-              <i class="fe fe-codesandbox fe-16"></i>
+            <a class="nav-link" href="dashboard.php">
+              <i class="fe fe-home fe-16"></i>
               <span class="ml-3 item-text">Dashboard</span>
-              </i>
             </a>
           </li>
-          <!-- <li class="nav-item active">
-        <a class="nav-link text-primary" href="#">
-          <i class="fe fe-users fe-16"></i>
-          <span class="ml-3 item-text">Students</span>
-          </i>
-        </a>
-      </li> -->
+        </ul>
 
+        <!-- LMS -->
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="courses.php">
+              <i class="fe fe-book fe-16"></i>
+              <span class="ml-3 item-text">Courses</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="classes.php">
+              <i class="fe fe-users fe-16"></i>
+              <span class="ml-3 item-text">Classes</span>
+            </a>
+          </li> -->
+          <li class="nav-item active">
+            <a class="nav-link text-primary" href="nigerian-curriculum.php">
+              <i class="fe fe-layers fe-16"></i>
+              <span class="ml-3 item-text">curriculums</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="assignments.php">
+              <i class="fe fe-edit fe-16"></i>
+              <span class="ml-3 item-text">Assignments</span>
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="chat.php">
+              <i class="fe fe-refresh-cw fe-16"></i>
+              <span class="ml-3 item-text">Generate</span>
+            </a>
+          </li>
+        </ul>
 
+        <!-- Lesson Materials -->
+        <p class="text-muted nav-heading mt-4 mb-1">
+          <span>Lesson Materials</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="audio.php">
+              <i class="fe fe-music fe-16"></i>
+              <span class="ml-3 item-text">Audio</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="videos.php">
+              <i class="fe fe-film fe-16"></i>
+              <span class="ml-3 item-text">Video</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="documents.php">
+              <i class="fe fe-file-text fe-16"></i>
+              <span class="ml-3 item-text">Documents</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="file-manager.php">
+              <i class="fe fe-folder fe-16"></i>
+              <span class="ml-3 item-text">File Manager</span>
+            </a>
+          </li>
+        </ul>
 
-          <!-- Curriculum -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Curriculum</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item">
-              <a class="nav-link" href="index.php">
-                <i class="fe fe-globe fe-16"></i>
-                <span class="ml-3 item-text">Default</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="nigerian-curriculum.php">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">Nigerian</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">British</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">American</span>
-                </i>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-refresh-cw fe-16"></i>
-                <span class="ml-3 item-text">Generate</span>
-                </i>
-              </a>
-            </li>
-          </ul>
-          <!-- Lesson Materials -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Lesson Materials</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-
-            <li class="nav-item">
-              <a class="nav-link" href="audio.php">
-                <i class="fe fe-music fe-16"></i>
-                <span class="ml-3 item-text">Audio</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="videos.php">
-                <i class="fe fe-film fe-16"></i>
-                <span class="ml-3 item-text">Video</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="documents.php">
-                <i class="fe fe-file-text fe-16"></i>
-                <span class="ml-3 item-text">Documents</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="file-manager.php">
-                <i class="fe fe-folder fe-16"></i>
-                <span class="ml-3 item-text">File Manager</span>
-                </i>
-              </a>
-            </li>
-
-          </ul>
-
-          <!-- Extra -->
-          <!-- <p class="text-muted nav-heading mt-4 mb-1">
-        <span>Extra</span>
-      </p>
-      <ul class="navbar-nav flex-fill w-100 mb-2">
-        <li class="nav-item">
-          <a class="nav-link" href="disable-student.php">
-            <i class="fe fe-slash fe-16"></i>
-            <span class="ml-3 item-text">Disable Students</span>
-            </i>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="export-data.php">
-            <i class="fe fe-printer fe-16"></i>
-            <span class="ml-3 item-text">Students Export</span>
-            </i>
-          </a>
-        </li> -->
+        <!-- Reports -->
+        <p class="text-muted nav-heading mt-4 mb-1">
+          <span>Reports</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="reports.php">
+              <i class="fe fe-pie-chart fe-16"></i>
+              <span class="ml-3 item-text">Analytics</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </aside>
@@ -252,7 +280,7 @@ if (isset($_GET['class'])) {
                             <div class="form-group col-auto ml-3">
                               <label class="my-1 mr-2 sr-only" for="subjectSelect">Status</label>
                               <?php
-                              // Fetch subjects for 'Primary 2'
+                              // Fetch subjects for the selected class
                               $query = "SELECT DISTINCT subject FROM curriculums WHERE class = '$class'";
                               $statement = $pdo->query($query);
 
@@ -271,8 +299,6 @@ if (isset($_GET['class'])) {
                               $pdo = null;
                               ?>
                             </div>
-
-
                           </div>
                         </form>
                       </div>
@@ -310,7 +336,7 @@ if (isset($_GET['class'])) {
                   </div>
                 </div>
               </div>
-            </div> <!-- end section --> <!-- end section -->
+            </div> <!-- end section -->
           </div> <!-- .col-12 -->
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
@@ -359,7 +385,7 @@ if (isset($_GET['class'])) {
                       <div class="my-0 text-muted small">Fusce dapibus, tellus ac cursus commodo</div>
                       <small class="badge badge-pill badge-light text-muted">30m ago</small>
                     </div>
-                  </div> <!-- / .row -->
+                  </div>
                 </div>
                 <div class="list-group-item bg-transparent">
                   <div class="row align-items-center">
@@ -372,8 +398,8 @@ if (isset($_GET['class'])) {
                       <small class="badge badge-pill badge-light text-muted">1h ago</small>
                     </div>
                   </div>
-                </div> <!-- / .row -->
-              </div> <!-- / .list-group -->
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Clear All</button>
@@ -467,8 +493,8 @@ if (isset($_GET['class'])) {
           </div>
         </div>
       </div>
-    </main> <!-- main -->
-  </div> <!-- .wrapper -->
+    </main>
+  </div>
 
   <?php if ($class == 'Primary 1') { ?>
     <script>
@@ -479,8 +505,7 @@ if (isset($_GET['class'])) {
 
         if (selectedSubject in primaryOne) {
           for (var theme in primaryOne[selectedSubject]) {
-            var subjectName = selectedSubject; //
-            var subjectName = selectedSubject; //
+            var subjectName = selectedSubject;
             // Add row for theme
             var themeRow = document.createElement("tr");
             themeRow.setAttribute("role", "group");
@@ -494,14 +519,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + primaryOne[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 1') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 1') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 1') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 1') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -533,7 +557,6 @@ if (isset($_GET['class'])) {
     </script>
 
   <?php } elseif ($class == 'Primary 2') { ?>
-
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -542,7 +565,7 @@ if (isset($_GET['class'])) {
 
         if (selectedSubject in primaryTwo) {
           for (var theme in primaryTwo[selectedSubject]) {
-            var subjectName = selectedSubject; //
+            var subjectName = selectedSubject;
             // Add row for theme
             var themeRow = document.createElement("tr");
             themeRow.setAttribute("role", "group");
@@ -556,46 +579,16 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + primaryTwo[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 2') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 2') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryTwo[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryTwo[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 2') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryTwo[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryTwo[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 2') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
-      }
+      } 
+      // hello
 
-
-      // Function to filter topics based on the search input
-      function filterTopics() {
-        var searchInput = document.getElementById("search").value.toLowerCase();
-        var tableBody = document.getElementById("tableBody");
-        var rows = tableBody.getElementsByTagName("tr");
-
-        for (var i = 0; i < rows.length; i++) {
-          var topicCell = rows[i].getElementsByTagName("td")[1];
-          if (topicCell) {
-            var topicText = topicCell.textContent || topicCell.innerText;
-            if (topicText.toLowerCase().indexOf(searchInput) > -1) {
-              rows[i].style.display = "";
-            } else {
-              rows[i].style.display = "none";
-            }
-          }
-        }
-      }
-
-      // Add event listener for subject selection
-      document.getElementById("subjectSelect").addEventListener("change", function() {
-        var selectedSubject = this.value;
-        populateTable(selectedSubject);
-      });
-
-      // Initial population of the table
-      populateTable("Arabic"); // Default subject (you can change this as needed)
-    </script>
-
-  <?php } elseif ($class == 'Primary 3') { ?>
-
+      <?php } elseif ($class == 'Primary 3') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -618,14 +611,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + primaryThree[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 3') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 3') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryThree[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryThree[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 3') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryThree[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryThree[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 3') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -656,8 +648,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'Primary 4') { ?>
-
+<?php } elseif ($class == 'Primary 4') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -680,14 +671,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + primaryFour[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 4') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 4') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryFour[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryFour[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 4') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryFour[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryFour[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 4') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -718,8 +708,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'Primary 5') { ?>
-
+<?php } elseif ($class == 'Primary 5') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -742,14 +731,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + primaryFive[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 5') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 5') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryFive[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryFive[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 5') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryFive[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryFive[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 5') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -780,8 +768,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'Primary 6') { ?>
-
+<?php } elseif ($class == 'Primary 6') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -804,14 +791,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + primarySix[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 6') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 6') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primarySix[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primarySix[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 6') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primarySix[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primarySix[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Primary 6') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -842,8 +828,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'Jss 1') { ?>
-
+<?php } elseif ($class == 'Jss 1') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -866,14 +851,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + jss1[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 1') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 1') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(jss1[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(jss1[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 1') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(jss1[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(jss1[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 1') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -904,8 +888,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'Jss 2') { ?>
-
+<?php } elseif ($class == 'Jss 2') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -928,14 +911,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + jss2[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 2') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 2') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(jss2[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(jss2[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 2') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(jss2[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(jss2[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 2') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -966,8 +948,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'Jss 3') { ?>
-
+<?php } elseif ($class == 'Jss 3') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -990,14 +971,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + jss3[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 3') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 3') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(jss3[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(jss3[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 3') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(jss3[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(jss3[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('Jss 3') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -1018,6 +998,8 @@ if (isset($_GET['class'])) {
         }
       }
 
+   
+
       // Add event listener for subject selection
       document.getElementById("subjectSelect").addEventListener("change", function() {
         var selectedSubject = this.value;
@@ -1028,8 +1010,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'SSS 1') { ?>
-
+    <?php } elseif ($class == 'SSS 1') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -1038,7 +1019,7 @@ if (isset($_GET['class'])) {
 
         if (selectedSubject in sss1) {
           for (var theme in sss1[selectedSubject]) {
-            var subjectName = selectedSubject; //
+            var subjectName = selectedSubject;
             // Add row for theme
             var themeRow = document.createElement("tr");
             themeRow.setAttribute("role", "group");
@@ -1052,14 +1033,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + sss1[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 1') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 1') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(sss1[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(sss1[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 1') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(sss1[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(sss1[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 1') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -1090,8 +1070,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'SSS 2') { ?>
-
+<?php } elseif ($class == 'SSS 2') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -1100,7 +1079,7 @@ if (isset($_GET['class'])) {
 
         if (selectedSubject in sss2) {
           for (var theme in sss2[selectedSubject]) {
-            var subjectName = selectedSubject; //
+            var subjectName = selectedSubject;
             // Add row for theme
             var themeRow = document.createElement("tr");
             themeRow.setAttribute("role", "group");
@@ -1114,14 +1093,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + sss2[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 2') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 2') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(sss2[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(sss2[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 2') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(sss2[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(sss2[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 2') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -1152,8 +1130,7 @@ if (isset($_GET['class'])) {
       populateTable("Arabic"); // Default subject (you can change this as needed)
     </script>
 
-  <?php } elseif ($class == 'SSS 3') { ?>
-
+<?php } elseif ($class == 'SSS 3') { ?>
     <script>
       // Function to populate the table based on the selected subject
       function populateTable(selectedSubject) {
@@ -1162,7 +1139,7 @@ if (isset($_GET['class'])) {
 
         if (selectedSubject in sss3) {
           for (var theme in sss3[selectedSubject]) {
-            var subjectName = selectedSubject; //
+            var subjectName = selectedSubject;
             // Add row for theme
             var themeRow = document.createElement("tr");
             themeRow.setAttribute("role", "group");
@@ -1176,14 +1153,13 @@ if (isset($_GET['class'])) {
               contentRow.innerHTML =
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + sss3[selectedSubject][theme]["Content"][i] + '</td>' +
-                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 3') + '">View Content</a></td>' +
-                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(primaryOne[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 3') + '">View Plan</a></td>';
+                '<td><a href="view-content.php?subtopic=' + encodeURIComponent(sss3[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(sss3[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 3') + '" onclick="showLoader()">View Content</a></td>' +
+                '<td><a href="view-plan.php?subtopic=' + encodeURIComponent(sss3[selectedSubject][theme]["Content"][i]) + '&topic=' + encodeURIComponent(sss3[selectedSubject][theme]["Topic"]) + '&subject=' + encodeURIComponent(subjectName) + '&class=' + encodeURIComponent('SSS 3') + '" onclick="showLoader()">View Plan</a></td>';
               tableBody.appendChild(contentRow);
             }
           }
         }
       }
-
 
       // Function to filter topics based on the search input
       function filterTopics() {
@@ -1203,6 +1179,7 @@ if (isset($_GET['class'])) {
           }
         }
       }
+
 
       // Add event listener for subject selection
       document.getElementById("subjectSelect").addEventListener("change", function() {
@@ -1234,6 +1211,78 @@ if (isset($_GET['class'])) {
         [16, 32, 64, -1],
         [16, 32, 64, "All"]
       ]
+    });
+  </script>
+  <script src="../js/apps.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-56159088-1');
+  </script>
+   <script>
+    $('#dataTable-1').DataTable({
+      autoWidth: true,
+      "lengthMenu": [
+        [16, 32, 64, -1],
+        [16, 32, 64, "All"]
+      ]
+    });
+
+    function showLoader() {
+      // Set flag in session storage to show loader on next page
+      sessionStorage.setItem('showLoader', 'true');
+      
+      // Show loader immediately for better UX
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      
+      // Start progress animation
+      let progress = 0;
+      const progressBar = document.getElementById('progressBar');
+      const interval = setInterval(() => {
+        progress += Math.random() * 10;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+        }
+        progressBar.style.width = progress + '%';
+      }, 300);
+    }
+
+    // For the content page (view-content.php), add this to handle the loader:
+    document.addEventListener('DOMContentLoaded', function() {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      
+      // Check if we should show loader (for content generation pages)
+      if (sessionStorage.getItem('showLoader') === 'true') {
+        loadingOverlay.style.display = 'flex';
+        sessionStorage.removeItem('showLoader');
+        
+        // Start progress animation
+        let progress = 0;
+        const progressBar = document.getElementById('progressBar');
+        const interval = setInterval(() => {
+          progress += Math.random() * 10;
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+          }
+          progressBar.style.width = progress + '%';
+        }, 300);
+        
+        // Hide overlay when content is loaded
+        window.addEventListener('load', function() {
+          // Give it a little delay for better UX
+          setTimeout(() => {
+            loadingOverlay.style.display = 'none';
+          }, 500);
+        });
+      }
     });
   </script>
   <script src="../js/apps.js"></script>

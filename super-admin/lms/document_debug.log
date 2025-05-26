@@ -1,0 +1,4 @@
+[2025-05-16 15:32:30] Database error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'rinda_ams.lms_documents' doesn't exist
+[2025-05-16 15:33:31] Error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'rinda_ams.lms_notes' doesn't exist
+[2025-05-16 15:33:31] Database error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'rinda_ams.lms_documents' doesn't exist
+[2025-05-16 15:33:31] Database error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'rinda_ams.lms_documents' doesn't exist

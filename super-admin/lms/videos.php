@@ -1,737 +1,699 @@
-<?php require '../settings.php'; ?>
-<!doctype html>
-<html lang="en">
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="favicon.ico">
-  <title>Rinda AMS - Rinda AMS</title>
-  <!-- Simple bar CSS -->
-  <link rel="stylesheet" href="../css/simplebar.css">
-  <!-- Fonts CSS -->
-  <link href="../overpass-font.css" rel="stylesheet">
-  <!-- Icons CSS -->
-  <link rel="stylesheet" href="../css/feather.css">
-  <!-- Date Range Picker CSS -->
-  <link rel="stylesheet" href="../css/daterangepicker.css">
-  <!-- App CSS -->
-  <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
-  <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
+require_once('../settings.php');
 
-  <link rel="stylesheet" href="video-js.css">
-  <script src="jquery-3.6.0.min.js"></script>
-  <!-- Bootstrap CSS (if not already included) -->
-  <style>
-    /* Additional CSS styling for the video player */
-    .video-container {
-      position: relative;
-      padding-top: 56.25%;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+function debug_log($message) {
+    file_put_contents('video_debug.log', date('[Y-m-d H:i:s] ') . $message . PHP_EOL, FILE_APPEND);
+}
+
+// Extract YouTube video ID
+function getYouTubeVideoId($url) {
+    $parts = parse_url($url);
+    if (!isset($parts['host'])) return null;
+
+    $host = $parts['host'];
+    $path = $parts['path'] ?? '';
+    $query = $parts['query'] ?? '';
+
+    if (strpos($host, 'youtu.be') !== false) {
+        $id = ltrim($path, '/');
+        return explode('?', $id)[0];
     }
 
-    #videoPlayer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    if (strpos($host, 'youtube.com') !== false) {
+        if (preg_match('#/(embed|v)/([^/?]+)#', $path, $matches)) {
+            return $matches[2];
+        }
+        parse_str($query, $query_params);
+        if (isset($query_params['v'])) return $query_params['v'];
     }
 
-    /* Center the play button */
-    .vjs-big-play-button {
-      /* top: 50%;
-      left: 50%; */
-      transform: translate(200%, 200%);
+    return null;
+}
+
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (isset($_POST['action'])) {
+            $user_id = $_SESSION['user_id'] ?? null;
+
+            if ($_POST['action'] === 'add_video') {
+                if (empty($_POST['title'])) throw new Exception("Title is required");
+                if (empty($_POST['youtube_url'])) throw new Exception("YouTube URL is required");
+
+                $title = $_POST['title'];
+                $youtube_url = $_POST['youtube_url'];
+                $video_id = getYouTubeVideoId($youtube_url);
+
+                if (!$video_id) throw new Exception("Invalid YouTube URL format");
+
+                $thumbnail = "https://img.youtube.com/vi/$video_id/maxresdefault.jpg";
+                $status = $_POST['status'] ?? 'draft';
+                $subject = $_POST['subject'] ?? null;
+                $class = $_POST['class'] ?? null;
+                $description = $_POST['description'] ?? null;
+                $folder_id = $_POST['folder_id'] ?? null;
+
+                // Insert into videos table
+                $stmt = $pdo->prepare("INSERT INTO videos (title, youtube_url, subject, class, added_by, status, description, thumbnail, folder_id) 
+                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$title, $youtube_url, $subject, $class, $user_id, $status, $description, $thumbnail, $folder_id]);
+
+                $video_record_id = $pdo->lastInsertId();
+
+                // Insert into files table so it shows in file-manager
+                $virtual_file_path = "https://www.youtube.com/watch?v=" . $video_id;
+                $stmt = $pdo->prepare("INSERT INTO files (title, file_name, file_path, type, size, folder, uploaded_by, permission) 
+                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([
+                    $title,
+                    $video_id . '.youtube', // fake extension for display
+                    $virtual_file_path,
+                    'video',
+                    0,
+                    $folder_id,
+                    $user_id,
+                    'public'
+                ]);
+
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => 'Video added successfully!'
+                ];
+
+            } elseif ($_POST['action'] === 'update_video') {
+                if (empty($_POST['id']) || empty($_POST['title'])) throw new Exception("Required fields missing");
+
+                $stmt = $pdo->prepare("UPDATE videos SET title = ?, subject = ?, class = ?, status = ?, description = ?, folder_id = ? WHERE id = ?");
+                $stmt->execute([
+                    $_POST['title'],
+                    $_POST['subject'] ?? null,
+                    $_POST['class'] ?? null,
+                    $_POST['status'] ?? 'draft',
+                    $_POST['description'] ?? null,
+                    $_POST['folder_id'] ?? null,
+                    $_POST['id']
+                ]);
+
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => 'Video updated successfully!'
+                ];
+
+            } elseif ($_POST['action'] === 'delete_video') {
+                if (empty($_POST['id'])) throw new Exception("Video ID missing");
+
+                $stmt = $pdo->prepare("SELECT youtube_url FROM videos WHERE id = ?");
+                $stmt->execute([$_POST['id']]);
+                $video = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($video) {
+                    $video_id = getYouTubeVideoId($video['youtube_url']);
+                    $virtual_file_path = "https://www.youtube.com/watch?v=" . $video_id;
+
+                    // Delete from file manager (files table)
+                    $stmt = $pdo->prepare("DELETE FROM files WHERE file_path = ?");
+                    $stmt->execute([$virtual_file_path]);
+                }
+
+                // Delete from videos
+                $stmt = $pdo->prepare("DELETE FROM videos WHERE id = ?");
+                $stmt->execute([$_POST['id']]);
+
+                $_SESSION['toast'] = [
+                    'type' => 'success',
+                    'message' => 'Video deleted successfully!'
+                ];
+            }
+
+            header("Location: videos.php");
+            exit();
+
+        }
+    } catch (Exception $e) {
+        debug_log("Error: " . $e->getMessage());
+        $_SESSION['toast'] = [
+            'type' => 'danger',
+            'message' => $e->getMessage()
+        ];
+        header("Location: videos.php");
+        exit();
     }
+}
 
-    .card {
-      border-radius: 8px;
-    }
-  </style>
-</head>
+// Get video stats and data
+try {
+    $total_videos = $pdo->query("SELECT COUNT(*) FROM videos")->fetchColumn();
+    $total_views = $pdo->query("SELECT SUM(views) FROM videos")->fetchColumn() ?? 0;
+    $published_videos = $pdo->query("SELECT COUNT(*) FROM videos WHERE status = 'published'")->fetchColumn();
 
-<body class="vertical  light  ">
-  <div class="wrapper">
-    <nav class="topnav navbar navbar-light">
-      <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
-        <i class="fe fe-menu navbar-toggler-icon"></i>
-      </button>
-      <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
-      </form>
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
-            <i class="fe fe-sun fe-16"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-shortcut">
-            <span class="fe fe-grid fe-16"></span>
-          </a>
-        </li>
-        <li class="nav-item nav-notif">
-          <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-notif">
-            <span class="fe fe-bell fe-16"></span>
-            <span class="dot dot-md bg-success"></span>
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
-            </span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <div class=" col-12 text-left">
-              <p style="padding: 0%; margin: 0%;">
-                <?= $full_name; ?>
-              </p>
-              <strong>
-                <?= $account_type; ?>
-              </strong>
-            </div>
-            <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
-            <a class="dropdown-item" href="../logout.php">Log out</a>
-          </div>
-        </li>
-      </ul>
-    </nav>
-    <aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
-      <a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
-        <i class="fe fe-x"><span class="sr-only"></span></i>
-      </a>
-      <nav class="vertnav navbar navbar-light">
-        <!-- nav bar -->
-        <div class="w-100 mb-4 d-flex">
-          <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
-              <g>
-                <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
-                <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
-                <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
-              </g>
-            </svg>
-          </a>
-        </div>
-        <!-- <div class="btn-box w-100 mt-4 mb-1">
-      <a href="../" class="btn mb-2 btn-primary btn-lg btn-block">
-        <i class="fe fe-arrow-left fe-12 mx-2"></i><span class="small">Back To Dashboard</span>
-      </a>
-    </div> -->
-        <!-- Dashboard -->
-        <p class="text-muted nav-heading mt-4 mb-1">
-          <span>Dashboard</span>
-        </p>
-        <ul class="navbar-nav flex-fill w-100 mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">
-              <i class="fe fe-codesandbox fe-16"></i>
-              <span class="ml-3 item-text">Dashboard</span>
-              </i>
-            </a>
-          </li>
-          <!-- <li class="nav-item active">
-        <a class="nav-link text-primary" href="#">
-          <i class="fe fe-users fe-16"></i>
-          <span class="ml-3 item-text">Students</span>
-          </i>
-        </a>
-      </li> -->
+    // Get videos with folder names
+    $videos = $pdo->query("
+        SELECT v.*, f.name as folder_name 
+        FROM videos v 
+        LEFT JOIN folders f ON v.folder_id = f.id 
+        ORDER BY v.created_at DESC
+    ")->fetchAll(PDO::FETCH_ASSOC);
+    
+    $classes = $pdo->query("SELECT DISTINCT class FROM videos WHERE class IS NOT NULL ORDER BY class")->fetchAll(PDO::FETCH_COLUMN);
+    $subjects = $pdo->query("SELECT DISTINCT subject FROM videos WHERE subject IS NOT NULL ORDER BY subject")->fetchAll(PDO::FETCH_COLUMN);
+    
+    // Get all folders for dropdowns
+    $folders = $pdo->query("SELECT id, name FROM folders ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 
+} catch (PDOException $e) {
+    debug_log("DB Error: " . $e->getMessage());
+    $total_videos = 0;
+    $total_views = 0;
+    $published_videos = 0;
+    $videos = [];
+    $classes = [];
+    $subjects = [];
+    $folders = [];
+}
+?>
 
+<!-- Loading spinner -->
+<div class="spinner-container" id="loadingSpinner">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
 
-          <!-- Curriculum -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Curriculum</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item">
-              <a class="nav-link" href="index.php">
-                <i class="fe fe-globe fe-16"></i>
-                <span class="ml-3 item-text">Default</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="nigerian-curriculum.php">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">Nigerian</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">British</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-flag fe-16"></i>
-                <span class="ml-3 item-text">American</span>
-                </i>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-refresh-cw fe-16"></i>
-                <span class="ml-3 item-text">Generate</span>
-                </i>
-              </a>
-            </li>
-          </ul>
-          <!-- Lesson Materials -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Lesson Materials</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-
-            <li class="nav-item">
-              <a class="nav-link" href="audio.php">
-                <i class="fe fe-music fe-16"></i>
-                <span class="ml-3 item-text">Audio</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="videos.php">
-                <i class="fe fe-film fe-16"></i>
-                <span class="ml-3 item-text">Video</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="documents.php">
-                <i class="fe fe-file-text fe-16"></i>
-                <span class="ml-3 item-text">Documents</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="file-manager.php">
-                <i class="fe fe-folder fe-16"></i>
-                <span class="ml-3 item-text">File Manager</span>
-                </i>
-              </a>
-            </li>
-
-          </ul>
-
-          <!-- Extra -->
-          <!-- <p class="text-muted nav-heading mt-4 mb-1">
-        <span>Extra</span>
-      </p>
-      <ul class="navbar-nav flex-fill w-100 mb-2">
-        <li class="nav-item">
-          <a class="nav-link" href="disable-student.php">
-            <i class="fe fe-slash fe-16"></i>
-            <span class="ml-3 item-text">Disable Students</span>
-            </i>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="export-data.php">
-            <i class="fe fe-printer fe-16"></i>
-            <span class="ml-3 item-text">Students Export</span>
-            </i>
-          </a>
-        </li> -->
-        </ul>
-      </nav>
-    </aside>
+<!-- Navigation -->
+<?php include('./lms-header.php'); ?>
+<div class="wrapper">
     <main role="main" class="main-content">
-      <div class="container-fluid">
-        <div class="row justify-content-center">
-          <div class="col-md-12">
-            <div class="border-top">
-              <div class="file-panel mt-4">
-                <div class="row align-items-center mb-4">
-                  <div class="col">
-                    <h3 class="page-title">Videos</h3>
-                  </div>
-                </div>
-                <!-- .row -->
-                <hr class="my-4">
-                <div class="row my-4 pb-4">
-
-                  <?php
-                  $type = 'video';
-                  $query = "SELECT * FROM files WHERE type = :type ORDER BY `files`.`title` ASC";
-                  $stmt = $pdo->prepare($query);
-                  $stmt->execute(['type' => $type]);
-                  $videos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                  if (count($videos) === 0) {
-                    echo '<p class="text-center">None added Yet!</p>';
-                  } else {
-                    foreach ($videos as $index => $video) : ?>
-
-                      <div class="col-md-3 video-card">
-                        <div class="card shadow text-center mb-4">
-                          <div class="card-body file">
-                            <div class="file-action">
-                              <button type="button" class="btn btn-link dropdown-toggle more-vertical p-0 text-muted mx-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="text-muted sr-only">Action</span>
-                              </button>
-                              <div class="dropdown-menu m-2">
-                                <a class="dropdown-item edit" href="#"><i class="fe fe-edit-3 fe-12 mr-4"></i>edit</a>
-                                <a class="dropdown-item delete" href="#"><i class="fe fe-delete fe-12 mr-4"></i>Delete</a>
-                                <a class="dropdown-item share" href="#"><i class="fe fe-share fe-12 mr-4"></i>Share</a>
-                                <a class="dropdown-item download" href="download-video.php?id=<?= $video['id']; ?>"><i class="fe fe-download fe-12 mr-4"></i>Download</a>
-                              </div>
-                            </div>
-                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#yourModal" data-src="file-manager/videos/<?= $video['title'] ?>.<?= $video['extension'] ?>">
-                              <div class="circle circle-lg bg-light my-4">
-                                <span class="fe fe-film fe-24 text-info"></span>
-                              </div>
-                              <div class="file-info">
-                                <span class="badge badge-light text-muted mr-2 vid-subject" id="vidsubject-<?= $video['id'] ?>"><?= $video['subject'] ?></span>
-                                <span class="badge badge-pill badge-light text-muted vid-class" id="vidclass-<?= $video['id'] ?>"><?= $video['class'] ?></span>
-                              </div>
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="row align-items-center mb-4">
+                        <div class="col">
+                            <h2 class="h5 page-title">Video Management</h2>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#addVideoModal">
+                                <i class="fe fe-plus mr-2"></i>Add Video
                             </button>
-
-                            <div class="modal fade modal-full" id="yourModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-                              <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="video-container">
-                                      <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
-                                        <source src="file-manager/videos/<?= $video['title'] ?>.<?= $video['extension'] ?>" type="video/<?= $video['extension'] ?>">
-                                        <!-- Other video sources if needed -->
-                                      </video>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow video-card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <p class="mb-0 text-muted">Total Videos</p>
+                                            <h3 class="mb-0"><?= number_format($total_videos) ?></h3>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <span class="fe fe-film fe-32 text-primary"></span>
+                                        </div>
                                     </div>
-                                  </div>
                                 </div>
-                              </div>
                             </div>
-
-                          </div> <!-- .card-body -->
-                          <div class="card-footer bg-transparent border-0 fname">
-                            <span class="vid-id d-none">
-                              <?= $video['id'] ?>
-                            </span>
-                            <strong class="vid-title" id="vidtitle-<?= $video['id'] ?>"><?= $video['title'] ?></strong>
-                          </div> <!-- .card-footer -->
-                        </div> <!-- .card -->
-                      </div><!-- .col -->
-
-                  <?php endforeach;
-                  } ?>
-                  <!-- edit -->
-                  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="editModalLabel">Edit Video Info</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
                         </div>
-                        <div class="modal-body">
-                          <form id="editForm">
-                            <div class="form-group">
-                              <label for="video-name" class="col-form-label">Title:</label>
-                              <input type="text" class="form-control" id="edit-video-name">
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow video-card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <p class="mb-0 text-muted">Total Views</p>
+                                            <h3 class="mb-0"><?= number_format($total_views) ?></h3>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <span class="fe fe-eye fe-32 text-warning"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-6">
-                                <label for="edit-custom-class">Class <span><small>optional</small></span></label>
-                                <select class="custom-select" id="edit-custom-class" name="class">
-                                  <!-- Options for class -->
-                                  <option value="" selected disabled>Select</option>
-                                  <option value="Grade 1">Grade 1</option>
-                                  <option value="Grade 2">Grade 2</option>
-                                  <option value="Grade 3">Grade 3</option>
-                                  <option value="Grade 3">Grade 4</option>
-                                  <option value="Grade 3">Grade 5</option>
-                                  <option value="Grade 3">Grade 6</option>
-                                  <option value="Grade 3">Grade 7</option>
-                                  <option value="Grade 3">Grade 8</option>
-                                  <option value="Grade 3">Grade 9</option>
-                                  <option value="Grade 3">Grade 10</option>
-                                  <option value="Grade 3">Grade 11</option>
-                                  <option value="Grade 3">Grade 12</option>
-                                </select>
-                              </div>
-                              <div class="form-group col-md-6">
-                                <label for="edit-custom-subject">Subject <span><small>optional</small></span></label>
-                                <select class="custom-select" id="edit-custom-subject" name="subject">
-                                  <!-- Options for subject -->
-                                  <option value="Mathematics">Mathematics</option>
-                                  <option value="English">English</option>
-                                  <option value="Computer">Computer</option>
-                                </select>
-                              </div>
-                              <input type="hidden" id="edit-video-id" name="vi-id">
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow video-card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <p class="mb-0 text-muted">Published</p>
+                                            <h3 class="mb-0"><?= number_format($published_videos) ?></h3>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <span class="fe fe-check-circle fe-32 text-success"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </form>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn mb-2 btn-secondary" data-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn mb-2 btn-primary" id="saveChangesBtn">Save Changes</button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-
-
-                  <script>
-                    $(document).ready(function() {
-                      // Event listener for the edit option
-                      $('.dropdown-item.edit').on('click', function() {
-                        var card = $(this).closest('.card');
-                        var vidId = card.find('.vid-id').text(); // Assuming you have a class for video ID
-                        var vidTitle = card.find('.vid-title').text();
-                        var vidClass = card.find('.vid-class').text(); // Assuming you have a class for video class
-                        var vidSubject = card.find('.vid-subject').text(); // Assuming you have a class for video subject
-
-                        $('#edit-video-id').val(vidId);
-                        $('#edit-video-name').val(vidTitle);
-                        $('#edit-custom-class').val(vidClass); // Assuming you have options for classes in the select element
-                        $('#edit-custom-subject').val(vidSubject); // Assuming you have options for subjects in the select element
-
-                        $('#editModal').modal('show');
-                      });
-
-                      // Event listener for saving changes
-                      $('#saveChangesBtn').on('click', function() {
-                        var vidId = $('#edit-video-id').val();
-                        var newTitle = $('#edit-video-name').val();
-                        var newClass = $('#edit-custom-class').val();
-                        var newSubject = $('#edit-custom-subject').val();
-
-                        // Perform AJAX request to update video information in the database
-                        $.ajax({
-                          url: 'update-video.php',
-                          type: 'POST',
-                          data: {
-                            id: vidId,
-                            title: newTitle,
-                            class: newClass,
-                            subject: newSubject
-                          },
-                          success: function(response) {
-                            // Handle success
-                            console.log(response);
-                            // Optionally update the UI to reflect the changes
-                            // For example, update the title of the video card
-                            $('#vidtitle-' + vidId).text(newTitle);
-                            $('#vidsubject-' + vidId).text(newSubject);
-                            $('#vidclass-' + vidId).text(newClass);
-                            // Close the edit modal
-                            $('#editModal').modal('hide');
-                          },
-                          error: function(xhr, status, error) {
-                            // Handle error
-                            console.error(xhr.responseText);
-                          }
-                        });
-                      });
-                    });
-                  </script>
-
-                  <!-- end edit -->
-
-
-                  <!-- Confirm delete Modal -->
-                  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="confirmDeleteModalTitle">Confirm Delete</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
+                    
+                    <!-- Videos Table -->
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    <strong class="card-title">Videos</strong>
+                                </div>
+                                <div class="card-body">
+                                    <?php if (!empty($videos)): ?>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="videoTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Subject</th>
+                                                        <th>Class</th>
+                                                        <th>Folder</th>
+                                                        <th>Views</th>
+                                                        <th>Status</th>
+                                                        <th>Added</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($videos as $video): ?>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="video-thumbnail mr-3" style="background-image: url('<?= htmlspecialchars($video['thumbnail']) ?>'); width: 120px;">
+                                                                        <i class="fe fe-play text-white" style="font-size: 2rem; display: flex; height: 100%; align-items: center; justify-content: center; background: rgba(0,0,0,0.3);"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <strong><?= htmlspecialchars($video['title']) ?></strong>
+                                                                        <?php if (!empty($video['description'])): ?>
+                                                                            <p class="text-muted small mb-0"><?= htmlspecialchars(substr($video['description'], 0, 50)) ?>...</p>
+                                                                        <?php endif; ?>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td><?= htmlspecialchars($video['subject'] ?? 'N/A') ?></td>
+                                                            <td><?= htmlspecialchars($video['class'] ?? 'N/A') ?></td>
+                                                            <td><?= htmlspecialchars($video['folder_name'] ?? 'N/A') ?></td>
+                                                            <td><?= number_format($video['views']) ?></td>
+                                                            <td>
+                                                                <span class="badge badge-<?= $video['status'] == 'published' ? 'success' : 'secondary' ?>">
+                                                                    <?= ucfirst($video['status']) ?>
+                                                                </span>
+                                                            </td>
+                                                            <td><?= date('M j, Y', strtotime($video['created_at'])) ?></td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-outline-primary play-video" 
+                                                                    data-youtube="<?= htmlspecialchars($video['youtube_url']) ?>"
+                                                                    data-title="<?= htmlspecialchars($video['title']) ?>"
+                                                                    data-id="<?= $video['id'] ?>">
+                                                                    <i class="fe fe-play"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-secondary edit-video" 
+                                                                    data-id="<?= $video['id'] ?>"
+                                                                    data-title="<?= htmlspecialchars($video['title']) ?>"
+                                                                    data-subject="<?= htmlspecialchars($video['subject'] ?? '') ?>"
+                                                                    data-class="<?= htmlspecialchars($video['class'] ?? '') ?>"
+                                                                    data-status="<?= $video['status'] ?>"
+                                                                    data-description="<?= htmlspecialchars($video['description'] ?? '') ?>"
+                                                                    data-youtube="<?= htmlspecialchars($video['youtube_url']) ?>"
+                                                                    data-folder_id="<?= $video['folder_id'] ?? '' ?>">
+                                                                    <i class="fe fe-edit-2"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-danger delete-video" 
+                                                                    data-id="<?= $video['id'] ?>"
+                                                                    data-title="<?= htmlspecialchars($video['title']) ?>">
+                                                                    <i class="fe fe-trash-2"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="alert alert-info">
+                                            No videos found. Add your first video using the button above.
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                          Are you sure you want to delete this video?
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
 
-                  <!-- Delete -->
-
-                  <script>
-                    $(document).ready(function() {
-                      // Event listener for the delete option
-                      $('.dropdown-item.delete').on('click', function(event) {
-                        event.preventDefault();
-                        var videoCard = $(this).closest('.video-card');
-                        var card = $(this).closest('.card');
-                        var vidId = card.find('.vid-id').text();
-
-
-                        // Show the confirmation modal
-                        $('#confirmDeleteModal').modal('show');
-
-                        // Event listener for the confirm delete button inside the modal
-                        $('#confirmDeleteBtn').on('click', function() {
-                          // Send AJAX request to delete the document
-                          $.ajax({
-                            url: 'delete-video.php',
-                            type: 'POST',
-                            data: {
-                              id: vidId
-                            },
-                            success: function(response) {
-                              // Handle success
-                              console.log(response);
-                              // Optionally remove the row from the table
-                              videoCard.remove();
-                            },
-                            error: function(xhr, status, error) {
-                              // Handle error
-                              console.error(xhr.responseText);
-                            }
-                          });
-
-                          // Close the confirmation modal
-                          $('#confirmDeleteModal').modal('hide');
-                        });
-                      });
-                    });
-                  </script>
-
-                  <!-- End delete -->
-
-
-                  <!-- Video.js library -->
-                  <script src="video.js"></script>
-
-                  <script>
-                    // Initialize Video.js player
-                    document.addEventListener('DOMContentLoaded', function() {
-                      var player = videojs('videoPlayer');
-
-                      // Listen for modal close event to pause the video
-                      $('#yourModal').on('hidden.bs.modal', function() {
-                        player.pause();
-                      });
-
-                      // Listen for click event on the video container to toggle fullscreen
-                      var videoContainer = document.querySelector('.video-container');
-                      videoContainer.addEventListener('click', function() {
-                        if (!player.isFullscreen()) {
-                          player.requestFullscreen();
-                        } else {
-                          player.exitFullscreen();
-                        }
-                      });
-                    });
-                  </script>
-
-                  <!-- end video js -->
-
-
-                  <!-- share -->
-                  <!-- Share Modal -->
-                  <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="shareModalTitle">Share Document</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <p>Copy the link below to share this video:</p>
-                          <input type="text" id="shareLink" class="form-control" readonly>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <script>
-                    $(document).ready(function() {
-                      $('.dropdown-item.share').on('click', function() {
-                        var card = $(this).closest('.card');
-                        var vidId = card.find('.vid-id').text();
-                        var shareLink = window.location.origin + '/view-video.php?id=' + vidId;
-                        $('#shareLink').val(shareLink);
-                        $('#shareModal').modal('show');
-                      });
-                    });
-                  </script>
-
-                  <!-- end of share -->
-
-                </div> <!-- .row -->
-              </div> <!-- .file-panel -->
-            </div> <!-- .file-container -->
-          </div> <!-- .col -->
-        </div> <!-- .row -->
-      </div> <!-- .container-fluid -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
-          <div class="modal-content">
+<!-- Add Video Modal -->
+<div class="modal fade" id="addVideoModal" tabindex="-1" role="dialog" aria-labelledby="addVideoModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                <h5 class="modal-title" id="addVideoModalLabel">Add New Video</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addVideoForm" method="post">
+                <input type="hidden" name="action" value="add_video">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="videoTitle">Title *</label>
+                                <input type="text" class="form-control" id="videoTitle" name="title" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="videoYoutube">YouTube URL *</label>
+                                <input type="url" class="form-control" id="videoYoutube" name="youtube_url" 
+                                    placeholder="https://www.youtube.com/watch?v=..." required>
+                                <small class="text-muted">Paste the full YouTube URL</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="videoFolder">Folder</label>
+                                <select class="form-control" id="videoFolder" name="folder_id">
+                                    <option value="">-- Select Folder --</option>
+                                    <?php foreach ($folders as $folder): ?>
+                                        <option value="<?= $folder['id'] ?>"><?= htmlspecialchars($folder['name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="videoSubject">Subject</label>
+                                <input type="text" class="form-control" id="videoSubject" name="subject" list="subjectList">
+                                <datalist id="subjectList">
+                                    <?php foreach ($subjects as $subject): ?>
+                                        <option value="<?= htmlspecialchars($subject) ?>">
+                                    <?php endforeach; ?>
+                                </datalist>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="videoClass">Class</label>
+                                <input type="text" class="form-control" id="videoClass" name="class" list="classList">
+                                <datalist id="classList">
+                                    <?php foreach ($classes as $class): ?>
+                                        <option value="<?= htmlspecialchars($class) ?>">
+                                    <?php endforeach; ?>
+                                </datalist>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="videoStatus">Status</label>
+                                <select class="form-control" id="videoStatus" name="status">
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="videoDescription">Description</label>
+                                <textarea class="form-control" id="videoDescription" name="description" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="submit-btn-text">Add Video</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Video Modal -->
+<div class="modal fade" id="editVideoModal" tabindex="-1" role="dialog" aria-labelledby="editVideoModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editVideoModalLabel">Edit Video</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editVideoForm" method="post">
+                <input type="hidden" name="action" value="update_video">
+                <input type="hidden" name="id" id="editVideoId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editVideoTitle">Title *</label>
+                                <input type="text" class="form-control" id="editVideoTitle" name="title" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editVideoYoutube">YouTube URL</label>
+                                <input type="url" class="form-control" id="editVideoYoutube" name="youtube_url" readonly>
+                                <small class="text-muted">YouTube URL cannot be changed</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editVideoFolder">Folder</label>
+                                <select class="form-control" id="editVideoFolder" name="folder_id">
+                                    <option value="">-- Select Folder --</option>
+                                    <?php foreach ($folders as $folder): ?>
+                                        <option value="<?= $folder['id'] ?>"><?= htmlspecialchars($folder['name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editVideoSubject">Subject</label>
+                                <input type="text" class="form-control" id="editVideoSubject" name="subject" list="subjectList">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editVideoClass">Class</label>
+                                <input type="text" class="form-control" id="editVideoClass" name="class" list="classList">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editVideoStatus">Status</label>
+                                <select class="form-control" id="editVideoStatus" name="status">
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editVideoDescription">Description</label>
+                                <textarea class="form-control" id="editVideoDescription" name="description" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="submit-btn-text">Save Changes</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Video Modal -->
+<div class="modal fade" id="deleteVideoModal" tabindex="-1" role="dialog" aria-labelledby="deleteVideoModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteVideoModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="deleteVideoForm" method="post">
+                <input type="hidden" name="action" value="delete_video">
+                <input type="hidden" name="id" id="deleteVideoId">
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the video "<strong id="deleteVideoTitle"></strong>"?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        <span class="submit-btn-text">Delete Permanently</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Video Player Modal -->
+<div class="modal fade" id="videoPlayerModal" tabindex="-1" role="dialog" aria-labelledby="videoPlayerModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoPlayerModalLabel">Video Player</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-              <div class="list-group list-group-flush my-n3">
-                <div class="list-group-item bg-transparent">
-                  <div class="row align-items-center">
-                    <div class="col text-center"> <small><strong>You're well up to date</strong></small>
-                      <div class="my-0 text-muted small">No notifications available</div>
-                    </div>
-                  </div>
+                <div class="video-player-container">
+                    <iframe id="youtubePlayer" frameborder="0" allowfullscreen></iframe>
                 </div>
-              </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
-          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
-      </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Control Panel</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body px-5">
-              <div class="row align-items-center">
-                <div class="col-6 text-center">
-                  <a href="#" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
-                      <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p class="text-white">Dashboard</p>
-                  </a>
-                </div>
-                <div class="col-6 text-center">
-                  <a href="../academics" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
-                      <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p class="text-white">Academics</p>
-                  </a>
-                </div>
-              </div>
-              <div class="row align-items-center">
-                <div class="col-6 text-center">
-                  <a href="#" style="text-decoration: none;">
-                    <div class="squircle bg-success justify-content-center">
-                      <i class="fe fe-trello fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p class="text-success">E-Learning</p>
-                  </a>
-                </div>
-                <div class="col-6 text-center">
-                  <a href="../messages" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
-                      <i class="fe fe-mail fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p class="text-white">Messages</p>
-                  </a>
-                </div>
-              </div>
-              <div class="row align-items-center">
-                <div class="col-6 text-center">
-                  <a href="../shop" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
-                      <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p class="text-white">Shop</p>
-                  </a>
-                </div>
-                <div class="col-6 text-center">
-                  <a href="../hr/" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center text-white">
-                      <i class="fe fe-users fe-32 align-self-center"></i>
-                    </div>
-                    <p class="text-white">HR</p>
-                  </a>
-                </div>
-              </div>
-              <div class="row align-items-center">
-                <div class="col-6 text-center">
-                  <a href="../assessments" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
-                      <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
-                    </div>
-                    <p class="text-white">Assessments</p>
-                  </a>
-                </div>
-                <div class="col-6 text-center">
-                  <a href="#" style="text-decoration: none;">
-                    <div class="squircle bg-secondary justify-content-center">
-                      <i class="fe fe-settings fe-32 align-self-center text-muted"></i>
-                    </div>
-                    <p class="text-muted">Settings</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main> <!-- main -->
-  </div> <!-- .wrapper -->
-  <script src="../js/jquery.min.js"></script>
-  <script src="../js/popper.min.js"></script>
-  <script src="../js/moment.min.js"></script>
-  <script src="../js/bootstrap.min.js"></script>
-  <script src="../js/simplebar.min.js"></script>
-  <script src='../js/daterangepicker.js'></script>
-  <script src='../js/jquery.stickOnScroll.js'></script>
-  <script src="../js/tinycolor-min.js"></script>
-  <script src="../js/config.js"></script>
-  <script src="../js/d3.min.js"></script>
-  <script src="../js/topojson.min.js"></script>
-  <script src="../js/datamaps.all.min.js"></script>
-  <script src="../js/datamaps-zoomto.js"></script>
-  <script src="../js/datamaps.custom.js"></script>
-  <script src="../js/Chart.min.js"></script>
+    </div>
+</div>
 
+<!-- JavaScript -->
+<script src="../js/jquery.min.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/simplebar.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
 
+<script>
+$(document).ready(function() {
+    // Initialize DataTable
+    $('#videoTable').DataTable({
+        order: [[6, 'desc']], // Updated to account for new folder column
+        responsive: true,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search videos..."
+        }
+    });
 
-  <script>
-    /* defind global options */
-    Chart.defaults.global.defaultFontFamily = base.defaultFontFamily;
-    Chart.defaults.global.defaultFontColor = colors.mutedColor;
-  </script>
-  <script src="../js/gauge.min.js"></script>
-  <script src="../js/jquery.sparkline.min.js"></script>
-  <script src="../js/apexcharts.min.js"></script>
-  <script src="../js/apexcharts.custom.js"></script>
-  <script src="../js/apps.js"></script>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
+    // Show toast notifications
+    <?php if (isset($_SESSION['toast'])): ?>
+        new Noty({
+            type: '<?= $_SESSION['toast']['type'] ?>',
+            text: '<?= $_SESSION['toast']['message'] ?>',
+            timeout: 3000,
+            progressBar: true,
+            layout: 'topRight'
+        }).show();
+        <?php unset($_SESSION['toast']); ?>
+    <?php endif; ?>
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-56159088-1');
-  </script>
-</body>
+    // Play video
+    $(document).on('click', '.play-video', function() {
+        const youtubeUrl = $(this).data('youtube');
+        const videoTitle = $(this).data('title');
+        const videoId = $(this).data('id');
+        
+        // Extract YouTube video ID
+        let videoIdFromUrl = '';
+        if (youtubeUrl.includes('youtube.com/watch?v=')) {
+            videoIdFromUrl = youtubeUrl.split('v=')[1].split('&')[0];
+        } else if (youtubeUrl.includes('youtu.be/')) {
+            videoIdFromUrl = youtubeUrl.split('youtu.be/')[1].split('?')[0];
+        }
+        
+        if (videoIdFromUrl) {
+            // Update view count
+            $.post('update_video_stats.php', {
+                video_id: videoId,
+                action: 'view'
+            }).fail(function(xhr, status, error) {
+                console.error('Failed to update view count:', error);
+            });
+            
+            // Set up player
+            $('#videoPlayerModalLabel').text(videoTitle);
+            $('#youtubePlayer').attr('src', `https://www.youtube.com/embed/${videoIdFromUrl}?autoplay=1`);
+            $('#videoPlayerModal').modal('show');
+        } else {
+            alert('Invalid YouTube URL');
+        }
+    });
+    
+    // Close video player when modal is hidden
+    $('#videoPlayerModal').on('hidden.bs.modal', function() {
+        $('#youtubePlayer').attr('src', '');
+    });
 
-</html>
+    // Edit video
+    $(document).on('click', '.edit-video', function() {
+        $('#editVideoId').val($(this).data('id'));
+        $('#editVideoTitle').val($(this).data('title'));
+        $('#editVideoSubject').val($(this).data('subject'));
+        $('#editVideoClass').val($(this).data('class'));
+        $('#editVideoStatus').val($(this).data('status'));
+        $('#editVideoDescription').val($(this).data('description'));
+        $('#editVideoYoutube').val($(this).data('youtube'));
+        $('#editVideoFolder').val($(this).data('folder_id'));
+        
+        $('#editVideoModal').modal('show');
+    });
+
+    // Delete video
+    $(document).on('click', '.delete-video', function() {
+        $('#deleteVideoId').val($(this).data('id'));
+        $('#deleteVideoTitle').text($(this).data('title'));
+        $('#deleteVideoModal').modal('show');
+    });
+
+    // Form submissions with loading states
+    $('#addVideoForm, #editVideoForm, #deleteVideoForm').on('submit', function(e) {
+        e.preventDefault();
+        const form = $(this);
+        const submitBtn = form.find('button[type="submit"]');
+        const spinner = submitBtn.find('.spinner-border');
+        const btnText = submitBtn.find('.submit-btn-text');
+        
+        // Show loading state
+        btnText.addClass('d-none');
+        spinner.removeClass('d-none');
+        submitBtn.prop('disabled', true);
+        $('#loadingSpinner').addClass('show');
+        
+        $.ajax({
+            url: '',
+            type: 'POST',
+            data: form.serialize(),
+            success: function() {
+                window.location.reload();
+            },
+            error: function(xhr, status, error) {
+                // Reset button states
+                btnText.removeClass('d-none');
+                spinner.addClass('d-none');
+                submitBtn.prop('disabled', false);
+                $('#loadingSpinner').removeClass('show');
+                
+                new Noty({
+                    type: 'error',
+                    text: 'Error: ' + error,
+                    timeout: 5000,
+                    progressBar: true,
+                    layout: 'topRight'
+                }).show();
+                
+                console.error('AJAX Error:', error, xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+
+<?php include('./lms-footer.php'); ?>
