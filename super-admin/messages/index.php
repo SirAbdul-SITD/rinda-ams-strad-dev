@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="favicon.ico">
+  <link rel="icon" href="../assets/images/logo.jpg">
   <title>Messages | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
@@ -24,6 +24,58 @@
     .card {
       border-radius: 8px;
     }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      background-color: rgba(0, 10, 5, 0.8);
+      /* Background color with opacity */
+      color: #fff;
+    }
+
+    .popup.success {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .popup.error {
+      background-color: #F44336;
+      color: white;
+    }
+
+    .popup i {
+      margin-right: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .desktop {
+        display: none;
+        min-width: 720px;
+      }
+    }
+
+
+    @media (min-width: 768px) {
+      .mobile {
+        display: none;
+        min-width: 720px;
+      }
+    }
   </style>
 </head>
 
@@ -34,7 +86,8 @@
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -54,9 +107,15 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -69,8 +128,8 @@
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -84,7 +143,8 @@
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -193,7 +253,8 @@
           <div class="col-12">
             <div class="w-50 mx-auto text-center justify-content-center py-5 my-5">
               <h2 class="page-title mb-0">Get in touch</h2>
-              <p class="lead text-muted mb-0">Please select an option below to browse templates for sending notifications.</p>
+              <p class="lead text-muted mb-0">Please select an option below to browse templates for sending
+                notifications.</p>
             </div>
             <div class="row my-4">
               <div class="col-6 col-lg-3">
@@ -202,7 +263,8 @@
                     <div class="card-body">
                       <i class="fe fe-users fe-32 text-primary"></i>
                       <h3 class="h5 mt-0 mb-1">Parents</h3>
-                      <p class="text-muted mr-1">Send notifications to parents regarding upcoming school events updates and important.</p>
+                      <p class="text-muted mr-1">Send notifications to parents regarding upcoming school events updates
+                        and important.</p>
                     </div> <!-- .card-body -->
                   </div>
                 </a><!-- .card -->
@@ -213,7 +275,8 @@
                     <div class="card-body">
                       <i class="fe fe-book fe-32 text-success"></i>
                       <h3 class="h5 mt-0 mb-1">Teachers</h3>
-                      <p class="text-muted">Notify teachers about schedule changes, meetings, and important announcements.</p>
+                      <p class="text-muted">Notify teachers about schedule changes, meetings, and important
+                        announcements.</p>
                     </div> <!-- .card-body -->
                   </div>
                 </a> <!-- .card -->
@@ -224,7 +287,8 @@
                     <div class="card-body">
                       <i class="fe fe-user-check fe-32 text-warning"></i>
                       <h3 class="h5 mt-0 mb-1">Staffs</h3>
-                      <p class="text-muted">Send notifications to staff members regarding policy updates, announcements, and events.</p>
+                      <p class="text-muted">Send notifications to staff members regarding policy updates, announcements,
+                        and events.</p>
                     </div> <!-- .card-body -->
                   </div>
                 </a> <!-- .card -->
@@ -235,7 +299,8 @@
                     <div class="card-body">
                       <i class="fe fe-smile fe-32 text-primary"></i>
                       <h3 class="h5 mt-0 mb-1">Students</h3>
-                      <p class="text-muted">Notify students about upcoming exams, assignments, and other academic matters.</p>
+                      <p class="text-muted">Notify students about upcoming exams, assignments, and other academic
+                        matters.</p>
                     </div> <!-- .card-body -->
                   </div>
                 </a> <!-- .card -->
@@ -244,7 +309,8 @@
             <div class="my-5 ">
               <div class="text-center">
                 <h2 class="mb-0">Send custom messages</h2>
-                <p class="lead text-muted mb-5">Select any of the two options below to send custom notifications and messages</p>
+                <p class="lead text-muted mb-5">Select any of the two options below to send custom notifications and
+                  messages</p>
               </div>
             </div>
             <div class="row my-4">
@@ -257,7 +323,8 @@
                     <h3 class="h4 mt-4 mb-1 text-white">Send notifications</h3>
                     <p class="text-white mb-4">Notifications are mostly used for announcement or information update and
                       receiver won't be able to reply.</p>
-                    <a href="notification-select.php" class="btn btn-lg bg-primary-light text-white">New Notification<i class="fe fe-arrow-right fe-16 ml-2"></i></a>
+                    <a href="notification-select.php" class="btn btn-lg bg-primary-light text-white">New Notification<i
+                        class="fe fe-arrow-right fe-16 ml-2"></i></a>
                   </div> <!-- .card-body -->
                 </div> <!-- .card -->
               </div> <!-- .col-md-->
@@ -270,7 +337,8 @@
                     <h3 class="h4 mt-4 mb-1 text-white">Start a live chart</h3>
                     <p class="text-white mb-4">Chats are mostly used when the receiver is required to reply to the
                       message received or make further enquiries.</p>
-                    <a href="chat-select.php" class="btn btn-lg bg-success-light text-white">New Chat<i class="fe fe-arrow-right fe-16 ml-2"></i></a>
+                    <a href="chat-select.php" class="btn btn-lg bg-success-light text-white">New Chat<i
+                        class="fe fe-arrow-right fe-16 ml-2"></i></a>
                   </div> <!-- .card-body -->
                 </div> <!-- .card -->
               </div> <!-- .col-md-->
@@ -278,7 +346,8 @@
           </div> <!-- .col-12 -->
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -306,7 +375,9 @@
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <!-- Menu Modal -->
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -317,30 +388,30 @@
             </div>
             <div class="modal-body px-5">
               <div class="row align-items-center">
-                <div class="col-6 text-center">
-                  <a href="#" style="text-decoration: none;">
+                <div class="col-6 text-center con-item">
+                  <a href="../administration/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Dashboard</p>
+                    <p class="text-secondary control-panel-text">Dashboard</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../academics" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-user-plus fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Academics</p>
+                    <p class="text-secondary control-panel-text">Academics</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../lms" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-trello fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">E-Learning</p>
+                    <p class="text-secondary control-panel-text">E-Learning</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -353,30 +424,30 @@
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../shop" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-shopping-bag fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Shop</p>
+                    <p class="text-secondary control-panel-text">Shop</p>
                   </a>
                 </div>
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../hr/" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center text-white">
                       <i class="fe fe-users fe-32 align-self-center"></i>
                     </div>
-                    <p class="text-white">HR</p>
+                    <p class="text-secondary control-panel-text">HR</p>
                   </a>
                 </div>
               </div>
               <div class="row align-items-center">
-                <div class="col-6 text-center">
+                <div class="col-6 text-center con-item">
                   <a href="../assessments" style="text-decoration: none;">
                     <div class="squircle bg-secondary justify-content-center">
                       <i class="fe fe-check-circle fe-32 align-self-center text-white"></i>
                     </div>
-                    <p class="text-white">Assessments</p>
+                    <p class="text-secondary control-panel-text">Assessments</p>
                   </a>
                 </div>
                 <div class="col-6 text-center">
@@ -409,7 +480,7 @@
     function setCookie(name, value) {
       document.cookie = name + "=" + value + "; path=/";
 
-      setTimeout(function() {
+      setTimeout(function () {
         window.location.href = 'choose-templates.php';
       }, 1);
     }

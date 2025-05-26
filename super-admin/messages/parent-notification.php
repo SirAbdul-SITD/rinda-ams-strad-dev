@@ -14,7 +14,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="favicon.ico">
+  <link rel="icon" href="../assets/images/logo.jpg">
   <title>Compile Notification - Messages | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
@@ -35,14 +35,67 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
   <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
 
 
-<!-- Place the first <script> tag in your HTML's <head> -->
-<script src="https://cdn.tiny.cloud/1/bh3wpg04969gk3sicbornjf3q78tlfmp06uvjlwk2gi4t7ge/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+  <!-- Place the first <script> tag in your HTML's <head> -->
+  <script src="https://cdn.tiny.cloud/1/bh3wpg04969gk3sicbornjf3q78tlfmp06uvjlwk2gi4t7ge/tinymce/7/tinymce.min.js"
+    referrerpolicy="origin"></script>
 
 
 
   <style>
     .card {
       border-radius: 8px;
+    }
+
+    .modal-shortcut .con-item {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-shortcut .con-item:hover {
+      transform: scale(1.05);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      background-color: rgba(0, 10, 5, 0.8);
+      /* Background color with opacity */
+      color: #fff;
+    }
+
+    .popup.success {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .popup.error {
+      background-color: #F44336;
+      color: white;
+    }
+
+    .popup i {
+      margin-right: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .desktop {
+        display: none;
+        min-width: 720px;
+      }
+    }
+
+
+    @media (min-width: 768px) {
+      .mobile {
+        display: none;
+        min-width: 720px;
+      }
     }
 
     .popup {
@@ -239,7 +292,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -259,9 +313,15 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
-              <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <?php
+              if ($gender == 'Female') { ?>
+                <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } else { ?>
+                <img src="../../uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+              <?php } ?>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -274,8 +334,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
               </strong>
             </div>
             <hr width="80%">
-            <a class="dropdown-item text-muted" href="#">Profile</a>
-            <a class="dropdown-item text-muted" href="#">Settings</a>
+            <a class="dropdown-item" href="../profile">Profile</a>
+            <a class="dropdown-item" href="../profile/settings.php">Settings</a>
             <a class="dropdown-item" href="../logout.php">Log out</a>
           </div>
         </li>
@@ -289,7 +349,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -410,13 +471,14 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                   <div class="card shadow mb-4">
                     <div class="card-header">
                       <strong class="card-title">Configure Notification</strong>
-                      <span class="float-right"><i class="fe fe-flag mr-2"></i><span class="badge badge-pill badge-success text-white"><?= $template ?></span></span>
+                      <span class="float-right"><i class="fe fe-flag mr-2"></i><span
+                          class="badge badge-pill badge-success text-white"><?= $template ?></span></span>
                     </div>
 
                     <div class="card-body">
                       <div class="form-group col-md-12">
                         <label for="subject">Header Subject</label>
-                        <input type="text" name="subject" id="subject" class="form-control required" required value="<?= $subject ?>">
+                        <input type="text" name="subject" id="subject" class="form-control required" required>
                       </div>
 
                       <div class=" col-md-12">
@@ -424,14 +486,16 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                         <div class="form-row">
                           <div class="col-md-6">
                             <div class="custom-control custom-radio">
-                              <input type="radio" class="custom-control-input required" id="customControlValidation23" name="whom" checked required value='1'>
+                              <input type="radio" class="custom-control-input required" id="customControlValidation23"
+                                name="whom" checked required value='1'>
                               <label class="custom-control-label" for="customControlValidation23">All</label>
                               <p class="text-muted">Select parents to exclude from this notification.</p>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="custom-control custom-radio mb-3">
-                              <input type="radio" class="custom-control-input required" id="customControlValidation34" name="whom" required value='2'>
+                              <input type="radio" class="custom-control-input required" id="customControlValidation34"
+                                name="whom" required value='2'>
                               <label class="custom-control-label" for="customControlValidation34">Select</label>
                               <p class="text-muted"> Select parents that will receive this notification.
                               </p>
@@ -442,7 +506,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
 
                       <div class="form-group col-md-12">
                         <label for="recipients">Select Recipients</label>
-                        <select required class="form-control select2-multi required" id="recipients" name="recipients" aria-placeholder="Search Teachers" multiple>
+                        <select required class="form-control select2-multi required" id="recipients" name="recipients"
+                          aria-placeholder="Search Teachers" multiple>
                           <?php
                           $query = "SELECT id, CONCAT(firstName, ' ', lastName) AS full_name FROM parents ORDER BY firstName ASC";
                           $stmt = $pdo->prepare($query);
@@ -452,7 +517,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                             echo '<option value="" selected disabled>None added Yet!</option>';
                           } else {
                             echo '<option value="0"> -- Send to all parents -- </option>';
-                            foreach ($teachers as $teacher) :
+                            foreach ($teachers as $teacher):
                               $x = $teacher['id'];
                               $y = $teacher['full_name'];
                               echo "<option value=$x>$y</option>";
@@ -472,7 +537,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                     <div class="card-body">
                       <div class="form-group">
                         <label for="content" class="sr-only">Your Message</label>
-                        <textarea class="form-control bg-light" id="content" name="content" rows="7"><?= $content ?></textarea>
+                        <textarea class="form-control bg-light" id="content" name="content" rows="7"></textarea>
                       </div>
                     </div> <!-- .card-body -->
                   </div> <!-- .card -->
@@ -483,32 +548,39 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                       <h3 class="h5 mb-1">Channels</h3>
                       <p class="text-muted mb-4">Where would you like this notification to be sent?</p>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendToEmail" value="sendToEmail">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendToEmail" value="sendToEmail">
                         <label class="form-check-label" for="sendToEmail">Send to Email</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendToWhatsApp" value="sendToWhatsApp">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendToWhatsApp" value="sendToWhatsApp">
                         <label class="form-check-label" for="sendToWhatsApp">Send to WhatsApp</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMS" value="sendBySMS">
+                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMS"
+                          value="sendBySMS">
                         <label class="form-check-label" for="sendBySMS">Send by SMS</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendToEmailWhatsApp" value="sendToEmailWhatsApp">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendToEmailWhatsApp" value="sendToEmailWhatsApp">
                         <label class="form-check-label" for="sendToEmailWhatsApp">To Email & WhatsApp</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMSWhatsApp" value="sendBySMSWhatsApp">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendBySMSWhatsApp" value="sendBySMSWhatsApp">
                         <label class="form-check-label" for="sendBySMSWhatsApp">By SMS and WhatsApp</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMSEmail" value="sendBySMSEmail">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendBySMSEmail" value="sendBySMSEmail">
                         <label class="form-check-label" for="sendBySMSEmail">By SMS and Email</label>
                       </div>
                     </div>
                   </div>
-                  <button type="submit" class="w-100 btn btn-primary">Send Notification <i class="fe fe-send text-white"></i></button>
+                  <button type="submit" class="w-100 btn btn-primary">Send Notification <i
+                      class="fe fe-send text-white"></i></button>
 
                 </div> <!-- .col-md -->
               </div> <!-- .col-md -->
@@ -520,7 +592,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
 
 
   <!-- Start success Modal -->
-  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header justify-content-center">
@@ -540,7 +613,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
 
 
   <!-- Loading Modal -->
-  <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalTitle" aria-hidden="true">
+  <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="card col-12 loader">
         <div class="mt-4" style="align-self: center">
@@ -558,7 +632,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
   </div>
 
 
-  <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+  <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -586,7 +661,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
       </div>
     </div>
   </div>
-  <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+  <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -692,32 +768,54 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
   <script src='../js/uppy.min.js'></script>
   <script src='../js/quill.min.js'></script>
 
-<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
-<script>
-  tinymce.init({
+  <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+  <script>
+    tinymce.init({
       selector: 'textarea',
-          plugins: [
-                // Core editing features
-                      'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                            // Your account includes a free trial of TinyMCE premium features
-                                  // Try the most popular premium features until Oct 31, 2024:
-                                        'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
-                                            ],
-                                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                                                    tinycomments_mode: 'embedded',
-                                                        tinycomments_author: 'Author name',
-                                                            mergetags_list: [
-                                                                  { value: 'First.Name', title: 'First Name' },
-                                                                        { value: 'Email', title: 'Email' },
-                                                                            ],
-                                                                                ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-                                                                                  });
-                                                                                  </script>
-                                                                                  
+      /* Free-tier plugins */
+      plugins: [
+        'advlist',       // advanced list support
+        'autolink',      // linkify URLs
+        'lists',         // ordered/unordered lists
+        'link',          // hyperlinking
+        'image',         // images
+        'charmap',       // special characters
+        'searchreplace', // find & replace
+        'visualblocks',  // show block boundaries
+        'code',          // HTML source
+        'fullscreen',    // full-screen editing
+        'insertdatetime',// insert date/time
+        'media',         // embed media
+        'table',         // tables
+        'paste',         // paste handling
+        'help',          // help plugin
+        'wordcount'      // word count
+      ].join(' '),
+
+      /* Toolbar buttons (free-tier only) */
+      toolbar: [
+        'undo redo |',
+        'bold italic underline strikethrough |',
+        'alignleft aligncenter alignright alignjustify |',
+        'bullist numlist outdent indent |',
+        'link image media table |',
+        'searchreplace code fullscreen |',
+        'help'
+      ].join(' '),
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+    });
+  </script>
+
 
   <script>
     // Add event listener to the multi-select dropdown
-    document.getElementById('recipients').addEventListener('change', function() {
+    document.getElementById('recipients').addEventListener('change', function () {
       // Get the count of selected options
       var selectedCount = this.selectedOptions.length;
       // Update the count in the span element
@@ -807,42 +905,42 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -857,14 +955,14 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();
@@ -908,8 +1006,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
   </script>
 
 
-  <!-- <script>
-    $(document).ready(function() {
+  <script>
+    $(document).ready(function () {
 
       //Function to display a popup message
       function displayPopup(message, success) {
@@ -927,14 +1025,14 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
 
         document.body.appendChild(popup);
 
-        setTimeout(function() {
+        setTimeout(function () {
           popup.remove();
         }, 5000);
       }
 
 
 
-      $('#send-message').submit(function(event) {
+      $('#send-message').submit(function (event) {
         event.preventDefault(); // Prevent the default form submission
 
         // Serialize form data
@@ -946,15 +1044,15 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
           type: 'POST',
           data: formData,
           dataType: 'json',
-          beforeSend: function() {
+          beforeSend: function () {
             $('#loadingModal').modal({
               backdrop: 'static',
               keyboard: false
             });
             // $('#startModal').modal('hide')
           },
-          success: function(response) {
-            setTimeout(function() {
+          success: function (response) {
+            setTimeout(function () {
               $('#loadingModal').modal('hide');
 
               if (response.success) {
@@ -968,7 +1066,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
               }
             }, 500);
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             $('#loadingModal').modal('hide');
             displayPopup(response.message, false);
             // console.error(xhr, status, error);
@@ -977,7 +1075,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         });
       });
     });
-  </script> -->
+  </script>
 
 
 </body>

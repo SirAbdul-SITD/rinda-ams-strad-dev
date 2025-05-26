@@ -7,15 +7,6 @@ ini_set('display_errors', 0);
 // error_reporting(E_ALL);
 
 
-//  $servername = "localhost";
-//  $username = "riidalms_gha";
-//  $password = "K_TcmAcE?%_EZwqtkY";
-//  $database = "riidalms_gha";
-
-// $servername = "localhost";
-// $username = "riidalms_gha";
-// $password = "K_TcmAcE?%_EZwqtkY";
-// $database = "riidalms_gha";
 
 $servername = "localhost";
 $username = "root";

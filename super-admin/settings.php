@@ -2,7 +2,7 @@
 // // Start or resume the session
 session_start();
 
-ini_set('display_errors', 1);
+// ini_set('display_errors', 0);
 
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
@@ -23,18 +23,6 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
 }
 
 
-
-
-// $servername = "localhost";
-// $username = "riidalms_gha_dev";
-// $password = "=%6[qU$}GTD03-I3{N";
-// $database = "riidalms_gha_dev";
-
-
-//  $servername = "localhost";
-//  $username = "riidalms_gha";
-//  $password = "K_TcmAcE?%_EZwqtkY";
-//  $database = "riidalms_gha";
 
 
 $servername = "localhost";
