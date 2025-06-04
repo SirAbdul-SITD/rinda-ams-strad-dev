@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item active">
-            <a class="nav-link text-primary" href="dashboard.php">
+            <a class="nav-link text-primary" href="index.php">
               <i class="fe fe-home fe-16"></i>
               <span class="ml-3 item-text">Dashboard</span>
             </a>

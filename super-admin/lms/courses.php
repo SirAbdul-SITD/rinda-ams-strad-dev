@@ -121,7 +121,7 @@
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="dashboard.php">
+            <a class="nav-link" href="index.php">
               <i class="fe fe-home fe-16"></i>
               <span class="ml-3 item-text">Dashboard</span>
             </a>

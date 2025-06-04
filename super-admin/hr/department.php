@@ -140,29 +140,40 @@
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
             <a class="nav-link" href="index.php">
+              <i class="fe fe-home fe-16"></i>
+              <span class="ml-3 item-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="staff.php">
               <i class="fe fe-codesandbox fe-16"></i>
               <span class="ml-3 item-text">Staffs Directory</span>
-              </i>
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link text-primary" href="#">
+            <a class="nav-link text-primary" href="department.php">
               <i class="fe fe-users fe-16"></i>
               <span class="ml-3 item-text">Department</span>
-              </i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="designation.php">
               <i class="fe fe-book fe-16"></i>
               <span class="ml-3 item-text">Designation</span>
-              </i>
             </a>
           </li>
-
-
-
-
+          <li class="nav-item">
+            <a class="nav-link" href="attendance.php">
+              <i class="fe fe-calendar fe-16"></i>
+              <span class="ml-3 item-text">Attendance</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties.php">
+              <i class="fe fe-alert-triangle fe-16"></i>
+              <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
 
           <!-- Leave -->
           <p class="text-muted nav-heading mt-4 mb-1">
@@ -212,26 +223,25 @@
               </a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="message.php">
                 <i class="fe fe-copy fe-16"></i>
                 <span class="ml-3 item-text">Message</span>
                 </i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-server fe-16"></i>
+              <a class="nav-link" href="payroll.php">
+                <i class="fe fe-dollar-sign fe-16"></i>
                 <span class="ml-3 item-text">Payroll</span>
-                </i>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="#">
                 <i class="fe fe-fast-forward fe-16"></i>
                 <span class="ml-3 item-text">Penalties</span>
                 </i>
               </a>
-            </li>
+            </li> -->
           </ul>
       </nav>
     </aside>

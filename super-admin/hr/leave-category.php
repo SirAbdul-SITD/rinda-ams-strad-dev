@@ -138,37 +138,50 @@
             </svg>
           </a>
         </div>
+        <!-- Staffs Section -->
         <p class="text-muted nav-heading mt-4 mb-1">
           <span>Staffs</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
             <a class="nav-link" href="index.php">
+              <i class="fe fe-home fe-16"></i>
+              <span class="ml-3 item-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="staff.php">
               <i class="fe fe-codesandbox fe-16"></i>
               <span class="ml-3 item-text">Staffs Directory</span>
-              </i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="department.php">
               <i class="fe fe-users fe-16"></i>
               <span class="ml-3 item-text">Department</span>
-              </i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="designation.php">
               <i class="fe fe-book fe-16"></i>
               <span class="ml-3 item-text">Designation</span>
-              </i>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="attendance.php">
+              <i class="fe fe-calendar fe-16"></i>
+              <span class="ml-3 item-text">Attendance</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties.php">
+              <i class="fe fe-alert-triangle fe-16"></i>
+              <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
+        </ul>
 
-
-
-
-
-          <!-- Leave -->
+        <!-- Leave Section -->
           <p class="text-muted nav-heading mt-4 mb-1">
             <span>Leave</span>
           </p>
@@ -177,33 +190,29 @@
               <a class="nav-link" href="leave-application.php">
                 <i class="fe fe-home fe-16"></i>
                 <span class="ml-3 item-text">Leave Application</span>
-                </i>
               </a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link text-primary" href="#">
+            <a class="nav-link text-primary" href="leave-category.php">
                 <i class="fe fe-copy fe-16"></i>
                 <span class="ml-3 item-text">Leave Category</span>
-                </i>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="approved-leave.php">
                 <i class="fe fe-server fe-16"></i>
                 <span class="ml-3 item-text">Approved Leave</span>
-                </i>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="pending-leave.php">
                 <i class="fe fe-fast-forward fe-16"></i>
                 <span class="ml-3 item-text">Pending Requests</span>
-                </i>
               </a>
             </li>
           </ul>
 
-          <!-- Extras -->
+        <!-- Extras Section -->
           <p class="text-muted nav-heading mt-4 mb-1">
             <span>Extras</span>
           </p>
@@ -216,7 +225,7 @@
               </a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="message.php">
                 <i class="fe fe-copy fe-16"></i>
                 <span class="ml-3 item-text">Message</span>
                 </i>
@@ -229,13 +238,12 @@
                 </i>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-fast-forward fe-16"></i>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="penalties.php">
+                <i class="fe fe-alert-triangle fe-16"></i>
                 <span class="ml-3 item-text">Penalties</span>
-                </i>
               </a>
-            </li>
+            </li> -->
           </ul>
       </nav>
     </aside>
@@ -257,27 +265,20 @@
                 <div class="card shadow">
                   <div class="card-body">
                     <div class="toolbar">
-                      <form class="form">
-                        <div class="form-row">
-                          <div class="form-group col-auto mr-auto">
-                            <label class="my-1 mr-2 sr-only" for="inlineFormCustomSelectPref1">Show</label>
-                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelectPref1">
-                              <option value="">...</option>
-                              <option value="1">12</option>
-                              <option value="2" selected>32</option>
-                              <option value="3">64</option>
-                              <option value="3">128</option>
-                            </select>
-                          </div>
-                          <div class="form-group col-auto">
-                            <label for="search" class="sr-only">Search</label>
-                            <input type="text" class="form-control" id="search1" value="" placeholder="Search">
-                          </div>
-                        </div>
-                      </form>
+                      <!-- Removed custom search and page item count dropdown -->
                     </div>
                     <!-- table -->
-                    <!-- table -->
+                    <div class="table-responsive">
+                      <table class="table table-hover table-striped align-middle" id="leaveCategoryTable">
+                        <thead class="thead-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Category</th>
+                            <th>Days</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
                     <?php
                     // Query to select all departments
                     $query = "SELECT * FROM leave_categories";
@@ -289,55 +290,22 @@
                       echo '<div class="text-center">None Added Yet!</div>';
                     } else {
                     ?>
-                      <table class="table table-borderless table-hover">
-                        <thead>
-                          <tr>
-
-                            <th>#</th>
-                            <th>Category</th>
-                            <th>leaveDays</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <!-- Row 1 -->
                           <?php foreach ($categories as $index => $category) : ?>
-                            <tr>
+                              <tr data-id="<?= $category['id'] ?>">
+                                <td><?= $index + 1 ?></td>
+                                <td class="category-name"> <?= htmlspecialchars($category['category']) ?> </td>
+                                <td class="category-days"> <?= htmlspecialchars($category['days']) ?> </td>
                               <td>
-                                <?= $index + 1 ?>
-                              </td>
-                              <td>
-                                <p class="mb-0 text-muted">
-                                  <strong class="mb-0 text-muted category-name" data-category-id="<?= $category['id'] ?>">
-                                    <?= $category['category'] ?>
-                                  </strong>
-                                  <input type="hidden" class="category-id" value="<?= $category['id'] ?>">
-                                </p>
-                              </td>
-                              <td>
-                                <p class="mb-0 text-muted">
-                                  <strong class="mb-0 text-muted category-salary">
-                                    <?= $category['duration_in_days'] ?>
-                                  </strong>
-                                </p>
-                              </td>
-
-                              <td>
-                                <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <span class="text-muted sr-only">Action</span>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                  <a class="dropdown-item" href="#">Edit</a>
-                                  <a class="dropdown-item" href="#">Remove</a>
-                                </div>
+                                  <button class="btn btn-sm btn-outline-info view-btn" data-id="<?= $category['id'] ?>" data-name="<?= htmlspecialchars($category['category']) ?>" data-days="<?= htmlspecialchars($category['days']) ?>"><i class="fe fe-eye"></i></button>
+                                  <button class="btn btn-sm btn-outline-primary edit-btn" data-id="<?= $category['id'] ?>" data-name="<?= htmlspecialchars($category['category']) ?>" data-days="<?= htmlspecialchars($category['days']) ?>"><i class="fe fe-edit"></i></button>
+                                  <button class="btn btn-sm btn-outline-danger delete-btn" data-id="<?= $category['id'] ?>"><i class="fe fe-trash"></i></button>
                               </td>
                             </tr>
                           <?php endforeach; ?>
-
-
+                          <?php } ?>
                         </tbody>
                       </table>
-                    <?php } ?>
+                    </div>
                   </div>
                 </div>
               </div> <!-- customized table -->
@@ -500,12 +468,10 @@
   <script src='../js/jquery.dataTables.min.js'></script>
   <script src='../js/dataTables.bootstrap4.min.js'></script>
   <script>
-    $('#dataTable-1').DataTable({
+    $('#leaveCategoryTable').DataTable({
       autoWidth: true,
-      "lengthMenu": [
-        [16, 32, 64, -1],
-        [16, 32, 64, "All"]
-      ]
+      lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']],
+      responsive: true
     });
   </script>
   <script src="../js/apps.js"></script>
@@ -581,8 +547,104 @@
           }
         });
       });
+
+      // Open Add Modal
+      $('.btn-primary[data-target="#addModal"]').on('click', function() {
+        $('#categoryModalLabel').text('Add Leave Category');
+        $('#categoryForm')[0].reset();
+        $('#category-id').val('');
+        $('#categoryModal').modal('show');
+      });
+
+      // Open Edit Modal
+      $(document).on('click', '.edit-btn', function() {
+        $('#addModalLabel').text('Edit Leave Category');
+        $('#category-name').val($(this).data('name'));
+        $('#days').val($(this).data('days'));
+        $('#addModal').modal('show');
+      });
+
+      // Save (Add/Edit)
+      $('#saveCategoryBtn').on('click', function(e) {
+        e.preventDefault();
+        var id = $('#category-id').val();
+        var name = $('#category-name-input').val();
+        var days = $('#category-days-input').val();
+        var url = id ? 'update-leave-category.php' : 'add-leave-category.php';
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: { id: id, name: name, days: days },
+          dataType: 'json',
+          success: function(response) {
+            displayPopup(response.message, response.success);
+            if (response.success) {
+              setTimeout(function() { location.reload(); }, 1200);
+            }
+          },
+          error: function(xhr) {
+            displayPopup('Server error. Try again.', false);
+          }
+        });
+      });
+
+      // Delete
+      $(document).on('click', '.delete-btn', function() {
+        var id = $(this).data('id');
+        if (confirm('Are you sure you want to delete this category?')) {
+          $.ajax({
+            url: 'remove-leave-category.php',
+            type: 'POST',
+            data: { id: id },
+            dataType: 'json',
+            success: function(response) {
+              displayPopup(response.message, response.success);
+              if (response.success) {
+                setTimeout(function() { location.reload(); }, 1200);
+              }
+            },
+            error: function(xhr) {
+              displayPopup('Server error. Try again.', false);
+            }
+          });
+        }
+      });
+
+      // View
+      $(document).on('click', '.view-btn', function() {
+        $('#view-category-name').val($(this).data('name'));
+        $('#view-category-days').val($(this).data('days'));
+        $('#viewCategoryModal').modal('show');
+      });
     });
   </script>
+
+  <!-- View Modal -->
+  <div class="modal fade" id="viewCategoryModal" tabindex="-1" role="dialog" aria-labelledby="viewCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewCategoryModalLabel">View Leave Category</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Category Name</label>
+            <input type="text" class="form-control" id="view-category-name" readonly>
+          </div>
+          <div class="form-group">
+            <label>Days</label>
+            <input type="text" class="form-control" id="view-category-days" readonly>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

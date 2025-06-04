@@ -145,126 +145,153 @@
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
             <a class="nav-link" href="index.php">
+              <i class="fe fe-home fe-16"></i>
+              <span class="ml-3 item-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="staff.php">
               <i class="fe fe-codesandbox fe-16"></i>
               <span class="ml-3 item-text">Staffs Directory</span>
-              </i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="department.php">
               <i class="fe fe-users fe-16"></i>
               <span class="ml-3 item-text">Department</span>
-              </i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="designation.php">
               <i class="fe fe-book fe-16"></i>
               <span class="ml-3 item-text">Designation</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="attendance.php">
+              <i class="fe fe-calendar fe-16"></i>
+              <span class="ml-3 item-text">Attendance</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties.php">
+              <i class="fe fe-alert-triangle fe-16"></i>
+              <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Leave -->
+        <p class="text-muted nav-heading mt-4 mb-1">
+          <span>Leave</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="leave-application.php">
+              <i class="fe fe-home fe-16"></i>
+              <span class="ml-3 item-text">Leave Application</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="leave-category.php">
+              <i class="fe fe-copy fe-16"></i>
+              <span class="ml-3 item-text">Leave Category</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="approved-leave.php">
+              <i class="fe fe-server fe-16"></i>
+              <span class="ml-3 item-text">Approved Leave</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link text-primary" href="pending-leave.php">
+              <i class="fe fe-fast-forward fe-16"></i>
+              <span class="ml-3 item-text">Pending Requests</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Extras -->
+        <p class="text-muted nav-heading mt-4 mb-1">
+          <span>Extras</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fe fe-home fe-16"></i>
+              <span class="ml-3 item-text">Attendance</span>
+              </i>
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="message.php">
+              <i class="fe fe-copy fe-16"></i>
+              <span class="ml-3 item-text">Message</span>
               </i>
             </a>
           </li>
-
-
-
-
-
-          <!-- Leave -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Leave</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item">
-              <a class="nav-link" href="leave-application.php">
-                <i class="fe fe-home fe-16"></i>
-                <span class="ml-3 item-text">Leave Application</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="leave-category.php">
-                <i class="fe fe-copy fe-16"></i>
-                <span class="ml-3 item-text">Leave Category</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="approved-leave.php">
-                <i class="fe fe-server fe-16"></i>
-                <span class="ml-3 item-text">Approved Leave</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link text-primary" href="#">
-                <i class="fe fe-fast-forward fe-16"></i>
-                <span class="ml-3 item-text">Pending Requests</span>
-                </i>
-              </a>
-            </li>
-          </ul>
-
-          <!-- Extras -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>Extras</span>
-          </p>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-home fe-16"></i>
-                <span class="ml-3 item-text">Attendance</span>
-                </i>
-              </a>
-            </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-copy fe-16"></i>
-                <span class="ml-3 item-text">Message</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-server fe-16"></i>
-                <span class="ml-3 item-text">Payroll</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-fast-forward fe-16"></i>
-                <span class="ml-3 item-text">Penalties</span>
-                </i>
-              </a>
-            </li>
-          </ul>
+          <li class="nav-item">
+            <a class="nav-link" href="payroll.php">
+              <i class="fe fe-dollar-sign fe-16"></i>
+              <span class="ml-3 item-text">Payroll</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="penalties.php">
+              <i class="fe fe-alert-triangle fe-16"></i>
+              <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li> -->
+        </ul>
       </nav>
     </aside>
     <main role="main" class="main-content">
       <div class="container-fluid">
         <div class="row justify-content-center">
           <?php
+          // Enable error reporting
+          error_reporting(E_ALL);
+          ini_set('display_errors', 1);
+
           // Execute SQL query
           $sql = "SELECT 
-            la.id AS id,
-            CONCAT(s.first_name, ' ', s.last_name) AS name,
-            lc.category AS category,
-            la.start_date AS start_date,
-            DATE_ADD(la.start_date, INTERVAL lc.duration_in_days DAY) AS end_date,
-            la.create_datetime AS apply_date, la.status AS status
-        FROM
-            leave_applications AS la
-                INNER JOIN
-            staffs AS s ON la.staff_id = s.id
-                INNER JOIN
-            leave_categories AS lc ON la.category_id = lc.id
-        WHERE
-            la.status != 'Approved'";
+                la.id AS id,
+                CONCAT(s.first_name, ' ', s.last_name) AS name,
+                lc.category AS category,
+                la.start_date AS start_date,
+                CASE 
+                    WHEN la.start_date IS NOT NULL AND lc.days IS NOT NULL 
+                    THEN DATE_ADD(la.start_date, INTERVAL lc.days DAY)
+                    ELSE NULL 
+                END AS end_date,
+                la.create_datetime AS apply_date,
+                la.status AS status
+            FROM
+                leave_applications AS la
+                    LEFT JOIN
+                staffs AS s ON la.staff_id = s.id
+                    LEFT JOIN
+                leave_categories AS lc ON la.category_id = lc.id
+            WHERE
+                LOWER(la.status) = LOWER('Pending')
+            ORDER BY la.create_datetime DESC";
 
-          $stmt = $pdo->query($sql);
-
-          // Check if query was successful
-
+          try {
+              $stmt = $pdo->query($sql);
+              $rowCount = $stmt->rowCount();
+              echo "<!-- Debug: Number of rows found: " . $rowCount . " -->";
+              
+              if ($rowCount === 0) {
+                  // Check if there are any records in the table
+                  $checkSql = "SELECT COUNT(*) as total FROM leave_applications WHERE status = 'Pending'";
+                  $checkStmt = $pdo->query($checkSql);
+                  $totalPending = $checkStmt->fetch(PDO::FETCH_ASSOC)['total'];
+                  echo "<!-- Debug: Total pending records in table: " . $totalPending . " -->";
+              }
+          } catch (PDOException $e) {
+              echo "<!-- Debug: Database error: " . $e->getMessage() . " -->";
+          }
           ?>
           <div class="col-12">
             <h2 class="mb-2 page-title">Pending Leave Requests</h2>
@@ -294,26 +321,14 @@
                           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         ?>
                             <tr data-id="<?= $row['id']; ?>">
-                              <td>
-                                <?php echo $i++; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['name']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['category']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['start_date']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['end_date']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['apply_date']; ?>
-                              </td>
-                              <td class="status-cell" <?php if ($row['status'] == "Rejected") { ?> style="color: red" <?php } ?>>
-                                <?php echo $row['status']; ?>
+                              <td><?= $i++; ?></td>
+                              <td><?= $row['name']; ?></td>
+                              <td><?= $row['category']; ?></td>
+                              <td><?= $row['start_date'] ? date('Y-m-d', strtotime($row['start_date'])) : 'N/A'; ?></td>
+                              <td><?= $row['end_date'] ? date('Y-m-d', strtotime($row['end_date'])) : 'N/A'; ?></td>
+                              <td><?= $row['apply_date'] ? date('Y-m-d', strtotime($row['apply_date'])) : 'N/A'; ?></td>
+                              <td class="status-cell" style="color: orange">
+                                <?= $row['status']; ?>
                               </td>
                               <td>
                                 <div class="btn-group">
@@ -328,17 +343,21 @@
                                 </div>
                               </td>
                             </tr>
-                        <?php
+                        <?php 
                           }
-                        }
+                        } else {
                         ?>
+                          <tr>
+                            <td colspan="8" class="text-center">No pending leave requests found.</td>
+                          </tr>
+                        <?php } ?>
                       </tbody>
                     </table>
                   </div>
                 </div>
-              </div> <!-- simple table -->
-            </div> <!-- end section -->
-          </div> <!-- .col-12 -->
+              </div>
+            </div>
+          </div>
 
 
         </div> <!-- .row -->
@@ -565,7 +584,7 @@
         $('#approveConfirmationModal').modal('show');
 
         // Add click event listener to the confirmation button
-        $('#approveConfirmationModal').one('click', '.confirm-action', function() {
+        $('#approveConfirmationModal').one('click', '.confirm-approve', function() {
           // Send AJAX request to approve the request
           $.ajax({
             type: 'POST',

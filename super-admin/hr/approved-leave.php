@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="favicon.ico">
-  <title>Approved - Leave | Rinda AMS</title>
+  <title>Approved Leave | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->
@@ -144,29 +144,41 @@
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
             <a class="nav-link" href="index.php">
+              <i class="fe fe-home fe-16"></i>
+              <span class="ml-3 item-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="staff.php">
               <i class="fe fe-codesandbox fe-16"></i>
               <span class="ml-3 item-text">Staffs Directory</span>
-              </i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="department.php">
               <i class="fe fe-users fe-16"></i>
               <span class="ml-3 item-text">Department</span>
-              </i>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="designation.php">
               <i class="fe fe-book fe-16"></i>
               <span class="ml-3 item-text">Designation</span>
-              </i>
             </a>
           </li>
-
-
-
-
+          <li class="nav-item">
+            <a class="nav-link" href="attendance.php">
+              <i class="fe fe-calendar fe-16"></i>
+              <span class="ml-3 item-text">Attendance</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties.php">
+              <i class="fe fe-alert-triangle fe-16"></i>
+              <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
+        </ul>
 
           <!-- Leave -->
           <p class="text-muted nav-heading mt-4 mb-1">
@@ -177,28 +189,24 @@
               <a class="nav-link" href="leave-application.php">
                 <i class="fe fe-home fe-16"></i>
                 <span class="ml-3 item-text">Leave Application</span>
-                </i>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="leave-category.php">
                 <i class="fe fe-copy fe-16"></i>
                 <span class="ml-3 item-text">Leave Category</span>
-                </i>
               </a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link text-primary" href="#">
+            <a class="nav-link text-primary" href="approved-leave.php">
                 <i class="fe fe-server fe-16"></i>
                 <span class="ml-3 item-text">Approved Leave</span>
-                </i>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="pending-leave.php">
                 <i class="fe fe-fast-forward fe-16"></i>
                 <span class="ml-3 item-text">Pending Requests</span>
-                </i>
               </a>
             </li>
           </ul>
@@ -216,26 +224,24 @@
               </a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="message.php">
                 <i class="fe fe-copy fe-16"></i>
                 <span class="ml-3 item-text">Message</span>
                 </i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-server fe-16"></i>
+            <a class="nav-link" href="payroll.php">
+              <i class="fe fe-dollar-sign fe-16"></i>
                 <span class="ml-3 item-text">Payroll</span>
-                </i>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-fast-forward fe-16"></i>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="penalties.php">
+                <i class="fe fe-alert-triangle fe-16"></i>
                 <span class="ml-3 item-text">Penalties</span>
-                </i>
               </a>
-            </li>
+            </li> -->
           </ul>
       </nav>
     </aside>
@@ -244,32 +250,51 @@
         <div class="row justify-content-center">
 
           <?php
+          // Enable error reporting
+          error_reporting(E_ALL);
+          ini_set('display_errors', 1);
+
           // Execute SQL query
           $sql = "SELECT 
                 la.id AS id,
                 CONCAT(s.first_name, ' ', s.last_name) AS name,
                 lc.category AS category,
                 la.start_date AS start_date,
-                DATE_ADD(la.start_date, INTERVAL lc.duration_in_days DAY) AS end_date,
+                    CASE 
+                        WHEN la.start_date IS NOT NULL AND lc.days IS NOT NULL 
+                        THEN DATE_ADD(la.start_date, INTERVAL lc.days DAY)
+                        ELSE NULL 
+                    END AS end_date,
                 la.create_datetime AS apply_date,
-                CASE
-                    WHEN la.status = 'Terminated' THEN 'Terminated'
-                    WHEN NOW() < la.start_date THEN 'Approved'
-                    WHEN NOW() BETWEEN la.start_date AND DATE_ADD(la.start_date, INTERVAL lc.duration_in_days DAY) THEN CONCAT(DATEDIFF(DATE_ADD(la.start_date, INTERVAL lc.duration_in_days DAY), NOW()), ' Days Remaining')
-                    ELSE 'Ended'
-                END AS status
+                    la.status AS status
             FROM
                 leave_applications AS la
-                    INNER JOIN
+                        LEFT JOIN
                 staffs AS s ON la.staff_id = s.id
-                    INNER JOIN
+                        LEFT JOIN
                 leave_categories AS lc ON la.category_id = lc.id
             WHERE
-                la.status IN ('Approved', 'Terminated');
-            ";
+                    LOWER(la.status) = LOWER('Approved')
+                ORDER BY la.create_datetime DESC";
 
+          try {
           $stmt = $pdo->query($sql);
+              $rowCount = $stmt->rowCount();
+              echo "<!-- Debug: Number of rows found: " . $rowCount . " -->";
+              
+              if ($rowCount === 0) {
+                  // Check if there are any records in the table
+                  $checkSql = "SELECT COUNT(*) as total FROM leave_applications WHERE LOWER(status) = LOWER('Approved')";
+                  $checkStmt = $pdo->query($checkSql);
+                  $totalApproved = $checkStmt->fetch(PDO::FETCH_ASSOC)['total'];
+                  echo "<!-- Debug: Total approved records in table: " . $totalApproved . " -->";
+              }
+          } catch (PDOException $e) {
+              echo "<!-- Debug: Database error: " . $e->getMessage() . " -->";
+          }
+          ?>
 
+          <?php
           // Check if query was successful
           if ($stmt->rowCount() > 0) {
           ?>
@@ -300,26 +325,14 @@
                           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                           ?>
                             <tr data-id="<?= $row['id']; ?>">
-                              <td>
-                                <?php echo $i++; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['name']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['category']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['start_date']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['end_date']; ?>
-                              </td>
-                              <td>
-                                <?php echo $row['apply_date']; ?>
-                              </td>
-                              <td class="status-cell" <?php if ($row['status'] == "Terminated") { ?> style="color: red" <?php } elseif ($row['status'] == "Approved") { ?> style="color: green" <?php } ?>>
-                                <?php echo $row['status']; ?>
+                              <td><?= $i++; ?></td>
+                              <td><?= $row['name']; ?></td>
+                              <td><?= $row['category']; ?></td>
+                              <td><?= date('Y-m-d', strtotime($row['start_date'])); ?></td>
+                              <td><?= date('Y-m-d', strtotime($row['end_date'])); ?></td>
+                              <td><?= date('Y-m-d', strtotime($row['apply_date'])); ?></td>
+                              <td class="status-cell" style="color: green">
+                                <?= $row['status']; ?>
                               </td>
                               <td>
                                 <div class="btn-group">
@@ -327,29 +340,34 @@
                                     <span class="text-muted sr-only">Action</span>
                                   </button>
                                   <div class="dropdown-menu dropdown-menu-right">
-                                    <!-- <a class="dropdown-item extend-action" href="#">Extend</a> -->
-                                    <?php if ($row['status'] == "Terminated") { ?>
-                                      <a class="dropdown-item resume-action" href="#">Resume</a>
-                                    <?php } else { ?>
+                                    <a class="dropdown-item view-reason" href="#">View Reason</a>
                                       <a class="dropdown-item terminate-action" href="#">Terminate</a>
-                                    <?php } ?>
                                   </div>
                                 </div>
                               </td>
                             </tr>
-                        <?php
-                          }
-                        }
-                        ?>
+                          <?php } ?>
                         </tbody>
                       </table>
                     </div>
                   </div>
-                </div> <!-- simple table -->
-              </div> <!-- end section -->
-            </div> <!-- .col-12 -->
-
-
+                </div>
+              </div>
+            </div>
+          <?php } else { ?>
+            <div class="col-12">
+              <h2 class="mb-2 page-title">Approved Leave Requests</h2>
+              <div class="row my-4">
+                <div class="col-md-12">
+                  <div class="card shadow">
+                    <div class="card-body">
+                      <div class="text-center">No approved leave requests found.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php } ?>
 
         </div> <!-- .row -->
       </div> <!-- .container-fluid -->
