@@ -4,54 +4,46 @@ require '../settings.php';
 header('Content-Type: application/json');
 
 try {
-    // Validate required fields
-    $required_fields = ['id', 'staff_id', 'type', 'description', 'amount', 'date', 'status'];
-    foreach ($required_fields as $field) {
-        if (!isset($_POST[$field]) || empty($_POST[$field])) {
-            throw new Exception("Missing required field: $field");
-        }
+    // Validate input
+    if (empty($_POST['penalty_id']) || empty($_POST['staff_id']) || empty($_POST['penalty_type_id']) || empty($_POST['date']) || !isset($_POST['price'])) {
+        throw new Exception('Penalty ID, staff, penalty type, date, and price are required');
     }
 
-    // Sanitize and validate input
-    $penalty_id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
-    $staff_id = filter_var($_POST['staff_id'], FILTER_VALIDATE_INT);
-    $type = filter_var($_POST['type'], FILTER_SANITIZE_STRING);
-    $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-    $amount = filter_var($_POST['amount'], FILTER_VALIDATE_FLOAT);
-    $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
-    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    $penalty_id = intval($_POST['penalty_id']);
+    $staff_id = intval($_POST['staff_id']);
+    $penalty_type_id = intval($_POST['penalty_type_id']);
+    $date = $_POST['date'];
+    $price = floatval($_POST['price']);
+    $description = trim($_POST['description'] ?? '');
 
-    if (!$penalty_id || !$staff_id || !$amount) {
-        throw new Exception('Invalid input data');
+    if ($price < 0) {
+        throw new Exception('Price cannot be negative');
     }
 
-    // Begin transaction
-    $pdo->beginTransaction();
+    // Check if penalty exists
+    $stmt = $pdo->prepare("SELECT id FROM penalties WHERE id = ?");
+    $stmt->execute([$penalty_id]);
+    if ($stmt->rowCount() === 0) {
+        throw new Exception('Penalty not found');
+    }
+
+    // Check if staff exists
+    $stmt = $pdo->prepare("SELECT id FROM staffs WHERE id = ?");
+    $stmt->execute([$staff_id]);
+    if ($stmt->rowCount() === 0) {
+        throw new Exception('Staff member not found');
+    }
+
+    // Check if penalty type exists
+    $stmt = $pdo->prepare("SELECT id FROM penalty_types WHERE id = ?");
+    $stmt->execute([$penalty_type_id]);
+    if ($stmt->rowCount() === 0) {
+        throw new Exception('Penalty type not found');
+    }
 
     // Update penalty
-    $query = "UPDATE penalties SET 
-              staff_id = ?, 
-              type = ?, 
-              description = ?, 
-              amount = ?, 
-              date = ?, 
-              status = ?,
-              updated_at = NOW()
-              WHERE id = ?";
-    
-    $stmt = $pdo->prepare($query);
-    $stmt->execute([
-        $staff_id,
-        $type,
-        $description,
-        $amount,
-        $date,
-        $status,
-        $penalty_id
-    ]);
-
-    // Commit transaction
-    $pdo->commit();
+    $stmt = $pdo->prepare("UPDATE penalties SET staff_id = ?, penalty_type_id = ?, date = ?, price = ?, description = ? WHERE id = ?");
+    $stmt->execute([$staff_id, $penalty_type_id, $date, $price, $description, $penalty_id]);
 
     echo json_encode([
         'success' => true,
@@ -59,11 +51,6 @@ try {
     ]);
 
 } catch (Exception $e) {
-    // Rollback transaction on error
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
-
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()

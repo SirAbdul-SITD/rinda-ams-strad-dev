@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 // Set PDO to throw exceptions
 // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+$current_page = basename($_SERVER['PHP_SELF']);
 
 require_once('../settings.php'); ?>
 <!doctype html>
@@ -17,7 +18,7 @@ require_once('../settings.php'); ?>
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-  <title>LMS Dashboard - Admin | <?= $school_name ?></title>
+  <title>Learning Management System | <?= $school_name ?></title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
   <!-- Fonts CSS -->
@@ -33,8 +34,22 @@ require_once('../settings.php'); ?>
   <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
   <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
   <style>
-
-/* .card {
+    .sidebar-collapsed .sidebar-left {
+      width: 60px;
+    }
+    .sidebar-collapsed .main-content {
+      margin-left: 60px;
+    }
+    .sidebar-left {
+      transition: width 0.3s ease;
+    }
+    .main-content {
+      transition: margin-left 0.3s ease;
+    }
+    .navbar-toggler {
+      cursor: pointer;
+    }
+    /* .card {
       border-radius: 8px;
     } */
     /* Loading overlay styles */

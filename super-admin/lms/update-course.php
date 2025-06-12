@@ -1,178 +1,164 @@
 <?php
+// Start session before any output
+session_start();
+
 // Enable detailed error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('../settings.php');
+require_once '../includes/config.php';
+require_once '../includes/functions.php';
 
 // Set header to return JSON
 header('Content-Type: application/json');
 
+// Function to send JSON response
+function sendResponse($success, $message, $data = null, $statusCode = 200) {
+    http_response_code($statusCode);
+    echo json_encode([
+        'success' => $success,
+        'message' => $message,
+        'data' => $data
+    ]);
+    exit;
+}
+
 // Log the received data for debugging
-file_put_contents('update_course_debug.log', "\n\n" . date('Y-m-d H:i:s') . " - Received data: " . print_r($_POST, true) . "\nFiles: " . print_r($_FILES, true), FILE_APPEND);
+$log_data = [
+    'POST' => $_POST,
+    'FILES' => $_FILES,
+    'SERVER' => [
+        'REQUEST_METHOD' => $_SERVER['REQUEST_METHOD'],
+        'CONTENT_TYPE' => $_SERVER['CONTENT_TYPE'] ?? 'not set'
+    ]
+];
+file_put_contents('update_course_debug.log', "\n\n" . date('Y-m-d H:i:s') . " - Request data: " . print_r($log_data, true), FILE_APPEND);
+
+// Check if user is logged in and has admin privileges
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    sendResponse(false, 'Unauthorized access', null, 401);
+}
 
 // Check if the form was submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate required fields
-    $required = ['course_id', 'course_name', 'course_code', 'curriculum_type_id', 'level'];
-    $missing = [];
-    
-    foreach ($required as $field) {
-        if (empty($_POST[$field])) {
-            $missing[] = $field;
-        }
-    }
-    
-    if (!empty($missing)) {
-        http_response_code(400);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Missing required fields: ' . implode(', ', $missing),
+if ($_SERVER["REQUEST_METHOD"] != "POST") {
+    sendResponse(false, 'Invalid request method. Only POST is allowed.', [
+        'received_method' => $_SERVER['REQUEST_METHOD']
+    ], 405);
+}
+
+// Validate required fields
+$required_fields = ['course_id', 'course_name', 'subject', 'class_level'];
+foreach ($required_fields as $field) {
+    if (!isset($_POST[$field]) || empty($_POST[$field])) {
+        sendResponse(false, "Missing required field: $field", [
             'received_data' => $_POST
-        ]);
-        exit;
+        ], 400);
     }
+}
 
-    try {
-        // Begin transaction
-        $pdo->beginTransaction();
-
-        // Debug: Log database connection status
-        file_put_contents('update_course_debug.log', "Database connection check: " . ($pdo ? "Connected" : "Not connected") . "\n", FILE_APPEND);
-
-        // Get current course data
-        $stmt = $pdo->prepare("SELECT thumbnail FROM courses WHERE course_id = ?");
-        $stmt->execute([$_POST['course_id']]);
-        $currentCourse = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$currentCourse) {
-            throw new Exception("Course not found with ID: " . $_POST['course_id']);
-        }
-
-        // Handle file upload
-        $thumbnailPath = $currentCourse['thumbnail'];
-        if (!empty($_FILES['thumbnail']['name'])) {
-            $uploadDir = './uploads/course-thumbnails/';
-            
-            // Debug: Log upload directory status
-            file_put_contents('update_course_debug.log', "Upload directory: $uploadDir, exists: " . (file_exists($uploadDir) ? "Yes" : "No") . ", writable: " . (is_writable($uploadDir) ? "Yes" : "No") . "\n", FILE_APPEND);
-            
-            if (!file_exists($uploadDir)) {
-                if (!mkdir($uploadDir, 0777, true)) {
-                    throw new Exception("Failed to create upload directory at: " . realpath($uploadDir));
-                }
-            }
-
-            $fileExt = strtolower(pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION));
-            $fileName = 'thumbnail_' . time() . '_' . uniqid() . '.' . $fileExt;
-            $targetPath = $uploadDir . $fileName;
-
-            // Check if file is an image
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            $fileType = mime_content_type($_FILES['thumbnail']['tmp_name']);
-            
-            // Debug: Log file info
-            file_put_contents('update_course_debug.log', "File info - Type: $fileType, Size: " . $_FILES['thumbnail']['size'] . "\n", FILE_APPEND);
-            
-            if (!in_array($fileType, $allowedTypes)) {
-                throw new Exception("Invalid file type. Only JPG, PNG, GIF, and WebP files are allowed.");
-            }
-
-            // Check file size (max 2MB)
-            if ($_FILES['thumbnail']['size'] > 2097152) {
-                throw new Exception("File size exceeds 2MB limit.");
-            }
-
-            if (!move_uploaded_file($_FILES['thumbnail']['tmp_name'], $targetPath)) {
-                throw new Exception("Failed to move uploaded file. Check permissions.");
-            }
-            
-            // Delete old thumbnail if it exists
-            if ($thumbnailPath && file_exists('../../' . $thumbnailPath)) {
-                if (!unlink('../../' . $thumbnailPath)) {
-                    throw new Exception("Failed to delete old thumbnail.");
-                }
-            }
-            
-            $thumbnailPath = 'uploads/course-thumbnails/' . $fileName;
-        }
-
-        // Debug: Log the update data
-        file_put_contents('update_course_debug.log', "Updating course with data: " . print_r([
-            'course_name' => $_POST['course_name'],
-            'course_code' => $_POST['course_code'],
-            'curriculum_type_id' => $_POST['curriculum_type_id'],
-            'level' => $_POST['level'],
-            'description' => $_POST['description'] ?? null,
-            'thumbnail' => $thumbnailPath,
-            'course_id' => $_POST['course_id']
-        ], true) . "\n", FILE_APPEND);
-
-        // Update course in database
-        $stmt = $pdo->prepare("
-            UPDATE courses SET
-            course_name = ?,
-            course_code = ?,
-            curriculum_type_id = ?,
-            level = ?,
-            description = ?,
-            thumbnail = ?
-            WHERE course_id = ?
-        ");
-        
-        $success = $stmt->execute([
-            trim($_POST['course_name']),
-            trim($_POST['course_code']),
-            $_POST['curriculum_type_id'],
-            trim($_POST['level']),
-            !empty($_POST['description']) ? trim($_POST['description']) : null,
-            $thumbnailPath,
-            $_POST['course_id']
-        ]);
-
-        if (!$success) {
-            $errorInfo = $stmt->errorInfo();
-            throw new Exception("Database update failed: " . ($errorInfo[2] ?? 'Unknown error'));
-        }
-
-        // Commit transaction
-        $pdo->commit();
-
-        // Debug: Log success
-        file_put_contents('update_course_debug.log', "Course updated successfully\n", FILE_APPEND);
-
-        echo json_encode([
-            'success' => true,
-            'message' => 'Course updated successfully!'
-        ]);
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        
-        // Delete uploaded file if transaction failed
-        if (!empty($thumbnailPath) && isset($fileName) && file_exists('./uploads/course-thumbnails/' . $fileName)) {
-            unlink('./uploads/course-thumbnails/' . $fileName);
-        }
-        
-        // Debug: Log error
-        file_put_contents('update_course_debug.log', "Error: " . $e->getMessage() . "\n", FILE_APPEND);
-        
-        http_response_code(500);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error: ' . $e->getMessage(),
-            'error_details' => [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]
-        ]);
+try {
+    // Get database connection
+    $pdo = getDBConnection();
+    if (!$pdo) {
+        throw new Exception("Failed to connect to database");
     }
-} else {
-    http_response_code(405);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Invalid request method. Only POST is allowed.'
-    ]);
+    
+    // Get current course data
+    $stmt = $pdo->prepare("SELECT * FROM courses WHERE id = ?");
+    $stmt->execute([$_POST['course_id']]);
+    $current_course = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$current_course) {
+        sendResponse(false, 'Course not found', null, 404);
+    }
+    
+    // Handle file upload if new thumbnail is provided
+    $thumbnail_path = $current_course['thumbnail'];
+    if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = __DIR__ . '/course_thumbnails/';
+        if (!file_exists($upload_dir)) {
+            if (!mkdir($upload_dir, 0777, true)) {
+                throw new Exception("Failed to create upload directory");
+            }
+        }
+        
+        $file_info = pathinfo($_FILES['thumbnail']['name']);
+        $extension = strtolower($file_info['extension']);
+        
+        // Validate file type
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+        if (!in_array($extension, $allowed_types)) {
+            sendResponse(false, 'Invalid file type. Allowed types: ' . implode(', ', $allowed_types), null, 400);
+        }
+        
+        // Generate unique filename
+        $new_filename = uniqid() . '.' . $extension;
+        $upload_path = 'course_thumbnails/' . $new_filename;
+        $full_path = __DIR__ . '/' . $upload_path;
+        
+        if (!move_uploaded_file($_FILES['thumbnail']['tmp_name'], $full_path)) {
+            throw new Exception("Failed to move uploaded file");
+        }
+        
+        // Delete old thumbnail if exists
+        if ($current_course['thumbnail']) {
+            $old_thumbnail_path = __DIR__ . '/' . $current_course['thumbnail'];
+            if (file_exists($old_thumbnail_path)) {
+                unlink($old_thumbnail_path);
+            }
+        }
+        
+        $thumbnail_path = $upload_path;
+    }
+    
+    // Prepare data for update
+    $data = [
+        'course_name' => $_POST['course_name'],
+        'subject' => $_POST['subject'],
+        'class_level' => $_POST['class_level'],
+        'description' => $_POST['description'] ?? null,
+        'status' => $_POST['status'] ?? 'active',
+        'thumbnail' => $thumbnail_path,
+        'id' => $_POST['course_id']
+    ];
+    
+    // Log the data being used for update
+    file_put_contents('update_course_debug.log', "\nUpdate data: " . print_r($data, true), FILE_APPEND);
+    
+    // Update database
+    $sql = "UPDATE courses SET 
+            course_name = :course_name,
+            subject = :subject,
+            class_level = :class_level,
+            description = :description,
+            status = :status,
+            thumbnail = :thumbnail,
+            updated_at = CURRENT_TIMESTAMP
+            WHERE id = :id";
+    
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute($data);
+    
+    if ($result) {
+        sendResponse(true, 'Course updated successfully', [
+            'course_id' => $_POST['course_id'],
+            'thumbnail' => $thumbnail_path
+        ]);
+    } else {
+        throw new Exception("Failed to update course in database");
+    }
+    
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    sendResponse(false, 'Database error occurred', [
+        'error_details' => $e->getMessage()
+    ], 500);
+} catch (Exception $e) {
+    error_log("General error: " . $e->getMessage());
+    sendResponse(false, 'An error occurred', [
+        'error_details' => $e->getMessage()
+    ], 500);
 }
 ?>

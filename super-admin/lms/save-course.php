@@ -1,152 +1,74 @@
 <?php
-require_once('../settings.php');
+require_once '../includes/config.php';
+require_once '../includes/functions.php';
 
-// Set header to return JSON
-header('Content-Type: application/json');
+// Check if user is logged in and has admin privileges
+session_start();
+if (!isset($_SESSION['user_id']) || !isAdmin($_SESSION['user_id'])) {
+    die(json_encode(['success' => false, 'message' => 'Unauthorized access']));
+}
 
-// Check if the form was submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate required fields
-    $required = ['course_name', 'course_code', 'curriculum_type_id', 'level'];
-    $missing = [];
-    foreach ($required as $field) {
-        if (empty($_POST[$field])) {
-            $missing[] = $field;
+// Validate input
+$required_fields = ['course_name', 'subject', 'class_level'];
+foreach ($required_fields as $field) {
+    if (empty($_POST[$field])) {
+        die(json_encode(['success' => false, 'message' => ucfirst($field) . ' is required']));
+    }
+}
+
+try {
+    $pdo = getDBConnection();
+    
+    // Handle file upload if thumbnail is provided
+    $thumbnail_path = null;
+    if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = '../uploads/courses/';
+        if (!file_exists($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        
+        $file_info = pathinfo($_FILES['thumbnail']['name']);
+        $extension = strtolower($file_info['extension']);
+        
+        // Validate file type
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+        if (!in_array($extension, $allowed_types)) {
+            die(json_encode(['success' => false, 'message' => 'Invalid file type. Allowed types: ' . implode(', ', $allowed_types)]));
+        }
+        
+        // Generate unique filename
+        $filename = uniqid() . '.' . $extension;
+        $thumbnail_path = 'uploads/courses/' . $filename;
+        
+        if (!move_uploaded_file($_FILES['thumbnail']['tmp_name'], $upload_dir . $filename)) {
+            die(json_encode(['success' => false, 'message' => 'Error uploading file']));
         }
     }
     
-    if (!empty($missing)) {
-        http_response_code(400);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Missing required fields: ' . implode(', ', $missing)
-        ]);
-        exit;
-    }
-
-    try {
-        // Begin transaction
-        $pdo->beginTransaction();
-
-        // Handle file upload
-        $thumbnailPath = null;
-        if (!empty($_FILES['thumbnail']['name'])) {
-            $uploadDir = './uploads/course-thumbnails/';
-            if (!file_exists($uploadDir)) {
-                if (!mkdir($uploadDir, 0777, true)) {
-                    throw new Exception("Failed to create upload directory.");
-                }
-            }
-
-            $fileExt = strtolower(pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION));
-            $fileName = 'thumbnail_' . time() . '_' . uniqid() . '.' . $fileExt;
-            $targetPath = $uploadDir . $fileName;
-
-            // Check if file is an image
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            $fileType = mime_content_type($_FILES['thumbnail']['tmp_name']);
-            
-            if (!in_array($fileType, $allowedTypes)) {
-                throw new Exception("Only JPG, PNG, GIF, and WebP files are allowed for thumbnails.");
-            }
-
-            // Check file size (max 2MB)
-            if ($_FILES['thumbnail']['size'] > 2097152) {
-                throw new Exception("Thumbnail image must be less than 2MB.");
-            }
-
-            if (!move_uploaded_file($_FILES['thumbnail']['tmp_name'], $targetPath)) {
-                throw new Exception("Failed to upload thumbnail image.");
-            }
-            
-            $thumbnailPath = 'uploads/course-thumbnails/' . $fileName;
-        }
-
-        // Insert course into database
-        $stmt = $pdo->prepare("
-            INSERT INTO courses 
-            (course_name, course_code, curriculum_type_id, level, description, thumbnail) 
-            VALUES (?, ?, ?, ?, ?, ?)
-        ");
-        
-        $success = $stmt->execute([
-            trim($_POST['course_name']),
-            trim($_POST['course_code']),
-            $_POST['curriculum_type_id'],
-            trim($_POST['level']),
-            !empty($_POST['description']) ? trim($_POST['description']) : null,
-            $thumbnailPath
-        ]);
-
-        if (!$success) {
-            throw new Exception("Failed to save course to database.");
-        }
-
-        $courseId = $pdo->lastInsertId();
-        
-        // Create folder for the course in the file manager
-        $folderName = preg_replace('/[^a-zA-Z0-9-_]/', '_', $_POST['course_name']);
-        $folderPath = 'uploads/courses/' . $folderName . '_' . $courseId;
-        
-        // Create the physical directory
-        if (!file_exists($folderPath)) {
-            if (!mkdir($folderPath, 0777, true)) {
-                throw new Exception("Failed to create course folder.");
-            }
-        }
-        
-        // Create folder record in database
-        $folderStmt = $pdo->prepare("
-            INSERT INTO folders 
-            (name, parent_id, created_by, permission, created_at) 
-            VALUES (?, NULL, ?, 'private', NOW())
-        ");
-        
-        $folderSuccess = $folderStmt->execute([
-            $_POST['course_name'] . ' Materials',
-            $_SESSION['user_id'] // Assuming you have user session
-        ]);
-        
-        if (!$folderSuccess) {
-            throw new Exception("Failed to create folder record in database.");
-        }
-        
-        $folderId = $pdo->lastInsertId();
-
-        // Commit transaction
-        $pdo->commit();
-
-        echo json_encode([
-            'success' => true,
-            'message' => 'Course created successfully with dedicated folder!',
-            'course_id' => $courseId,
-            'folder_id' => $folderId
-        ]);
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        
-        // Delete uploaded file if transaction failed
-        if (!empty($thumbnailPath) && file_exists($thumbnailPath)) {
-            unlink($thumbnailPath);
-        }
-        
-        // Delete folder if it was created
-        if (!empty($folderPath) && file_exists($folderPath)) {
-            rmdir($folderPath);
-        }
-        
-        http_response_code(500);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error: ' . $e->getMessage(),
-            'error_details' => $e->getFile() . ':' . $e->getLine()
-        ]);
-    }
-} else {
-    http_response_code(405);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Invalid request method. Only POST is allowed.'
-    ]);
+    // Prepare data for insertion
+    $data = [
+        'course_name' => $_POST['course_name'],
+        'subject' => $_POST['subject'],
+        'class_level' => $_POST['class_level'],
+        'description' => $_POST['description'] ?? null,
+        'status' => $_POST['status'] ?? 'active',
+        'thumbnail' => $thumbnail_path,
+        'created_at' => date('Y-m-d H:i:s')
+    ];
+    
+    // Insert into database
+    $sql = "INSERT INTO courses (course_name, subject, class_level, description, status, thumbnail, created_at) 
+            VALUES (:course_name, :subject, :class_level, :description, :status, :thumbnail, :created_at)";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($data);
+    
+    echo json_encode(['success' => true, 'message' => 'Course added successfully']);
+    
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Database error occurred']);
+} catch (Exception $e) {
+    error_log("General error: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'An error occurred']);
 }
-?>

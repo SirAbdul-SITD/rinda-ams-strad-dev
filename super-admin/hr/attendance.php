@@ -153,7 +153,7 @@
           <span>Staffs</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
-          <li class="nav-item">
+              <li class="nav-item">
             <a class="nav-link" href="index.php">
               <i class="fe fe-home fe-16"></i>
               <span class="ml-3 item-text">Dashboard</span>
@@ -165,16 +165,28 @@
               <span class="ml-3 item-text">Staffs Directory</span>
             </a>
           </li>
-          <li class="nav-item">
+              <li class="nav-item">
             <a class="nav-link" href="department.php">
               <i class="fe fe-users fe-16"></i>
               <span class="ml-3 item-text">Department</span>
             </a>
           </li>
-          <li class="nav-item">
+              <li class="nav-item">
             <a class="nav-link" href="designation.php">
               <i class="fe fe-book fe-16"></i>
               <span class="ml-3 item-text">Designation</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties.php">
+              <i class="fe fe-alert-triangle fe-16"></i>
+              <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties-types.php">
+              <i class="fe fe-list fe-16"></i>
+              <span class="ml-3 item-text">Penalty Types</span>
             </a>
           </li>
           <li class="nav-item active">
@@ -184,9 +196,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="penalties.php">
-              <i class="fe fe-alert-triangle fe-16"></i>
-              <span class="ml-3 item-text">Penalties</span>
+            <a class="nav-link" href="fingerprints.php">
+              <i class="fe fe-codesandbox fe-16"></i>
+              <span class="ml-3 item-text">Fingerprints</span>
             </a>
           </li>
         </ul>
@@ -196,19 +208,19 @@
           <span>Leave</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
-          <li class="nav-item">
+              <li class="nav-item">
             <a class="nav-link" href="leave-application.php">
               <i class="fe fe-home fe-16"></i>
               <span class="ml-3 item-text">Leave Application</span>
-            </a>
-          </li>
-          <li class="nav-item">
+                </a>
+              </li>
+              <li class="nav-item">
             <a class="nav-link" href="leave-category.php">
               <i class="fe fe-copy fe-16"></i>
               <span class="ml-3 item-text">Leave Category</span>
-            </a>
-          </li>
-          <li class="nav-item">
+                </a>
+              </li>
+              <li class="nav-item">
             <a class="nav-link" href="approved-leave.php">
               <i class="fe fe-server fe-16"></i>
               <span class="ml-3 item-text">Approved Leave</span>
@@ -227,24 +239,18 @@
           <span>Extras</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
-              <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="message.php">
               <i class="fe fe-copy fe-16"></i>
               <span class="ml-3 item-text">Message</span>
-                </a>
-              </li>
-              <li class="nav-item">
+            </a>
+          </li> -->
+          <li class="nav-item">
             <a class="nav-link" href="payroll.php">
               <i class="fe fe-dollar-sign fe-16"></i>
               <span class="ml-3 item-text">Payroll</span>
             </a>
           </li>
-              <!-- <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fe fe-fast-forward fe-16"></i>
-              <span class="ml-3 item-text">Penalties</span>
-            </a>
-          </li> -->
         </ul>
       </nav>
     </aside>
@@ -321,6 +327,17 @@
         <div class="row">
               <div class="col-md-12">
                 <div class="card shadow">
+                  <div class="card-header">
+                    <h3 class="card-title">Attendance Management</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#markAttendanceModal">
+                            <i class="fas fa-plus"></i> Mark Attendance
+                        </button>
+                        <button type="button" class="btn btn-success" id="syncTomprintBtn">
+                            <i class="fas fa-sync"></i> Sync Tomprint
+                        </button>
+                    </div>
+                  </div>
                   <div class="card-body">
                 <div class="table-responsive">
                   <table class="table table-hover" id="attendanceTable">
@@ -364,11 +381,11 @@
                         <tr>
                           <td><?= date('M d, Y', strtotime($row['date'])) ?></td>
                           <td><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></td>
-                          <td><?= htmlspecialchars($row['department']) ?></td>
+                          <td><?= htmlspecialchars($row['department'] ?? '') ?></td>
                           <td><span class="attendance-status <?= $status_class ?>"><?= ucfirst($row['status']) ?></span></td>
                           <td><?= $row['check_in'] ? date('h:i A', strtotime($row['check_in'])) : '-' ?></td>
                           <td><?= $row['check_out'] ? date('h:i A', strtotime($row['check_out'])) : '-' ?></td>
-                          <td><?= $row['working_hours'] ? $row['working_hours'] . ' hrs' : '-' ?></td>
+                          <td><?= isset($row['working_hours']) && $row['working_hours'] ? $row['working_hours'] . ' hrs' : '-' ?></td>
                           <td>
                             <button class="btn btn-sm btn-outline-primary edit-attendance" 
                                     data-id="<?= $row['id'] ?>"
@@ -429,13 +446,15 @@
                                  ORDER BY s.first_name";
                   $staff_stmt = $pdo->query($staff_query);
                   while ($staff = $staff_stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $staff_name = trim($staff['first_name'] . ' ' . $staff['last_name']);
+                    $department = $staff['department'] ?? '';
                     ?>
                     <tr>
                       <td>
-                        <?= htmlspecialchars($staff['first_name'] . ' ' . $staff['last_name']) ?>
+                        <?= htmlspecialchars($staff_name) ?>
                         <input type="hidden" name="staff_ids[]" value="<?= $staff['id'] ?>">
                       </td>
-                      <td><?= htmlspecialchars($staff['department']) ?></td>
+                      <td><?= htmlspecialchars($department) ?></td>
                       <td>
                         <select class="form-control" name="status[<?= $staff['id'] ?>]" required>
                           <option value="present">Present</option>
@@ -667,6 +686,33 @@
       $('#filterForm').submit(function(e) {
         e.preventDefault();
         $('#attendanceTable').DataTable().ajax.reload();
+      });
+
+      // Handle Tomprint sync button click
+      $('#syncTomprintBtn').click(function() {
+        const button = $(this);
+        button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Syncing...');
+        
+        $.ajax({
+          url: 'mark-attendance-auto.php',
+          method: 'GET',
+          dataType: 'json',
+          success: function(response) {
+            if (response.success) {
+              toastr.success(response.message);
+              // Reload the DataTable
+              $('#attendanceTable').DataTable().ajax.reload();
+            } else {
+              toastr.error('Failed to sync attendance data');
+            }
+          },
+          error: function() {
+            toastr.error('Error connecting to the server');
+          },
+          complete: function() {
+            button.prop('disabled', false).html('<i class="fas fa-sync"></i> Sync Tomprint');
+          }
+        });
       });
     });
   </script>
