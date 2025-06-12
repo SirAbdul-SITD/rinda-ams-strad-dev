@@ -350,7 +350,7 @@
                                 $thumbnail = !empty($course['thumbnail']) ? '../' . $course['thumbnail'] : '../assets/images/default-course.jpg';
                                 echo '
                                 <tr>
-                                  <td><img src="' . ($course['thumbnail'] ? './' . htmlspecialchars($course['thumbnail']) : '../assets/images/default-course.jpg') . '" alt="Course thumbnail" style="max-width: 80px; border-radius: 5px;"></td>
+                                  <td><img src="' . $thumbnail . '" alt="Course thumbnail" style="max-width: 80px; border-radius: 5px;"></td>
                                   <td>' . htmlspecialchars($course['course_name'] ?? '') . '</td>
                                   <td>' . htmlspecialchars($course['subject'] ?? '') . '</td>
                                   <td>' . htmlspecialchars($course['class_level'] ?? '') . '</td>
@@ -363,11 +363,14 @@
                                     <button type="button" class="btn btn-sm btn-primary edit-course" 
                                             data-id="' . ($course['course_id'] ?? '') . '"
                                             data-name="' . htmlspecialchars($course['course_name'] ?? '') . '"
+                                            data-code="' . htmlspecialchars($course['course_code'] ?? '') . '"
                                             data-subject="' . htmlspecialchars($course['subject'] ?? '') . '"
+                                            data-level="' . htmlspecialchars($course['level'] ?? '') . '"
                                             data-class="' . htmlspecialchars($course['class_level'] ?? '') . '"
                                             data-description="' . htmlspecialchars($course['description'] ?? '') . '"
                                             data-status="' . htmlspecialchars($course['status'] ?? 'active') . '"
-                                            data-thumbnail="' . htmlspecialchars($course['thumbnail'] ?? '') . '">
+                                            data-thumbnail="' . htmlspecialchars($course['thumbnail'] ?? '') . '"
+                                            data-curriculum-type="' . htmlspecialchars($course['curriculum_type_id'] ?? '') . '">
                                       <i class="fe fe-edit"></i>
                                     </button>
                                     <button type="button" class="btn btn-sm btn-danger delete-course" 
@@ -406,15 +409,30 @@
           </button>
         </div>
         <div class="modal-body">
-          <form id="addCourseForm">
+          <form id="addCourseForm" method="post" enctype="multipart/form-data">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="course_name">Course Name *</label>
                 <input type="text" class="form-control" id="course_name" name="course_name" required>
               </div>
               <div class="form-group col-md-6">
+                <label for="course_code">Course Code *</label>
+                <input type="text" class="form-control" id="course_code" name="course_code" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
                 <label for="subject">Subject *</label>
                 <input type="text" class="form-control" id="subject" name="subject" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="level">Level *</label>
+                <select class="form-control" id="level" name="level" required>
+                  <option value="">Select Level</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
               </div>
             </div>
             <div class="form-row">
@@ -437,11 +455,19 @@
                 </select>
               </div>
               <div class="form-group col-md-6">
-                <label for="status">Status *</label>
-                <select class="form-control" id="status" name="status" required>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="draft">Draft</option>
+                <label for="curriculum_type_id">Curriculum Type *</label>
+                <select class="form-control" id="curriculum_type_id" name="curriculum_type_id" required>
+                  <option value="">Select Curriculum Type</option>
+                  <?php
+                  try {
+                    $stmt = $pdo->query("SELECT id, name FROM curriculum_types ORDER BY name");
+                    while ($row = $stmt->fetch()) {
+                      echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                    }
+                  } catch (PDOException $e) {
+                    error_log("Error fetching curriculum types: " . $e->getMessage());
+                  }
+                  ?>
                 </select>
               </div>
             </div>
@@ -453,11 +479,11 @@
               <label for="thumbnail">Course Thumbnail</label>
               <input type="file" class="form-control-file" id="thumbnail" name="thumbnail" accept="image/*">
             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="saveCourseBtn">Save Course</button>
+            </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="saveCourseBtn">Save Course</button>
         </div>
       </div>
     </div>
@@ -482,8 +508,23 @@
                 <input type="text" class="form-control" id="editCourseName" name="course_name" required>
               </div>
               <div class="form-group col-md-6">
+                <label for="editCourseCode">Course Code *</label>
+                <input type="text" class="form-control" id="editCourseCode" name="course_code" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
                 <label for="editSubject">Subject *</label>
                 <input type="text" class="form-control" id="editSubject" name="subject" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="editLevel">Level *</label>
+                <select class="form-control" id="editLevel" name="level" required>
+                  <option value="">Select Level</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
               </div>
             </div>
             <div class="form-row">
@@ -505,6 +546,24 @@
                   <option value="SSS 3">SSS 3</option>
                 </select>
               </div>
+              <div class="form-group col-md-6">
+                <label for="editCurriculumType">Curriculum Type *</label>
+                <select class="form-control" id="editCurriculumType" name="curriculum_type_id" required>
+                  <option value="">Select Curriculum Type</option>
+                  <?php
+                  try {
+                    $stmt = $pdo->query("SELECT id, name FROM curriculum_types ORDER BY name");
+                    while ($row = $stmt->fetch()) {
+                      echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                    }
+                  } catch (PDOException $e) {
+                    error_log("Error fetching curriculum types: " . $e->getMessage());
+                  }
+                  ?>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="editStatus">Status *</label>
                 <select class="form-control" id="editStatus" name="status" required>
@@ -575,6 +634,33 @@
   <script src="../js/apps.js"></script>
 
   <script>
+    // Function to show notifications
+    function showNotification(type, message) {
+      // Remove any existing alerts
+      $('.alert').remove();
+      
+      // Create alert HTML
+      var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+        '</div>';
+      
+      // Add the alert at the top of the page
+      $('.container-fluid').prepend(alertHtml);
+      
+      // Scroll to the alert
+      $('html, body').animate({
+        scrollTop: $('.alert').offset().top - 20
+      }, 500);
+      
+      // Auto-dismiss after 5 seconds
+      setTimeout(function() {
+        $('.alert').alert('close');
+      }, 5000);
+    }
+
     $(document).ready(function() {
       // Initialize SimpleBar for sidebar
       new SimpleBar(document.getElementById('leftSidebar'));
@@ -600,22 +686,21 @@
       });
 
       // Handle form submission for adding new course
-      $('#saveCourseBtn').click(function() {
-        // Disable the button to prevent double submission
-        $(this).prop('disabled', true);
+      $('#addCourseForm').on('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submitted');
         
-        // Get form data
-        var formData = new FormData($('#addCourseForm')[0]);
+        const formData = new FormData(this);
         
-        // Validate required fields
-        if (!formData.get('course_name') || !formData.get('subject') || !formData.get('class_level')) {
-          showAlert('danger', 'Please fill in all required fields');
-          $(this).prop('disabled', false);
-          return;
+        // Log form data for debugging
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ': ' + pair[1]);
         }
         
-        // Log the form data being sent
-        console.log('Sending form data:', Object.fromEntries(formData));
+        // Disable submit button and show loading state
+        const submitBtn = $('#saveCourseBtn');
+        const originalBtnText = submitBtn.html();
+        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Adding...');
         
         $.ajax({
           url: 'save-course.php',
@@ -623,32 +708,24 @@
           data: formData,
           processData: false,
           contentType: false,
+          dataType: 'json',
           success: function(response) {
-            console.log('Raw server response:', response);
-            
-            try {
-              // If response is already an object, use it directly
-              var result = typeof response === 'object' ? response : JSON.parse(response);
-              
-              if (result.success) {
-                showAlert('success', result.message);
-                $('#addCourseModal').modal('hide');
-                $('#addCourseForm')[0].reset();
-                // Reload the page after a short delay to show the success message
-                setTimeout(function() {
-                  location.reload();
-                }, 1500);
-              } else {
-                showAlert('danger', result.message || 'Error adding course');
-                // Re-enable the button
-                $('#saveCourseBtn').prop('disabled', false);
-              }
-            } catch (e) {
-              console.error('Error parsing server response:', e);
-              console.error('Raw response:', response);
-              showAlert('danger', 'Error processing server response. Please try again.');
-              // Re-enable the button
-              $('#saveCourseBtn').prop('disabled', false);
+            console.log('Server response:', response);
+            if (response.success) {
+              // Show success message
+              showNotification('success', response.message);
+              // Close modal and reset form
+              $('#addCourseModal').modal('hide');
+              $('#addCourseForm')[0].reset();
+              // Reload the page
+              setTimeout(function() {
+                location.reload();
+              }, 1500);
+            } else {
+              // Show error message
+              showNotification('danger', response.message || 'Error adding course');
+              // Re-enable submit button
+              submitBtn.prop('disabled', false).html(originalBtnText);
             }
           },
           error: function(xhr, status, error) {
@@ -658,19 +735,25 @@
               response: xhr.responseText
             });
             
-            var errorMessage = 'Error adding course';
+            let errorMessage = 'Error processing server response. Please try again.';
+            
             try {
-              var response = JSON.parse(xhr.responseText);
+              // Try to parse the response as JSON
+              const response = JSON.parse(xhr.responseText);
               if (response.message) {
                 errorMessage = response.message;
               }
             } catch (e) {
               console.error('Error parsing error response:', e);
+              // If we can't parse the response, use the raw response text
+              if (xhr.responseText) {
+                errorMessage = 'Server error: ' + xhr.responseText.substring(0, 100);
+              }
             }
             
-            showAlert('danger', errorMessage);
-            // Re-enable the button
-            $('#saveCourseBtn').prop('disabled', false);
+            showNotification('danger', errorMessage);
+            // Re-enable submit button
+            submitBtn.prop('disabled', false).html(originalBtnText);
           }
         });
       });
@@ -679,19 +762,24 @@
       $(document).on('click', '.edit-course', function() {
         var courseId = $(this).data('id');
         var courseName = $(this).data('name');
+        var courseCode = $(this).data('code');
         var subject = $(this).data('subject');
+        var level = $(this).data('level');
         var classLevel = $(this).data('class');
         var description = $(this).data('description');
         var status = $(this).data('status');
         var thumbnail = $(this).data('thumbnail');
+        var curriculumTypeId = $(this).data('curriculum-type');
         
         // Populate the edit form
         $('#editCourseId').val(courseId);
         $('#editCourseName').val(courseName);
+        $('#editCourseCode').val(courseCode);
         $('#editSubject').val(subject);
+        $('#editLevel').val(level);
         $('#editClassLevel').val(classLevel);
         $('#editDescription').val(description);
-        $('#editStatus').val(status);
+        $('#editCurriculumType').val(curriculumTypeId);
         
         // Show current thumbnail if exists
         if (thumbnail) {
@@ -714,7 +802,7 @@
         
         // Validate required fields
         if (!formData.get('course_id') || !formData.get('course_name') || !formData.get('subject') || !formData.get('class_level')) {
-          showAlert('danger', 'Please fill in all required fields');
+          showNotification('danger', 'Please fill in all required fields');
           $(this).prop('disabled', false);
           return;
         }
@@ -728,30 +816,20 @@
           data: formData,
           processData: false,
           contentType: false,
+          dataType: 'json',
           success: function(response) {
-            console.log('Raw server response:', response);
+            console.log('Server response:', response);
             
-            try {
-              // If response is already an object, use it directly
-              var result = typeof response === 'object' ? response : JSON.parse(response);
-              
-              if (result.success) {
-                showAlert('success', result.message);
-                // Close the modal
-                $('#editCourseModal').modal('hide');
-                // Reload the page after a short delay to show the success message
-                setTimeout(function() {
-                  location.reload();
-                }, 1500);
-              } else {
-                showAlert('danger', result.message || 'Failed to update course');
-                // Re-enable the update button
-                $('#updateCourseBtn').prop('disabled', false);
-              }
-            } catch (e) {
-              console.error('Error parsing server response:', e);
-              console.error('Raw response:', response);
-              showAlert('danger', 'Error processing server response. Please try again.');
+            if (response.success) {
+              showNotification('success', response.message);
+              // Close the modal
+              $('#editCourseModal').modal('hide');
+              // Reload the page after a short delay to show the success message
+              setTimeout(function() {
+                location.reload();
+              }, 1500);
+            } else {
+              showNotification('danger', response.message || 'Failed to update course');
               // Re-enable the update button
               $('#updateCourseBtn').prop('disabled', false);
             }
@@ -771,9 +849,10 @@
               }
             } catch (e) {
               console.error('Error parsing error response:', e);
+              errorMessage += ': ' + error;
             }
             
-            showAlert('danger', errorMessage);
+            showNotification('danger', errorMessage);
             // Re-enable the update button
             $('#updateCourseBtn').prop('disabled', false);
           }
@@ -802,45 +881,19 @@
               if (result.success) {
                 $('#deleteCourseModal').modal('hide');
                 location.reload(); // Reload the page to show updated data
-                showAlert('success', 'Course deleted successfully!');
+                showNotification('success', 'Course deleted successfully!');
               } else {
-                showAlert('danger', result.message || 'Error deleting course');
+                showNotification('danger', result.message || 'Error deleting course');
               }
             } catch (e) {
-              showAlert('danger', 'Error processing server response');
+              showNotification('danger', 'Error processing server response');
             }
           },
           error: function() {
-            showAlert('danger', 'Error connecting to server');
+            showNotification('danger', 'Error connecting to server');
           }
         });
       });
-
-      // Function to show alert messages
-      function showAlert(type, message) {
-        // Remove any existing alerts
-        $('.alert').remove();
-        
-        var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
-          message +
-          '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-          '<span aria-hidden="true">&times;</span>' +
-          '</button>' +
-          '</div>';
-        
-        // Add the alert at the top of the page
-        $('.container-fluid').prepend(alertHtml);
-        
-        // Scroll to the alert
-        $('html, body').animate({
-          scrollTop: $('.alert').offset().top - 20
-        }, 500);
-        
-        // Auto-dismiss after 5 seconds
-        setTimeout(function() {
-          $('.alert').alert('close');
-        }, 5000);
-      }
     });
   </script>
 

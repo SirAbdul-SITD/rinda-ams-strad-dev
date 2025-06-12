@@ -21,12 +21,33 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   
   .calendar-title {
     font-size: 1.5rem;
     font-weight: 600;
     color: #2e384d;
+    margin: 0;
+  }
+  
+  .team-info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  .team-duration {
+    background-color: #e3f2fd;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #1976d2;
+  }
+  
+  .team-period {
+    font-style: italic;
   }
   
   .calendar-nav {

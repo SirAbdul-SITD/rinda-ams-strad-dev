@@ -1,21 +1,41 @@
 <?php
+// Prevent any output before headers
+ob_start();
+
 // Start session before any output
 session_start();
 
-// Enable detailed error reporting for debugging
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// Disable error display but enable logging
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 error_reporting(E_ALL);
 
+// Set error handler to prevent output
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    error_log("PHP Error [$errno]: $errstr in $errfile on line $errline");
+    return true;
+});
+
+// Set exception handler
+set_exception_handler(function($e) {
+    error_log("Uncaught Exception: " . $e->getMessage());
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => false,
+        'message' => 'An unexpected error occurred',
+        'error' => $e->getMessage()
+    ]);
+    exit;
+});
+
 require_once('../settings.php');
-require_once '../includes/config.php';
-require_once '../includes/functions.php';
 
 // Set header to return JSON
 header('Content-Type: application/json');
 
 // Function to send JSON response
 function sendResponse($success, $message, $data = null, $statusCode = 200) {
+    ob_clean(); // Clear any output buffer
     http_response_code($statusCode);
     echo json_encode([
         'success' => $success,
@@ -25,6 +45,12 @@ function sendResponse($success, $message, $data = null, $statusCode = 200) {
     exit;
 }
 
+// Function to handle errors
+function handleError($message, $error = null) {
+    error_log("Course Update Error: " . $message . ($error ? " - " . $error : ""));
+    sendResponse(false, $message, ['error' => $error], 500);
+}
+
 // Log the received data for debugging
 $log_data = [
     'POST' => $_POST,
@@ -32,13 +58,22 @@ $log_data = [
     'SERVER' => [
         'REQUEST_METHOD' => $_SERVER['REQUEST_METHOD'],
         'CONTENT_TYPE' => $_SERVER['CONTENT_TYPE'] ?? 'not set'
+    ],
+    'SESSION' => [
+        'user_id' => $_SESSION['user_id'] ?? null,
+        'admin_rights' => $_SESSION['admin_rights'] ?? null
     ]
 ];
-file_put_contents('update_course_debug.log', "\n\n" . date('Y-m-d H:i:s') . " - Request data: " . print_r($log_data, true), FILE_APPEND);
+error_log("Update Course Request: " . print_r($log_data, true));
 
 // Check if user is logged in and has admin privileges
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
-    sendResponse(false, 'Unauthorized access', null, 401);
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['admin_rights']) || $_SESSION['admin_rights'] != 1) {
+    sendResponse(false, 'Unauthorized access', [
+        'session_data' => [
+            'user_id' => $_SESSION['user_id'] ?? null,
+            'admin_rights' => $_SESSION['admin_rights'] ?? null
+        ]
+    ], 401);
 }
 
 // Check if the form was submitted
@@ -49,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
 }
 
 // Validate required fields
-$required_fields = ['course_id', 'course_name', 'subject', 'class_level'];
+$required_fields = ['course_id', 'course_name', 'subject', 'class_level', 'curriculum_type_id', 'course_code', 'level'];
 foreach ($required_fields as $field) {
     if (!isset($_POST[$field]) || empty($_POST[$field])) {
         sendResponse(false, "Missing required field: $field", [
@@ -59,19 +94,20 @@ foreach ($required_fields as $field) {
 }
 
 try {
-    // Get database connection
-    $pdo = getDBConnection();
-    if (!$pdo) {
-        throw new Exception("Failed to connect to database");
-    }
-    
     // Get current course data
-    $stmt = $pdo->prepare("SELECT * FROM courses WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT * FROM courses WHERE course_id = ?");
     $stmt->execute([$_POST['course_id']]);
     $current_course = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if (!$current_course) {
         sendResponse(false, 'Course not found', null, 404);
+    }
+    
+    // Check if course_code is unique (excluding current course)
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM courses WHERE course_code = ? AND course_id != ?");
+    $stmt->execute([$_POST['course_code'], $_POST['course_id']]);
+    if ($stmt->fetchColumn() > 0) {
+        sendResponse(false, 'Course code already exists', null, 400);
     }
     
     // Handle file upload if new thumbnail is provided
@@ -80,7 +116,7 @@ try {
         $upload_dir = __DIR__ . '/course_thumbnails/';
         if (!file_exists($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
-                throw new Exception("Failed to create upload directory");
+                throw new Exception("Failed to create upload directory: " . $upload_dir);
             }
         }
         
@@ -99,7 +135,7 @@ try {
         $full_path = __DIR__ . '/' . $upload_path;
         
         if (!move_uploaded_file($_FILES['thumbnail']['tmp_name'], $full_path)) {
-            throw new Exception("Failed to move uploaded file");
+            throw new Exception("Failed to move uploaded file. Check directory permissions: " . $upload_dir);
         }
         
         // Delete old thumbnail if exists
@@ -116,27 +152,31 @@ try {
     // Prepare data for update
     $data = [
         'course_name' => $_POST['course_name'],
+        'course_code' => $_POST['course_code'],
         'subject' => $_POST['subject'],
         'class_level' => $_POST['class_level'],
+        'level' => $_POST['level'],
         'description' => $_POST['description'] ?? null,
-        'status' => $_POST['status'] ?? 'active',
         'thumbnail' => $thumbnail_path,
-        'id' => $_POST['course_id']
+        'curriculum_type_id' => $_POST['curriculum_type_id'],
+        'course_id' => $_POST['course_id']
     ];
     
     // Log the data being used for update
-    file_put_contents('update_course_debug.log', "\nUpdate data: " . print_r($data, true), FILE_APPEND);
+    error_log("Update Course Data: " . print_r($data, true));
     
     // Update database
     $sql = "UPDATE courses SET 
             course_name = :course_name,
+            course_code = :course_code,
             subject = :subject,
             class_level = :class_level,
+            level = :level,
             description = :description,
-            status = :status,
             thumbnail = :thumbnail,
+            curriculum_type_id = :curriculum_type_id,
             updated_at = CURRENT_TIMESTAMP
-            WHERE id = :id";
+            WHERE course_id = :course_id";
     
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute($data);
@@ -147,18 +187,13 @@ try {
             'thumbnail' => $thumbnail_path
         ]);
     } else {
-        throw new Exception("Failed to update course in database");
+        $error = $stmt->errorInfo();
+        throw new Exception("Failed to update course in database. SQL State: " . $error[0] . " - " . $error[2]);
     }
     
 } catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    sendResponse(false, 'Database error occurred', [
-        'error_details' => $e->getMessage()
-    ], 500);
+    handleError('Database error occurred', $e->getMessage());
 } catch (Exception $e) {
-    error_log("General error: " . $e->getMessage());
-    sendResponse(false, 'An error occurred', [
-        'error_details' => $e->getMessage()
-    ], 500);
+    handleError('An error occurred', $e->getMessage());
 }
 ?>
