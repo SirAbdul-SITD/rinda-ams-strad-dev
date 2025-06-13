@@ -1,7 +1,10 @@
 -- Add notice board columns to academic_calendar table
 ALTER TABLE academic_calendar
 ADD COLUMN is_notice TINYINT(1) DEFAULT 0,
-ADD COLUMN notice_readers VARCHAR(255) DEFAULT NULL;
+ADD COLUMN students TINYINT(1) DEFAULT 0,
+ADD COLUMN staffs TINYINT(1) DEFAULT 0,
+ADD COLUMN parents TINYINT(1) DEFAULT 0,
+ADD COLUMN subject VARCHAR(255) DEFAULT NULL AFTER title;
 
 -- Create notice_board table
 CREATE TABLE IF NOT EXISTS notice_board (
@@ -11,11 +14,16 @@ CREATE TABLE IF NOT EXISTS notice_board (
     description TEXT,
     start_date DATE NOT NULL,
     end_date DATE,
-    readers VARCHAR(255) NOT NULL,
+    students TINYINT(1) DEFAULT 0,
+    staffs TINYINT(1) DEFAULT 0,
+    parents TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES academic_calendar(id) ON DELETE CASCADE
 );
+
+-- Add subject column to notices table
+ALTER TABLE notices ADD COLUMN subject VARCHAR(255) DEFAULT NULL AFTER title;
 
 -- Create trigger to sync notices to notice_board table
 DELIMITER //
@@ -24,8 +32,9 @@ AFTER INSERT ON academic_calendar
 FOR EACH ROW
 BEGIN
     IF NEW.is_notice = 1 THEN
-        INSERT INTO notice_board (event_id, title, description, start_date, end_date, readers)
-        VALUES (NEW.id, NEW.title, NEW.description, NEW.start_date, NEW.end_date, NEW.notice_readers);
+        INSERT INTO notice_board (event_id, title, description, start_date, end_date, students, staffs, parents)
+        VALUES (NEW.id, NEW.title, NEW.description, NEW.start_date, NEW.end_date, 
+                NEW.students, NEW.staffs, NEW.parents);
     END IF;
 END//
 
@@ -40,11 +49,14 @@ BEGIN
                 description = NEW.description,
                 start_date = NEW.start_date,
                 end_date = NEW.end_date,
-                readers = NEW.notice_readers
+                students = NEW.students,
+                staffs = NEW.staffs,
+                parents = NEW.parents
             WHERE event_id = NEW.id;
         ELSE
-            INSERT INTO notice_board (event_id, title, description, start_date, end_date, readers)
-            VALUES (NEW.id, NEW.title, NEW.description, NEW.start_date, NEW.end_date, NEW.notice_readers);
+            INSERT INTO notice_board (event_id, title, description, start_date, end_date, students, staffs, parents)
+            VALUES (NEW.id, NEW.title, NEW.description, NEW.start_date, NEW.end_date,
+                    NEW.students, NEW.staffs, NEW.parents);
         END IF;
     ELSE
         DELETE FROM notice_board WHERE event_id = NEW.id;

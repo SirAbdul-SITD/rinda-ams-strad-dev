@@ -1,17 +1,46 @@
 <?php
 require_once '../settings.php';
 
+// Helper function to safely escape HTML
+function safe_html($str, $default = '') {
+    if ($str === null || $str === '') {
+        return $default;
+    }
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
+// Helper function to format date
+function format_date($date) {
+    return $date ? date('M j, Y', strtotime($date)) : '';
+}
+
 // Function to get notices for a specific user type
 function getNotices($pdo, $userType) {
     try {
-        $stmt = $pdo->prepare("SELECT * FROM notice_board 
-                              WHERE FIND_IN_SET(?, readers) 
-                              AND start_date <= CURDATE() 
-                              AND (end_date IS NULL OR end_date >= CURDATE())
-                              ORDER BY start_date DESC");
-        $stmt->execute([$userType]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("SELECT n.*, ac.event_type, ac.start_time, ac.end_time, ac.all_day, ac.is_online, ac.meeting_link, ac.location 
+                              FROM notices n 
+                              LEFT JOIN academic_calendar ac ON n.event_id = ac.id 
+                              WHERE n." . $userType . " = 1 
+                              AND n.start_date <= CURDATE() 
+                              AND (n.end_date IS NULL OR n.end_date >= CURDATE())
+                              ORDER BY n.date_posted DESC");
+        $stmt->execute();
+        $notices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Ensure all fields have at least empty string values
+        foreach ($notices as &$notice) {
+            $notice['title'] = $notice['title'] ?? '';
+            $notice['content'] = $notice['content'] ?? '';
+            $notice['event_type'] = $notice['event_type'] ?? '';
+            $notice['start_time'] = $notice['start_time'] ?? '';
+            $notice['end_time'] = $notice['end_time'] ?? '';
+            $notice['meeting_link'] = $notice['meeting_link'] ?? '';
+            $notice['location'] = $notice['location'] ?? '';
+        }
+        
+        return $notices;
     } catch (PDOException $e) {
+        error_log("Error fetching notices: " . $e->getMessage());
         return [];
     }
 }
@@ -61,7 +90,7 @@ $staffNotices = getNotices($pdo, 'staffs');
             font-weight: 600;
             color: #4e73df;
         }
-        .notice-readers {
+        .notice-type {
             display: inline-block;
             padding: 0.25rem 0.5rem;
             margin: 0.25rem;
@@ -69,6 +98,22 @@ $staffNotices = getNotices($pdo, 'staffs');
             color: #1976d2;
             border-radius: 0.25rem;
             font-size: 0.75rem;
+        }
+        .notice-time {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        .notice-location {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        .notice-link {
+            font-size: 0.875rem;
+            color: #4e73df;
+            margin-top: 0.5rem;
+            word-break: break-all;
         }
     </style>
 </head>
@@ -99,16 +144,43 @@ $staffNotices = getNotices($pdo, 'staffs');
                                             <?php foreach ($studentNotices as $notice): ?>
                                                 <div class="notice-card">
                                                     <div class="notice-header">
-                                                        <h4 class="mb-0"><?= htmlspecialchars($notice['title']) ?></h4>
+                                                        <h4 class="mb-0"><?= safe_html($notice['title'], 'Event') ?></h4>
+                                                        <?php if (!empty($notice['event_type'])): ?>
+                                                            <span class="notice-type"><?= safe_html(ucfirst($notice['event_type'])) ?></span>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <div class="notice-body">
-                                                        <?= nl2br(htmlspecialchars($notice['description'])) ?>
+                                                        <?= nl2br(safe_html($notice['content'], 'No content available')) ?>
+                                                        
+                                                        <?php if (!$notice['all_day'] && !empty($notice['start_time'])): ?>
+                                                            <div class="notice-time">
+                                                                <i class="fe fe-clock"></i> 
+                                                                <?= safe_html($notice['start_time']) ?>
+                                                                <?php if (!empty($notice['end_time'])): ?>
+                                                                    - <?= safe_html($notice['end_time']) ?>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                        
+                                                        <?php if ($notice['is_online'] && !empty($notice['meeting_link'])): ?>
+                                                            <div class="notice-link">
+                                                                <i class="fe fe-video"></i> 
+                                                                <a href="<?= safe_html($notice['meeting_link']) ?>" target="_blank">
+                                                                    Join Meeting
+                                                                </a>
+                                                            </div>
+                                                        <?php elseif (!empty($notice['location'])): ?>
+                                                            <div class="notice-location">
+                                                                <i class="fe fe-map-pin"></i> 
+                                                                <?= safe_html($notice['location']) ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <div class="notice-footer">
                                                         <span class="notice-date">
-                                                            <?= date('M j, Y', strtotime($notice['start_date'])) ?>
-                                                            <?php if ($notice['end_date']): ?>
-                                                                - <?= date('M j, Y', strtotime($notice['end_date'])) ?>
+                                                            <?= format_date($notice['start_date']) ?>
+                                                            <?php if (!empty($notice['end_date'])): ?>
+                                                                - <?= format_date($notice['end_date']) ?>
                                                             <?php endif; ?>
                                                         </span>
                                                     </div>
@@ -130,16 +202,43 @@ $staffNotices = getNotices($pdo, 'staffs');
                                             <?php foreach ($parentNotices as $notice): ?>
                                                 <div class="notice-card">
                                                     <div class="notice-header">
-                                                        <h4 class="mb-0"><?= htmlspecialchars($notice['title']) ?></h4>
+                                                        <h4 class="mb-0"><?= safe_html($notice['title'], 'Event') ?></h4>
+                                                        <?php if (!empty($notice['event_type'])): ?>
+                                                            <span class="notice-type"><?= safe_html(ucfirst($notice['event_type'])) ?></span>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <div class="notice-body">
-                                                        <?= nl2br(htmlspecialchars($notice['description'])) ?>
+                                                        <?= nl2br(safe_html($notice['content'], 'No content available')) ?>
+                                                        
+                                                        <?php if (!$notice['all_day'] && !empty($notice['start_time'])): ?>
+                                                            <div class="notice-time">
+                                                                <i class="fe fe-clock"></i> 
+                                                                <?= safe_html($notice['start_time']) ?>
+                                                                <?php if (!empty($notice['end_time'])): ?>
+                                                                    - <?= safe_html($notice['end_time']) ?>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                        
+                                                        <?php if ($notice['is_online'] && !empty($notice['meeting_link'])): ?>
+                                                            <div class="notice-link">
+                                                                <i class="fe fe-video"></i> 
+                                                                <a href="<?= safe_html($notice['meeting_link']) ?>" target="_blank">
+                                                                    Join Meeting
+                                                                </a>
+                                                            </div>
+                                                        <?php elseif (!empty($notice['location'])): ?>
+                                                            <div class="notice-location">
+                                                                <i class="fe fe-map-pin"></i> 
+                                                                <?= safe_html($notice['location']) ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <div class="notice-footer">
                                                         <span class="notice-date">
-                                                            <?= date('M j, Y', strtotime($notice['start_date'])) ?>
-                                                            <?php if ($notice['end_date']): ?>
-                                                                - <?= date('M j, Y', strtotime($notice['end_date'])) ?>
+                                                            <?= format_date($notice['start_date']) ?>
+                                                            <?php if (!empty($notice['end_date'])): ?>
+                                                                - <?= format_date($notice['end_date']) ?>
                                                             <?php endif; ?>
                                                         </span>
                                                     </div>
@@ -161,16 +260,43 @@ $staffNotices = getNotices($pdo, 'staffs');
                                             <?php foreach ($staffNotices as $notice): ?>
                                                 <div class="notice-card">
                                                     <div class="notice-header">
-                                                        <h4 class="mb-0"><?= htmlspecialchars($notice['title']) ?></h4>
+                                                        <h4 class="mb-0"><?= safe_html($notice['title'], 'Event') ?></h4>
+                                                        <?php if (!empty($notice['event_type'])): ?>
+                                                            <span class="notice-type"><?= safe_html(ucfirst($notice['event_type'])) ?></span>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <div class="notice-body">
-                                                        <?= nl2br(htmlspecialchars($notice['description'])) ?>
+                                                        <?= nl2br(safe_html($notice['content'], 'No content available')) ?>
+                                                        
+                                                        <?php if (!$notice['all_day'] && !empty($notice['start_time'])): ?>
+                                                            <div class="notice-time">
+                                                                <i class="fe fe-clock"></i> 
+                                                                <?= safe_html($notice['start_time']) ?>
+                                                                <?php if (!empty($notice['end_time'])): ?>
+                                                                    - <?= safe_html($notice['end_time']) ?>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                        
+                                                        <?php if ($notice['is_online'] && !empty($notice['meeting_link'])): ?>
+                                                            <div class="notice-link">
+                                                                <i class="fe fe-video"></i> 
+                                                                <a href="<?= safe_html($notice['meeting_link']) ?>" target="_blank">
+                                                                    Join Meeting
+                                                                </a>
+                                                            </div>
+                                                        <?php elseif (!empty($notice['location'])): ?>
+                                                            <div class="notice-location">
+                                                                <i class="fe fe-map-pin"></i> 
+                                                                <?= safe_html($notice['location']) ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <div class="notice-footer">
                                                         <span class="notice-date">
-                                                            <?= date('M j, Y', strtotime($notice['start_date'])) ?>
-                                                            <?php if ($notice['end_date']): ?>
-                                                                - <?= date('M j, Y', strtotime($notice['end_date'])) ?>
+                                                            <?= format_date($notice['start_date']) ?>
+                                                            <?php if (!empty($notice['end_date'])): ?>
+                                                                - <?= format_date($notice['end_date']) ?>
                                                             <?php endif; ?>
                                                         </span>
                                                     </div>

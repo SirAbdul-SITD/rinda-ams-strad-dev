@@ -20,9 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Handle AJAX requests
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
+    switch ($_GET['action']) {
+        case 'edit_event':
+            editEvent($pdo);
+            break;
+    }
+}
+
 // Function to add a new event
 function addEvent($pdo) {
     $data = sanitizeInput($_POST);
+
+    // Debug logging
+    error_log("POST data: " . print_r($_POST, true));
 
     // Validate event type
     $validEventTypes = ['class', 'exam', 'holiday', 'meeting', 'online', 'other'];
@@ -31,19 +43,21 @@ function addEvent($pdo) {
     try {
         $pdo->beginTransaction();
         
+        // Handle notice
+        $isNotice = isset($_POST['is_notice']) ? 1 : 0;
+        
         // Insert into academic_calendar
         $stmt = $pdo->prepare("INSERT INTO academic_calendar 
-                              (title, event_type, start_date, end_date, start_time, end_time, 
-                               all_day, is_online, meeting_link, location, description, is_notice, readers) 
+                              (title, subject, event_type, start_date, end_date, start_time, end_time, 
+                               all_day, is_online, meeting_link, location, description, is_notice) 
                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         $allDay = isset($data['all_day']) ? 1 : 0;
         $isOnline = isset($data['is_online']) ? 1 : 0;
-        $isNotice = isset($data['is_notice']) ? 1 : 0;
-        $noticeReaders = !empty($data['readers']) ? $data['readers'] : '';
         
         $stmt->execute([
             $data['title'],
+            $data['subject'] ?? null,
             $eventType,
             $data['start_date'],
             $data['end_date'] ?: $data['start_date'],
@@ -54,37 +68,42 @@ function addEvent($pdo) {
             $isOnline ? ($data['meeting_link'] ?? null) : null,
             $isOnline ? null : ($data['location'] ?? null),
             $data['description'] ?? null,
-            $isNotice,
-            $noticeReaders
+            $isNotice
         ]);
         
         $eventId = $pdo->lastInsertId();
         
         // If it's a notice, also insert into notices table
         if ($isNotice) {
-            $stmt = $pdo->prepare("INSERT INTO notices 
-                                  (title, content, start_date, end_date, readers, posted_by, date_posted, event_id) 
-                                  VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
+            // Get selected readers
+            $students = isset($_POST['readers']) && in_array('students', $_POST['readers']) ? 1 : 0;
+            $staffs = isset($_POST['readers']) && in_array('staffs', $_POST['readers']) ? 1 : 0;
+            $parents = isset($_POST['readers']) && in_array('parents', $_POST['readers']) ? 1 : 0;
             
-            // Ensure readers is never null
-            $noticeReaders = !empty($data['readers']) ? $data['readers'] : '';
+            $stmt = $pdo->prepare("INSERT INTO notices 
+                                  (title, subject, content, start_date, end_date, students, staffs, parents, 
+                                   posted_by, date_posted, event_id) 
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)");
             
             $stmt->execute([
                 $data['title'],
+                $data['subject'] ?? null,
                 $data['description'] ?? '',
                 $data['start_date'],
                 $data['end_date'] ?: $data['start_date'],
-                $noticeReaders,
+                $students,
+                $staffs,
+                $parents,
                 $_SESSION['user_name'] ?? 'Admin',
-                date('Y-m-d H:i:s'),
                 $eventId
             ]);
         }
         
         $pdo->commit();
         $_SESSION['message'] = ['type' => 'success', 'text' => 'Event added successfully'];
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         $pdo->rollBack();
+        error_log("Error in addEvent: " . $e->getMessage());
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Error adding event: ' . $e->getMessage()];
     }
     
@@ -103,20 +122,22 @@ function updateEvent($pdo) {
     try {
         $pdo->beginTransaction();
         
+        // Handle notice
+        $isNotice = isset($_POST['is_notice']) ? 1 : 0;
+        
         // Update academic_calendar
         $stmt = $pdo->prepare("UPDATE academic_calendar SET 
-                              title = ?, event_type = ?, start_date = ?, end_date = ?, 
+                              title = ?, subject = ?, event_type = ?, start_date = ?, end_date = ?, 
                               start_time = ?, end_time = ?, all_day = ?, is_online = ?, 
-                              meeting_link = ?, location = ?, description = ?, is_notice = ?, readers = ? 
+                              meeting_link = ?, location = ?, description = ?, is_notice = ? 
                               WHERE id = ?");
         
         $allDay = isset($data['all_day']) ? 1 : 0;
         $isOnline = isset($data['is_online']) ? 1 : 0;
-        $isNotice = isset($data['is_notice']) ? 1 : 0;
-        $noticeReaders = isset($data['readers']) ? $data['readers'] : '';
         
         $stmt->execute([
             $data['title'],
+            $data['subject'] ?? null,
             $eventType,
             $data['start_date'],
             $data['end_date'] ?: $data['start_date'],
@@ -128,65 +149,70 @@ function updateEvent($pdo) {
             $isOnline ? null : ($data['location'] ?? null),
             $data['description'] ?? null,
             $isNotice,
-            $noticeReaders,
             $data['id']
         ]);
         
         // Handle notice in notices table
         if ($isNotice) {
+            // Get selected readers
+            $students = isset($_POST['readers']) && in_array('students', $_POST['readers']) ? 1 : 0;
+            $staffs = isset($_POST['readers']) && in_array('staffs', $_POST['readers']) ? 1 : 0;
+            $parents = isset($_POST['readers']) && in_array('parents', $_POST['readers']) ? 1 : 0;
+            
             // Check if notice already exists
-            $stmt = $pdo->prepare("SELECT id FROM notices WHERE title = ? AND start_date = ?");
-            $stmt->execute([$data['title'], $data['start_date']]);
+            $stmt = $pdo->prepare("SELECT id FROM notices WHERE event_id = ?");
+            $stmt->execute([$data['id']]);
             $noticeId = $stmt->fetchColumn();
             
             if ($noticeId) {
                 // Update existing notice
                 $stmt = $pdo->prepare("UPDATE notices SET 
-                                      title = ?, content = ?, start_date = ?, end_date = ?, readers = ?, event_id = ? 
-                                      WHERE id = ?");
-                
-                // Ensure readers is not null - use empty string if no readers selected
-                $noticeReaders = !empty($data['readers']) ? $data['readers'] : '';
+                                      title = ?, subject = ?, content = ?, start_date = ?, end_date = ?, 
+                                      students = ?, staffs = ?, parents = ? 
+                                      WHERE event_id = ?");
                 
                 $stmt->execute([
                     $data['title'],
+                    $data['subject'] ?? null,
                     $data['description'] ?? '',
                     $data['start_date'],
                     $data['end_date'] ?: $data['start_date'],
-                    $noticeReaders,
-                    $data['id'],  // Store the event_id
-                    $noticeId
+                    $students,
+                    $staffs,
+                    $parents,
+                    $data['id']
                 ]);
             } else {
                 // Insert new notice
                 $stmt = $pdo->prepare("INSERT INTO notices 
-                                      (title, content, start_date, end_date, readers, posted_by, date_posted, event_id) 
-                                      VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
-                
-                // Ensure readers is not null - use empty string if no readers selected
-                $noticeReaders = !empty($data['readers']) ? $data['readers'] : '';
+                                      (title, subject, content, start_date, end_date, students, staffs, parents, 
+                                       posted_by, date_posted, event_id) 
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)");
                 
                 $stmt->execute([
                     $data['title'],
+                    $data['subject'] ?? null,
                     $data['description'] ?? '',
                     $data['start_date'],
                     $data['end_date'] ?: $data['start_date'],
-                    $noticeReaders,
+                    $students,
+                    $staffs,
+                    $parents,
                     $_SESSION['user_name'] ?? 'Admin',
-                    date('Y-m-d H:i:s'),
-                    $data['id']  // Store the event_id
+                    $data['id']
                 ]);
             }
         } else {
             // Remove from notices if it was a notice before
-            $stmt = $pdo->prepare("DELETE FROM notices WHERE title = ? AND start_date = ?");
-            $stmt->execute([$data['title'], $data['start_date']]);
+            $stmt = $pdo->prepare("DELETE FROM notices WHERE event_id = ?");
+            $stmt->execute([$data['id']]);
         }
         
         $pdo->commit();
         $_SESSION['message'] = ['type' => 'success', 'text' => 'Event updated successfully'];
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         $pdo->rollBack();
+        error_log("Error in updateEvent: " . $e->getMessage());
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Error updating event: ' . $e->getMessage()];
     }
     
@@ -205,25 +231,19 @@ function deleteEvent($pdo) {
     try {
         $pdo->beginTransaction();
         
-        // Get event details before deleting
-        $stmt = $pdo->prepare("SELECT title, start_date FROM academic_calendar WHERE id = ?");
+        // Delete from notices table first (using event_id)
+        $stmt = $pdo->prepare("DELETE FROM notices WHERE event_id = ?");
         $stmt->execute([$_POST['id']]);
-        $event = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($event) {
-            // Delete from notices table first
-            $stmt = $pdo->prepare("DELETE FROM notices WHERE title = ? AND start_date = ?");
-            $stmt->execute([$event['title'], $event['start_date']]);
-            
-            // Then delete from academic_calendar
+        // Then delete from academic_calendar
         $stmt = $pdo->prepare("DELETE FROM academic_calendar WHERE id = ?");
         $stmt->execute([$_POST['id']]);
-        }
         
         $pdo->commit();
         $_SESSION['message'] = ['type' => 'success', 'text' => 'Event deleted successfully'];
     } catch (PDOException $e) {
         $pdo->rollBack();
+        error_log("Error in deleteEvent: " . $e->getMessage());
         $_SESSION['message'] = ['type' => 'error', 'text' => 'Error deleting event: ' . $e->getMessage()];
     }
     
@@ -301,6 +321,15 @@ function getTermDuration($pdo) {
 
 // Get current date information
 $currentDate = new DateTime();
+
+// Handle week navigation
+$weekOffset = isset($_GET['week']) ? intval($_GET['week']) : 0;
+$currentDate->modify($weekOffset . ' weeks');
+
+// Handle month navigation
+$monthOffset = isset($_GET['month']) ? intval($_GET['month']) : 0;
+$currentDate->modify($monthOffset . ' months');
+
 $termStartDate = getTermStartDate($pdo);
 $termDuration = getTermDuration($pdo);
 $currentTermWeek = calculateTermWeek($currentDate->format('Y-m-d'), $termStartDate);
@@ -309,11 +338,6 @@ $currentTermWeek = calculateTermWeek($currentDate->format('Y-m-d'), $termStartDa
 $termEndDate = new DateTime($termStartDate);
 $termEndDate->modify("+{$termDuration} months");
 
-// Get events for different views
-$todayEvents = getEvents($pdo, $currentDate->format('Y-m-d'), $currentDate->format('Y-m-d'));
-$monthEvents = getEvents($pdo, $currentDate->format('Y-m-01'), $currentDate->format('Y-m-t'));
-$allEvents = getEvents($pdo);
-
 // Get the first day of the current week
 $firstDayOfWeek = clone $currentDate;
 $firstDayOfWeek->modify('this week');
@@ -321,6 +345,11 @@ $firstDayOfWeek->modify('this week');
 // Get the last day of the current week
 $lastDayOfWeek = clone $firstDayOfWeek;
 $lastDayOfWeek->modify('+6 days');
+
+// Get events for different views
+$todayEvents = getEvents($pdo, $currentDate->format('Y-m-d'), $currentDate->format('Y-m-d'));
+$monthEvents = getEvents($pdo, $currentDate->format('Y-m-01'), $currentDate->format('Y-m-t'));
+$allEvents = getEvents($pdo);
 
 // Get events for the current week
 $weekEvents = getEvents($pdo, $firstDayOfWeek->format('Y-m-d'), $lastDayOfWeek->format('Y-m-d'));
@@ -331,10 +360,10 @@ function getNoticesByUserType($pdo, $userType) {
         $stmt = $pdo->prepare("SELECT n.*, ac.event_type, ac.start_time, ac.end_time, ac.all_day, ac.is_online, ac.meeting_link, ac.location 
                               FROM notices n 
                               LEFT JOIN academic_calendar ac ON n.event_id = ac.id 
-                              WHERE n.readers LIKE ? 
+                              WHERE n." . $userType . " = 1 
                               ORDER BY n.date_posted DESC");
         
-        $stmt->execute(['%' . $userType . '%']);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         error_log("Error fetching notices: " . $e->getMessage());
@@ -355,6 +384,53 @@ function getAllNotices($pdo) {
     } catch (PDOException $e) {
         error_log("Error fetching notices: " . $e->getMessage());
         return [];
+    }
+}
+
+function editEvent($pdo) {
+    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    if (!$id) {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Invalid event ID']);
+        exit();
+    }
+    
+    try {
+        // Get event details
+        $stmt = $pdo->prepare("SELECT * FROM academic_calendar WHERE id = ?");
+        $stmt->execute([$id]);
+        $event = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$event) {
+            throw new Exception('Event not found');
+        }
+        
+        // Get notice details if it's a notice
+        if ($event['is_notice']) {
+            $stmt = $pdo->prepare("SELECT students, staffs, parents FROM notices WHERE event_id = ?");
+            $stmt->execute([$id]);
+            $notice = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($notice) {
+                $event['students'] = (int)$notice['students'];
+                $event['staffs'] = (int)$notice['staffs'];
+                $event['parents'] = (int)$notice['parents'];
+            } else {
+                $event['students'] = 0;
+                $event['staffs'] = 0;
+                $event['parents'] = 0;
+            }
+        }
+        
+        // Return event data as JSON
+        header('Content-Type: application/json');
+        echo json_encode($event);
+        exit();
+    } catch (Exception $e) {
+        error_log("Error in editEvent: " . $e->getMessage());
+        header('Content-Type: application/json');
+        echo json_encode(['error' => $e->getMessage()]);
+        exit();
     }
 }
 ?>
@@ -524,11 +600,54 @@ function getAllNotices($pdo) {
         font-size: 0.8rem;
         font-weight: 500;
         margin-bottom: 2px;
+        padding: 2px 4px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .day-number.today-circle {
+        background: #4e73df;
+        color: white;
     }
 
     .event-item i {
         font-size: 0.7rem;
         margin-left: 2px;
+    }
+
+    .checkbox-group {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+    }
+    
+    .checkbox-group .form-check {
+        margin-right: 20px;
+        margin-bottom: 0;
+    }
+    
+    .checkbox-group .form-check:last-child {
+        margin-right: 0;
+    }
+    
+    .btn-link {
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .btn-link:hover {
+        transform: scale(1.2);
+        color: #4e73df !important;
+    }
+    
+    .calendar-title, .month-title {
+        font-weight: 600;
+        color: #2e59d9;
+    }
+    
+    .term-info {
+        font-size: 0.875rem;
+        color: #6c757d;
     }
   </style>
 </head>
@@ -570,8 +689,16 @@ function getAllNotices($pdo) {
                 <!-- Today's Calendar View -->
                 <div class="calendar-container">
   <div class="calendar-header">
-    <h3 class="calendar-title">Term Week <?= $currentTermWeek ?> (<?= $firstDayOfWeek->format('M j') ?> - <?= $lastDayOfWeek->modify('+13 days')->format('M j, Y') ?>)</h3>
-    <div class="term-info">
+    <h3 class="calendar-title text-center mb-2">Term Week <?= $currentTermWeek ?> (<?= $firstDayOfWeek->format('M j') ?> - <?= $lastDayOfWeek->format('M j, Y') ?>)</h3>
+    <div class="d-flex justify-content-center align-items-center mb-3">
+      <button class="btn btn-link text-dark p-0 mx-2" id="prevWeek" title="Previous Week">
+        <i class="fe fe-chevron-left"></i>
+      </button>
+      <button class="btn btn-link text-dark p-0 mx-2" id="nextWeek" title="Next Week">
+        <i class="fe fe-chevron-right"></i>
+      </button>
+    </div>
+    <div class="term-info text-center">
       <span class="term-duration">Term Duration: <?= $termDuration ?> months</span>
       <span class="term-period">(<?= date('M j, Y', strtotime($termStartDate)) ?> - <?= $termEndDate->format('M j, Y') ?>)</span>
     </div>
@@ -596,13 +723,18 @@ function getAllNotices($pdo) {
     // Get all events for this two-week period
     $periodEvents = getEvents($pdo, $firstDayOfWeek->format('Y-m-d'), $lastDayOfWeek->format('Y-m-d'));
     
+    // Get today's date for comparison
+    $today = new DateTime();
+    $todayFormatted = $today->format('Y-m-d');
+    
     // Display 14 days (2 weeks)
     for ($i = 0; $i < 14; $i++) {
         $day = clone $firstDayOfWeek;
         $day->add(new DateInterval("P{$i}D"));
         $dayNumber = $day->format('j');
-        $isToday = $day->format('Y-m-d') === $currentDate->format('Y-m-d');
-        $isPast = $day < $currentDate && !$isToday;
+        $dayFormatted = $day->format('Y-m-d');
+        $isToday = $dayFormatted === $todayFormatted;
+        $isPast = $day < $today && !$isToday;
         
         // Get events for this day
         $dayEvents = array_filter($periodEvents, function($event) use ($day) {
@@ -611,7 +743,6 @@ function getAllNotices($pdo) {
                 $eventEnd = !empty($event['end_date']) ? new DateTime($event['end_date']) : $eventStart;
                 $dayDate = $day->format('Y-m-d');
                 
-                // Only show event on start date and end date (if different from start date)
                 return $eventStart->format('Y-m-d') === $dayDate || 
                        ($eventEnd->format('Y-m-d') === $dayDate && $eventEnd->format('Y-m-d') !== $eventStart->format('Y-m-d'));
             } catch (Exception $e) {
@@ -621,21 +752,20 @@ function getAllNotices($pdo) {
         });
         
         echo '<div class="calendar-day' . ($isToday ? ' today' : '') . ($isPast ? ' past-day' : '') . '">';
-        echo '<div class="day-number">' . $dayNumber . '</div>';
+        echo '<div class="day-number' . ($isToday ? ' today-circle' : '') . '">' . $dayNumber . '</div>';
         
         // Display events for this day
         foreach ($dayEvents as $event) {
             try {
                 $eventClass = 'event-' . $event['event_type'];
                 $eventStart = new DateTime($event['start_date']);
-                $isUpcoming = $eventStart > $currentDate;
+                $isUpcoming = $eventStart > $today;
                 $isEndDate = !empty($event['end_date']) && 
-                            (new DateTime($event['end_date']))->format('Y-m-d') === $day->format('Y-m-d');
-                
+                            (new DateTime($event['end_date']))->format('Y-m-d') === $dayFormatted;
+            
                 echo '<div class="event-item ' . $eventClass . ($isUpcoming ? ' upcoming-event' : '') . '" data-id="' . $event['id'] . '">';
                 echo '<div class="event-title">' . htmlspecialchars($event['title']) . '</div>';
                 
-                // Add time if not all-day event
                 if (!$event['all_day'] && !empty($event['start_time'])) {
                     echo '<div class="event-time">' . date('g:i a', strtotime($event['start_time']));
                     if (!empty($event['end_time'])) {
@@ -644,7 +774,6 @@ function getAllNotices($pdo) {
                     echo '</div>';
                 }
                 
-                // Add icons for event type
                 if ($event['all_day'] == 1) {
                     echo '<i class="fe fe-clock" title="All Day Event"></i>';
                 }
@@ -655,11 +784,10 @@ function getAllNotices($pdo) {
                     echo '<i class="fe fe-bell" title="Notice Board Event"></i>';
                 }
                 
-                // Add indicator for end date
                 if ($isEndDate) {
                     echo '<i class="fe fe-flag" title="End Date"></i>';
                 }
-                
+            
                 echo '</div>';
             } catch (Exception $e) {
                 error_log("Error displaying event: " . $e->getMessage());
@@ -667,7 +795,6 @@ function getAllNotices($pdo) {
             }
         }
         
-        // Show event count badge if there are events
         if (count($dayEvents) > 0) {
             echo '<div class="event-count-badge">' . count($dayEvents) . '</div>';
         }
@@ -704,7 +831,7 @@ function getAllNotices($pdo) {
                 
                 <!-- Current Month Section -->
                 <div class="calendar-container">
-                  <h3 class="month-title"><?= $currentDate->format('F Y') ?></h3>
+                  <h3 class="month-title text-center mb-2"><?= $currentDate->format('F Y') ?></h3>
                   
                   <ul class="event-list">
                     <?php
@@ -806,6 +933,11 @@ function getAllNotices($pdo) {
                   </div>
                 </div>
                 
+                <div class="form-group">
+                  <label for="eventSubject">Subject</label>
+                  <input type="text" class="form-control" id="eventSubject" name="subject" placeholder="Enter subject (optional)">
+                </div>
+                
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="startDate">Start Date*</label>
@@ -851,20 +983,27 @@ function getAllNotices($pdo) {
                 
                 <div class="form-group" id="noticeReadersGroup" style="display: none;">
                     <label>Notice Readers*</label>
-                    <div class="tag-input-container" id="tagInputContainer">
-                        <select id="noticeReaderSelect">
-                            <option value="">Select readers...</option>
-                            <option value="students">Students</option>
-                            <option value="parents">Parents</option>
-                            <option value="staffs">Staffs</option>
-                        </select>
+                    <div class="d-flex align-items-center">
+                        <div class="form-check mr-4">
+                            <input type="checkbox" class="form-check-input" name="readers[]" value="students" id="studentsCheck">
+                            <label class="form-check-label" for="studentsCheck">Students</label>
+                        </div>
+                        <div class="form-check mr-4">
+                            <input type="checkbox" class="form-check-input" name="readers[]" value="staffs" id="staffsCheck">
+                            <label class="form-check-label" for="staffsCheck">Staffs</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="readers[]" value="parents" id="parentsCheck">
+                            <label class="form-check-label" for="parentsCheck">Parents</label>
+                        </div>
                     </div>
-                    <input type="hidden" name="readers" id="readers" value="">
+                    <small class="form-text text-muted">Select at least one reader group</small>
                 </div>
                 
                 <div class="form-group" id="meetingLinkGroup" style="display: none;">
                   <label for="meetingLink">Meeting Link*</label>
                   <input type="url" class="form-control" id="meetingLink" name="meeting_link" placeholder="https://meet.google.com/abc-xyz-123">
+                  <small class="form-text text-muted">Enter the meeting link (e.g., Google Meet, Zoom, etc.)</small>
                 </div>
                 
                 <div class="form-group" id="locationGroup">
@@ -951,221 +1090,199 @@ require_once('admin-footer.php');
         $('#noticeReaderSelect').select2({
             placeholder: "Select readers...",
             allowClear: true,
-            width: '100%'
+            width: '100%',
+            multiple: true
+        }).on('change', function() {
+            const selectedValues = $(this).val() || [];
+            const readersValue = selectedValues.join(',');
+            $('#readers').val(readersValue);
+            console.log('Selected readers value:', readersValue);
         });
         
-      // Set today's date as default for new events
-      $('#startDate').val(moment().format('YYYY-MM-DD'));
-      
-      // Toggle time fields based on all-day checkbox
-      $('#allDayEvent').change(function() {
-        if ($(this).is(':checked')) {
-          $('#timeFields').hide();
-          $('#startTime').val('');
-          $('#endTime').val('');
-        } else {
-          $('#timeFields').show();
-        }
-      });
-      
-      // Toggle online meeting fields
-      $('#isOnlineEvent').change(function() {
-        if ($(this).is(':checked')) {
-          $('#meetingLinkGroup').show();
-          $('#locationGroup').hide();
-          $('#eventType').val('online');
-        } else {
-          $('#meetingLinkGroup').hide();
-          $('#locationGroup').show();
-        }
-      });
-      
-      // Change event type handler
-      $('#eventType').change(function() {
-        if ($(this).val() === 'online') {
-          $('#isOnlineEvent').prop('checked', true).trigger('change');
-        }
-      });
-      
-        // Initialize tag input
-        const tagInput = {
-            container: $('#tagInputContainer'),
-            select: $('#noticeReaderSelect'),
-            hiddenInput: $('#readers'),
-            tags: new Set(),
-
-            init: function() {
-                this.select.on('change', () => this.addTag());
-                this.container.on('click', '.remove-tag', (e) => {
-                    const tag = $(e.target).closest('.tag');
-                    const value = tag.data('value');
-                    this.removeTag(value);
-                });
-            },
-
-            addTag: function() {
-                const value = this.select.val();
-                if (value && !this.tags.has(value)) {
-                    this.tags.add(value);
-                    this.renderTags();
-                    this.select.val('');
-                }
-            },
-
-            removeTag: function(value) {
-                this.tags.delete(value);
-                this.renderTags();
-            },
-
-            renderTags: function() {
-                // Clear existing tags
-                this.container.find('.tag').remove();
-                
-                // Add new tags
-                this.tags.forEach(value => {
-                    const tag = $(`<span class="tag" data-value="${value}">
-                        ${value.charAt(0).toUpperCase() + value.slice(1)}
-                        <span class="remove-tag">&times;</span>
-                    </span>`);
-                    this.container.prepend(tag);
-                });
-
-                // Always ensure there's a value, even if empty
-                const readersValue = Array.from(this.tags).join(',');
-                this.hiddenInput.val(readersValue || '');
-            }
-        };
-
-        tagInput.init();
-
         // Toggle notice readers group
         $('#isNotice').change(function() {
             if ($(this).is(':checked')) {
                 $('#noticeReadersGroup').show();
-                $('#readers').prop('required', true);
+                // Remove required attribute from individual checkboxes
+                $('input[name="readers[]"]').prop('required', false);
             } else {
                 $('#noticeReadersGroup').hide();
-                $('#readers').prop('required', false);
-                tagInput.tags.clear();
-                tagInput.renderTags();
-            }
-        });
-
-        // Handle form submission
-        $('#eventForm').on('submit', function(e) {
-            if ($('#isNotice').is(':checked')) {
-                if (tagInput.tags.size === 0) {
-                    e.preventDefault();
-                    alert('Please select at least one notice reader');
-                    return false;
-                }
-                // Ensure readers value is set before submission
-                const readersValue = Array.from(tagInput.tags).join(',');
-                $('#readers').val(readersValue || '');
-            } else {
-                // If not a notice, set empty string for readers
-                $('#readers').val('');
+                $('input[name="readers[]"]').prop('checked', false);
             }
         });
         
-    // Edit event button handler
-$(document).on('click', '.edit-event', function(e) {
-    e.stopPropagation();
-    var eventId = $(this).data('id');
-    
-    $.ajax({
-        url: 'get_event.php',
-        type: 'GET',
-        data: {id: eventId},
-        dataType: 'json',
-        success: function(response) {
-            if (response.error) {
-                alert(response.error);
-                return;
+        // Handle form submission
+        $('#eventForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent default submission
+            
+            // Handle readers validation for notices
+            if ($('#isNotice').is(':checked')) {
+                const selectedReaders = $('input[name="readers[]"]:checked').length;
+                if (selectedReaders === 0) {
+                    alert('Please select at least one notice reader');
+                    return false;
+                }
             }
             
-            $('#eventModalLabel').text('Edit Event');
-            $('#formAction').val('update_event');
-            $('#eventId').val(response.id);
-            $('#eventTitle').val(response.title);
-            $('#eventType').val(response.event_type);
-            $('#startDate').val(response.start_date.split(' ')[0]);
-            $('#endDate').val(response.end_date ? response.end_date.split(' ')[0] : '');
-            $('#startTime').val(response.start_time || '');
-            $('#endTime').val(response.end_time || '');
-            $('#eventLocation').val(response.location || '');
-            $('#eventDescription').val(response.description || '');
-            $('#allDayEvent').prop('checked', response.all_day == 1);
-            $('#isOnlineEvent').prop('checked', response.is_online == 1);
-            $('#meetingLink').val(response.meeting_link || '');
+            // Now submit the form
+            this.submit();
+        });
+        
+        // Reset form when modal is closed
+        $('#eventModal').on('hidden.bs.modal', function() {
+            $('#eventForm')[0].reset();
+            $('#formAction').val('add_event');
+            $('#eventId').val('');
+            $('#eventModalLabel').text('Add New Event');
+            $('#timeFields').show();
+            $('#meetingLinkGroup').hide();
+            $('#locationGroup').show();
+            $('#noticeReadersGroup').hide();
+            $('#startDate').val(moment().format('YYYY-MM-DD'));
+        });
+        
+        // Initialize form with today's date
+        $('#startDate').val(moment().format('YYYY-MM-DD'));
+        
+        // Handle edit button click
+        $(document).on('click', '.edit-event', function() {
+            const eventId = $(this).data('id');
             
-            if (response.all_day) {
-                $('#timeFields').hide();
-            } else {
-                $('#timeFields').show();
-            }
+            // Show loading state
+            $('#eventModalLabel').text('Loading...');
+            $('#eventModal').modal('show');
             
-            if (response.is_online) {
+            // Fetch event details
+            $.ajax({
+                url: 'calendar.php?action=edit_event&id=' + eventId,
+                method: 'GET',
+                dataType: 'json',
+                success: function(event) {
+                    if (event.error) {
+                        alert(event.error);
+                        $('#eventModal').modal('hide');
+                        return;
+                    }
+                    
+                    // Populate form fields
+                    $('#eventId').val(event.id);
+                    $('#eventTitle').val(event.title);
+                    $('#eventSubject').val(event.subject);
+                    $('#eventType').val(event.event_type);
+                    $('#startDate').val(event.start_date);
+                    $('#endDate').val(event.end_date);
+                    $('#startTime').val(event.start_time);
+                    $('#endTime').val(event.end_time);
+                    $('#eventLocation').val(event.location);
+                    $('#meetingLink').val(event.meeting_link);
+                    $('#eventDescription').val(event.description);
+                    
+                    // Handle all day checkbox
+                    if (event.all_day == 1) {
+                        $('#allDayEvent').prop('checked', true);
+                        $('#timeFields').hide();
+                    } else {
+                        $('#allDayEvent').prop('checked', false);
+                        $('#timeFields').show();
+                    }
+                    
+                    // Handle online meeting checkbox
+                    if (event.is_online == 1) {
+                        $('#isOnlineEvent').prop('checked', true);
+                        $('#meetingLinkGroup').show();
+                        $('#meetingLink').prop('required', true);
+                        $('#locationGroup').hide();
+                    } else {
+                        $('#isOnlineEvent').prop('checked', false);
+                        $('#meetingLinkGroup').hide();
+                        $('#meetingLink').prop('required', false);
+                        $('#locationGroup').show();
+                    }
+                    
+                    // Handle notice checkbox and readers
+                    if (event.is_notice == 1) {
+                        $('#isNotice').prop('checked', true);
+                        $('#noticeReadersGroup').show();
+                        
+                        // Set reader checkboxes
+                        $('#studentsCheck').prop('checked', event.students === 1);
+                        $('#staffsCheck').prop('checked', event.staffs === 1);
+                        $('#parentsCheck').prop('checked', event.parents === 1);
+                    } else {
+                        $('#isNotice').prop('checked', false);
+                        $('#noticeReadersGroup').hide();
+                        $('#studentsCheck').prop('checked', false);
+                        $('#staffsCheck').prop('checked', false);
+                        $('#parentsCheck').prop('checked', false);
+                    }
+                    
+                    // Update form action and modal title
+                    $('#formAction').val('update_event');
+                    $('#eventModalLabel').text('Edit Event');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading event:', error);
+                    alert('Error loading event details. Please try again.');
+                    $('#eventModal').modal('hide');
+                }
+            });
+        });
+
+        // Handle delete button click
+        $(document).on('click', '.delete-event', function() {
+            const eventId = $(this).data('id');
+            $('#deleteEventId').val(eventId);
+            $('#deleteModal').modal('show');
+        });
+
+        // Handle delete form submission
+        $('#deleteForm').on('submit', function(e) {
+            e.preventDefault();
+            this.submit();
+        });
+
+        // Handle online event checkbox
+        $('#isOnlineEvent').change(function() {
+            if ($(this).is(':checked')) {
                 $('#meetingLinkGroup').show();
+                $('#meetingLink').prop('required', true);
                 $('#locationGroup').hide();
             } else {
                 $('#meetingLinkGroup').hide();
+                $('#meetingLink').prop('required', false);
                 $('#locationGroup').show();
             }
-                    
-                    if (response.is_notice == 1) {
-                        $('#isNotice').prop('checked', true).trigger('change');
-                        if (response.readers) {
-                            var readers = response.readers.split(',');
-                            $('#readers').val(readers).trigger('change');
-                        }
-                    } else {
-                        $('#isNotice').prop('checked', false).trigger('change');
-                    }
-            
-            $('#eventModal').modal('show');
-        },
-        error: function(xhr, status, error) {
-            try {
-                var response = JSON.parse(xhr.responseText);
-                if (response.error) {
-                    alert(response.error);
-                } else {
-                    alert('Error loading event: ' + error);
-                }
-            } catch (e) {
-                alert('Server error: ' + xhr.responseText);
-            }
-        }
-    });
-});
-      
-      // Delete event button handler
-      $(document).on('click', '.delete-event', function(e) {
-        e.stopPropagation();
-        var eventId = $(this).data('id');
-        $('#deleteEventId').val(eventId);
-        $('#deleteModal').modal('show');
-      });
-      
-      // Reset form when modal is closed
-      $('#eventModal').on('hidden.bs.modal', function() {
-        $('#eventForm')[0].reset();
-            $('#readers').val(null).trigger('change');
-        $('#formAction').val('add_event');
-        $('#eventId').val('');
-        $('#eventModalLabel').text('Add New Event');
-        $('#timeFields').show();
-        $('#meetingLinkGroup').hide();
-        $('#locationGroup').show();
-            $('#noticeReadersGroup').hide();
-        $('#startDate').val(moment().format('YYYY-MM-DD'));
-      });
-      
-      // Close message alert after 5 seconds
-      setTimeout(function() {
-        $('.message-alert').fadeOut();
-      }, 5000);
+        });
+
+        // Handle week navigation
+        $('#prevWeek').click(function() {
+            const currentUrl = new URL(window.location.href);
+            const currentWeek = parseInt(currentUrl.searchParams.get('week') || '0');
+            currentUrl.searchParams.set('week', currentWeek - 1);
+            window.location.href = currentUrl.toString();
+        });
+
+        $('#nextWeek').click(function() {
+            const currentUrl = new URL(window.location.href);
+            const currentWeek = parseInt(currentUrl.searchParams.get('week') || '0');
+            currentUrl.searchParams.set('week', currentWeek + 1);
+            window.location.href = currentUrl.toString();
+        });
+
+        // Handle month navigation
+        $('#prevMonth').click(function() {
+            const currentUrl = new URL(window.location.href);
+            const currentMonth = parseInt(currentUrl.searchParams.get('month') || '0');
+            currentUrl.searchParams.set('month', currentMonth - 1);
+            window.location.href = currentUrl.toString();
+        });
+
+        $('#nextMonth').click(function() {
+            const currentUrl = new URL(window.location.href);
+            const currentMonth = parseInt(currentUrl.searchParams.get('month') || '0');
+            currentUrl.searchParams.set('month', currentMonth + 1);
+            window.location.href = currentUrl.toString();
+        });
     });
   </script>
 </body>
