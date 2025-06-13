@@ -1,5 +1,3 @@
-
-
 <?php
 
 require('../settings.php');
@@ -107,7 +105,7 @@ if (isset($_POST['student-id']) && isset($_POST['lunch-id']) && isset($_POST['st
                                 $comment
                                 </p>
                                 <p>
-                                You can follow <a href='https://parent.grithallacademy.com.ng/dashboard/lunch.php'>this link</a> and login to your dashboard to view all invoices.
+                                You can follow <a href='https://parent.strad.africa/dashboard/lunch.php'>this link</a> and login to your dashboard to view all invoices.
                                 </p>
                             </div>
                             <div class='footer'>
@@ -120,7 +118,7 @@ if (isset($_POST['student-id']) && isset($_POST['lunch-id']) && isset($_POST['st
                         </html>";
 
                     // Set headers for the email
-                    $headers = 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+                    $headers = 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
                     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
                     // Send the email

@@ -91,7 +91,7 @@ if ($insertQuery) {
 ";
 
   // Additional headers
-  $headers .= 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+  $headers .= 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
 

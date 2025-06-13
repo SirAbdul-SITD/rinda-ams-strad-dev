@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </html>";
 
                     // Additional headers
-                    $headers = 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+                    $headers = 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
                     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
                     // Send email
@@ -399,7 +399,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             ";
 
           // Additional headers
-          $headers .= 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+          $headers .= 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
           $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
 

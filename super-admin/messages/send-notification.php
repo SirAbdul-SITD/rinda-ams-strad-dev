@@ -126,12 +126,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </html>
                             ";
 
-                // Additional headers
-                $headers .= 'From: RINDA AMS <support@grithallacademy.com.ng>' . "\r\n";
-                $headers .= 'Reply-To: support@grithallacademy.com.ng' . "\r\n";
-                $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-                ;
+                $headers = ''; // initialize the variable
 
+                // Additional headers
+                $headers .= 'From: RINDA AMS <support@strad.africa>' . "\r\n";
+                $headers .= 'Reply-To: support@strad.africa' . "\r\n";
+                $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
                 if (mail($email, $subject, $message, $headers)) {
                     echo "Email sent to $email\n";

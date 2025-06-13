@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Generate new admission number
     $prefix = "GHA/2017/";
     $numeric_part = substr($last_admission_no, strlen($prefix)); // Get the numeric part
-    $numeric_part = (int)$numeric_part + 1; // Increment
+    $numeric_part = (int) $numeric_part + 1; // Increment
     $numeric_part = str_pad($numeric_part, 4, '0', STR_PAD_LEFT); // Pad with leading zeros
     $admission_no = $prefix . $numeric_part;
 
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Execute the query
     if ($stmt->execute()) {
       if ($stmt->rowCount() > 0) {
-      $studentId = $pdo->lastInsertId();
+        $studentId = $pdo->lastInsertId();
         // Update application status
         $insertQuery = "UPDATE `applications` SET `status` = :status, `modified_by` = :modified_by WHERE `ref` = :ref";
         $insertQ = $pdo->prepare($insertQuery);
@@ -170,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </html>";
 
           // Additional headers
-          $headers = 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+          $headers = 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
           $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
           // Send email

@@ -460,14 +460,14 @@ if (isset($_POST['parent_id']) || isset($_GET['parent_id'])) {
                               <?php
                               if ($student['photo'] == null) {
                                 if ($student['gender'] == 'female') { ?>
-                                  <img src="https://grithallacademy.com.ng/uploads/student-profiles/2.jpeg"
-                                    alt="Profile picture" class="avatar-img rounded-circle">
+                                  <img src="https://strad.africa/uploads/student-profiles/2.jpeg" alt="Profile picture"
+                                    class="avatar-img rounded-circle">
                                 <?php } else { ?>
-                                  <img src="https://grithallacademy.com.ng/uploads/student-profiles/1.jpeg"
-                                    alt="Profile picture" class="avatar-img rounded-circle">
+                                  <img src="https://strad.africa/uploads/student-profiles/1.jpeg" alt="Profile picture"
+                                    class="avatar-img rounded-circle">
                                 <?php }
                               } else { ?>
-                                <img src="https://grithallacademy.com.ng/uploads/student-profiles/<?= $student['photo'] ?>"
+                                <img src="https://strad.africa/uploads/student-profiles/<?= $student['photo'] ?>"
                                   alt="Profile picture" class="avatar-img rounded-circle">
                               <?php } ?>
                             </span>

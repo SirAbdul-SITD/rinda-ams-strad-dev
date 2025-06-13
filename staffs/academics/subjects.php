@@ -100,13 +100,16 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php
               if ($gender == 'Female') { ?>
-                <img src="/domains/grithallacademy.com.ng/public_html/uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+                <img src="/domains/strad.africa/public_html/uploads/staff-profiles/1.jpeg" alt="..."
+                  class="avatar-img rounded-circle">
               <?php } else { ?>
-                <img src="/domains/grithallacademy.com.ng/public_html/uploads/staff-profiles/1.jpeg" alt="..." class="avatar-img rounded-circle">
+                <img src="/domains/strad.africa/public_html/uploads/staff-profiles/1.jpeg" alt="..."
+                  class="avatar-img rounded-circle">
               <?php } ?>
             </span>
           </a>
@@ -238,14 +241,14 @@
               <div class="col">
                 <h2 class="page-title">Subjects</h2>
               </div>
-             
+
             </div>
 
 
 
 
             <div class="row my-4">
-              
+
               <!-- Small table -->
               <div class="col-md-12">
                 <div class="card shadow">
@@ -266,7 +269,7 @@
                     if (count($subjects) === 0) {
                       echo '<p class="text-center">None added Yet!</p>';
                     } else {
-                    ?>
+                      ?>
                       <!-- table -->
                       <table class="table datatables" id="dataTable-1">
                         <thead>
@@ -280,7 +283,7 @@
                         </thead>
                         <tbody>
                           <?php
-                          foreach ($subjects as $index => $subject) : ?>
+                          foreach ($subjects as $index => $subject): ?>
                             <tr data-id="<?= $subject['id']; ?>">
                               <td>
                                 <?= $index + 1; ?>
@@ -292,8 +295,10 @@
                                 <div class="input-group" style="display: none;">
                                   <input type="text" class="form-control" value="<?= $subject['subject']; ?>">
                                   <div class="input-group-append">
-                                    <button class="btn btn-danger cancel-button" type="button"><span class="fe fe-x-circle "></span></button>
-                                    <button class="btn btn-success save-button" type="button"><span class="fe fe-check-circle "></span></button>
+                                    <button class="btn btn-danger cancel-button" type="button"><span
+                                        class="fe fe-x-circle "></span></button>
+                                    <button class="btn btn-success save-button" type="button"><span
+                                        class="fe fe-check-circle "></span></button>
                                   </div>
                                 </div>
                               </td>
@@ -305,12 +310,13 @@
 
                               </td>
                               <td>
-                                <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-sm dropdown-toggle more-horizontal" type="button"
+                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <span class="text-muted sr-only">Action</span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                   <a class="dropdown-item edit-action" href="#">Edit</a>
-                                  
+
                                 </div>
                               </td>
                             </tr>
@@ -332,17 +338,19 @@
       </div> <!-- .container-fluid -->
 
 
-     
 
-     
+
+
 
 
       <!-- Notification Modal -->
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -355,13 +363,15 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
 
       <!-- Menu Modal -->
-       <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -464,7 +474,7 @@
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
@@ -473,8 +483,8 @@
 
 
     // Add class form js
-    document.querySelectorAll(".add_subject_form").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".add_subject_form").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         $.ajax({
@@ -482,11 +492,11 @@
           url: 'add_subject.php',
           data: $(this).serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               displayPopup(response.message, true);
               // Refresh the page after 2 seconds
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
               }, 2000);
             } else {
@@ -494,7 +504,7 @@
             }
 
           },
-          error: function(error, xhr) {
+          error: function (error, xhr) {
             displayPopup('Error occurred during request. Contact Admin', false);
           },
         });
@@ -503,8 +513,8 @@
 
 
     // Assign Class Teacher js
-    document.querySelectorAll(".assign_subject_form").forEach(function(form) {
-      form.addEventListener("submit", function(event) {
+    document.querySelectorAll(".assign_subject_form").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         $.ajax({
@@ -512,19 +522,19 @@
           url: 'assign_subject_form.php',
           data: $(this).serialize(),
           dataType: 'json',
-          success: function(response) {
+          success: function (response) {
             $('#assignTeacher').modal('hide');
             if (response.success) {
               displayPopup(response.message, true);
               // Refresh the page after 2 seconds
-              setTimeout(function() {
+              setTimeout(function () {
                 location.reload();
               }, 2000);
             } else {
               $('#warningModel').modal('show');
             }
           },
-          error: function(error, xhr) {
+          error: function (error, xhr) {
             displayPopup('Error occurred during request. Contact Admin', false);
           },
         });
@@ -532,27 +542,27 @@
     });
 
 
-    document.getElementById("force_assign").addEventListener("click", function() {
+    document.getElementById("force_assign").addEventListener("click", function () {
       $.ajax({
         type: 'POST',
         url: 'force_assign_subject_teacher.php',
         data: $('.assign_subject_form').serialize(),
         dataType: 'json',
-        beforeSend: function() {
+        beforeSend: function () {
           $('#warningModel').modal('hide');
         },
-        success: function(response) {
+        success: function (response) {
           if (response.success) {
             displayPopup(response.message, true);
             // Refresh the page after 2 seconds
-            setTimeout(function() {
+            setTimeout(function () {
               location.reload();
             }, 2000);
           } else {
             displayPopup(response.message, false);
           }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           displayPopup('Error occurred during request. Contact Admin', false);
           // console.error('Error:', error); // Log the error to the console for debugging
         },
@@ -560,12 +570,12 @@
     });
   </script>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
 
       const addSubjectBtn = $('#addSubjectBtn');
       const addSubjectForm = $('#addSubjectForm');
 
-      addSubjectBtn.click(function() {
+      addSubjectBtn.click(function () {
         if (addSubjectForm.is(':hidden')) {
           // Show the add subject form
           addSubjectForm.slideDown();
@@ -578,7 +588,7 @@
       });
 
       // Event delegation for edit action
-      document.body.addEventListener('click', function(event) {
+      document.body.addEventListener('click', function (event) {
         if (event.target.classList.contains('edit-action')) {
           event.preventDefault();
           const parentTr = event.target.closest('tr');
@@ -595,7 +605,7 @@
 
           // Save button
           const saveButton = inputGroup.querySelector('.save-button');
-          saveButton.addEventListener('click', function() {
+          saveButton.addEventListener('click', function () {
             const newName = inputElement.value;
 
             $.ajax({
@@ -606,7 +616,7 @@
                 newName: newName
               }, // Pass subject ID and new name
               dataType: 'json',
-              success: function(response) {
+              success: function (response) {
                 if (response.success) {
                   displayPopup(response.message, true);
                   // Update text with input value
@@ -619,7 +629,7 @@
                   displayPopup(response.message, false);
                 }
               },
-              error: function(error, xhr) {
+              error: function (error, xhr) {
                 displayPopup('Error occurred during request. Contact Admin', false);
               },
             });
@@ -627,7 +637,7 @@
 
           // Cancel button
           const cancelButton = inputGroup.querySelector('.cancel-button');
-          cancelButton.addEventListener('click', function() {
+          cancelButton.addEventListener('click', function () {
             // Hide input field and show span without changing the text
             inputGroup.style.display = 'none';
             spanElement.style.display = 'inline-block';
@@ -636,7 +646,7 @@
       });
 
       // Event delegation for remove action
-      document.body.addEventListener('click', function(event) {
+      document.body.addEventListener('click', function (event) {
         if (event.target.classList.contains('remove-action')) {
           event.preventDefault();
           const parentTr = event.target.closest('tr');
@@ -646,7 +656,7 @@
           $('#confirmationModal').modal('show');
 
           // Add click event listener to the confirmation button
-          $('.confirm-remove').off('click').on('click', function() {
+          $('.confirm-remove').off('click').on('click', function () {
             // Send AJAX request to remove the subject
             $.ajax({
               type: 'POST',
@@ -655,7 +665,7 @@
                 id: subjectId
               },
               dataType: 'json',
-              success: function(response) {
+              success: function (response) {
                 if (response.success) {
                   // Remove the row from the table
                   parentTr.remove();
@@ -664,7 +674,7 @@
                   displayPopup(response.message, false);
                 }
               },
-              error: function(error, xhr) {
+              error: function (error, xhr) {
                 displayPopup('Error occurred during request. Contact Admin', false);
               },
             });
@@ -764,42 +774,42 @@
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -814,14 +824,14 @@
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();

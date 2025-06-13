@@ -119,7 +119,8 @@
           </ul>
         </div>
         <form class="form-inline ml-md-auto d-none d-lg-flex searchform text-muted">
-          <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+          <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+            placeholder="Type something..." aria-label="Search">
         </form>
         <ul class="navbar-nav d-flex flex-row">
           <li class="nav-item">
@@ -139,7 +140,8 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="avatar avatar-sm mt-2">
                 <?php
                 if ($gender == 'Female') { ?>
@@ -196,14 +198,16 @@
                 <div class="card-body">
                   <div class="row">
                     <!-- Product Cards -->
-                    <?php foreach ($products as $product) : ?>
+                    <?php foreach ($products as $product): ?>
                       <div class="col-md-4 mb-4">
                         <div class="card h-100">
                           <!-- Category Overlay -->
-                          <span class="badge badge-primary position-absolute p-1" style="top: 10px; left: 0;   border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
+                          <span class="badge badge-primary position-absolute p-1"
+                            style="top: 10px; left: 0;   border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
                             <?php echo $product['category_name']; ?>
                           </span>
-                          <img src="https://grithallacademy.com.ng/uploads/shop/<?php echo $product['image_url']; ?>" class="card-img-top h-60" alt="Product Image">
+                          <img src="https://strad.africa/uploads/shop/<?php echo $product['image_url']; ?>"
+                            class="card-img-top h-60" alt="Product Image">
                           <div class="card-body d-flex flex-column">
                             <h5 class="card-title">
                               <?php echo $product['name']; ?>
@@ -219,7 +223,15 @@
                                 <?php echo $product['quantity_available'] . ' In Stock'; ?>
                               </p>
                             </div>
-                            <button class="btn btn-primary mt-auto w-100 edit-product-btn" data-product-id="<?php echo $product['id']; ?>" data-product-name="<?php echo htmlspecialchars($product['name']); ?>" data-product-description="<?php echo htmlspecialchars($product['description']); ?>" data-product-category-id="<?php echo $product['category_id']; ?>" data-category-name="<?php echo $product['category_name']; ?>" data-available-quantity="<?php echo $product['quantity_available']; ?>" data-product-price="<?php echo $product['price']; ?>" data-product-image="<?php echo $product['image_url']; ?>">
+                            <button class="btn btn-primary mt-auto w-100 edit-product-btn"
+                              data-product-id="<?php echo $product['id']; ?>"
+                              data-product-name="<?php echo htmlspecialchars($product['name']); ?>"
+                              data-product-description="<?php echo htmlspecialchars($product['description']); ?>"
+                              data-product-category-id="<?php echo $product['category_id']; ?>"
+                              data-category-name="<?php echo $product['category_name']; ?>"
+                              data-available-quantity="<?php echo $product['quantity_available']; ?>"
+                              data-product-price="<?php echo $product['price']; ?>"
+                              data-product-image="<?php echo $product['image_url']; ?>">
                               Edit Product
                             </button>
                           </div>
@@ -239,7 +251,8 @@
 
 
       <!-- Add Product -->
-      <div class="modal fade" id="addModel" tabindex="-1" role="dialog" aria-labelledby="addModelLabel" aria-hidden="true">
+      <div class="modal fade" id="addModel" tabindex="-1" role="dialog" aria-labelledby="addModelLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -265,7 +278,8 @@
                 <div class="form-row">
                   <div class="form-group col-6">
                     <label for="add-product-category" class="col-form-label">Select category: *</label>
-                    <select id="add-product-category" class="form-control select2 required" required name="add-product-category" required>
+                    <select id="add-product-category" class="form-control select2 required" required
+                      name="add-product-category" required>
                       <?php
                       $query = "SELECT * FROM product_categories ORDER BY `product_categories`.`category_name` ASC";
                       $stmt = $pdo->prepare($query);
@@ -275,7 +289,7 @@
                         echo '<option value="" selected disabled>None added Yet!</option>';
                       } else {
                         echo "<option value='' id='add-product-category' selected>Change Category</option>";
-                        foreach ($product_categories as $category) :
+                        foreach ($product_categories as $category):
                           $x = $category['category_id'];
                           $y = $category['category_name'];
                           echo "<option value=$x>$y</option>";
@@ -286,7 +300,8 @@
                   </div>
                   <div class="form-group col-6">
                     <label for="add-product-quantity" class="col-form-label">Stock:</label>
-                    <input type="number" class="form-control" id="add-product-quantity" name="add-product-quantity" required>
+                    <input type="number" class="form-control" id="add-product-quantity" name="add-product-quantity"
+                      required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -295,7 +310,8 @@
                     <input type="file" class="custom-file-input" id="add-product-image" name="image">
                     <label class="custom-file-label" for="add-product-image">Choose file</label>
                   </div>
-                  <img src="" class="img-thumbnail mt-2" id="add-product-thumbnail" style="display: none;" alt="Product Image">
+                  <img src="" class="img-thumbnail mt-2" id="add-product-thumbnail" style="display: none;"
+                    alt="Product Image">
                 </div>
               </form>
             </div>
@@ -308,12 +324,12 @@
 
       <script>
         // JavaScript code to update product image
-        document.getElementById('add-product-image').addEventListener('change', function() {
+        document.getElementById('add-product-image').addEventListener('change', function () {
           var fileInput = this;
           var imgThumbnail = document.getElementById('add-product-thumbnail');
           if (fileInput.files && fileInput.files[0]) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
               imgThumbnail.src = e.target.result;
               imgThumbnail.style.display = 'block'; // Display the thumbnail
             };
@@ -325,7 +341,8 @@
 
 
       <!-- Edit Product -->
-      <div class="modal fade" id="editModel" tabindex="-1" role="dialog" aria-labelledby="editModelLabel" aria-hidden="true">
+      <div class="modal fade" id="editModel" tabindex="-1" role="dialog" aria-labelledby="editModelLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -342,7 +359,8 @@
                 </div>
                 <div class="form-group">
                   <label for="edit-product-description" class="col-form-label">Product Description:</label>
-                  <textarea class="form-control" id="edit-product-description" name="edit-product-description"></textarea>
+                  <textarea class="form-control" id="edit-product-description"
+                    name="edit-product-description"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="edit-product-price" class="col-form-label">Price: *</label>
@@ -351,7 +369,8 @@
                 <div class="form-row">
                   <div class="form-group col-6">
                     <label for="edit-categories" class="col-form-label">Select category: *</label>
-                    <select id="edit-categories" class="form-control select2 required" required name="edit-category" required>
+                    <select id="edit-categories" class="form-control select2 required" required name="edit-category"
+                      required>
                       <?php
                       $query = "SELECT * FROM product_categories ORDER BY `product_categories`.`category_name` ASC";
                       $stmt = $pdo->prepare($query);
@@ -361,7 +380,7 @@
                         echo '<option value="" selected disabled>None added Yet!</option>';
                       } else {
                         echo "<option value='' id='edit-product-category' selected>Change Category</option>";
-                        foreach ($product_categories as $category) :
+                        foreach ($product_categories as $category):
                           $x = $category['category_id'];
                           $y = $category['category_name'];
                           echo "<option value=$x>$y</option>";
@@ -372,7 +391,8 @@
                   </div>
                   <div class="form-group col-6">
                     <label for="edit-product-quantity" class="col-form-label">Stock:</label>
-                    <input type="number" class="form-control" id="edit-product-quantity" name="edit-product-quantity" required>
+                    <input type="number" class="form-control" id="edit-product-quantity" name="edit-product-quantity"
+                      required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -395,12 +415,12 @@
 
       <script>
         // JavaScript code to update product image
-        document.getElementById('edit-product-image').addEventListener('change', function() {
+        document.getElementById('edit-product-image').addEventListener('change', function () {
           var fileInput = this;
           var imgThumbnail = document.getElementById('edit-product-thumbnail');
           if (fileInput.files && fileInput.files[0]) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
               imgThumbnail.src = e.target.result;
             };
             reader.readAsDataURL(fileInput.files[0]);
@@ -413,7 +433,8 @@
 
 
       <!-- RemoveConfirmModal -->
-      <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -434,11 +455,13 @@
       </div>
 
 
-      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+              <h5 class="modal-title" id="defaultModalLabel">Notifications</h5> <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="list-group list-group-flush my-n3">
@@ -451,11 +474,13 @@
                 </div>
               </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" disabled>Clear All</button> </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+                disabled>Clear All</button> </div>
           </div>
         </div>
       </div>
-      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -659,42 +684,42 @@
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -709,14 +734,14 @@
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();
@@ -778,7 +803,7 @@
 
       document.body.appendChild(popup);
 
-      setTimeout(function() {
+      setTimeout(function () {
         popup.remove();
       }, 5000);
     }
@@ -786,14 +811,14 @@
 
 
 
-    document.getElementById('addProductBtn').addEventListener('click', function() {
+    document.getElementById('addProductBtn').addEventListener('click', function () {
       var form = document.getElementById('addProductForm');
       var formData = new FormData(form);
 
       // AJAX request to send form data
       var xhr = new XMLHttpRequest();
       xhr.open('POST', 'add_product.php', true);
-      xhr.onload = function() {
+      xhr.onload = function () {
         if (xhr.status === 200) {
           // Success
           console.log(xhr.responseText);
@@ -805,7 +830,7 @@
           console.error('Error occurred while adding product');
         }
       };
-      xhr.onerror = function() {
+      xhr.onerror = function () {
         console.error('AJAX request failed');
       };
       xhr.send(formData);
@@ -816,8 +841,8 @@
 
 
 
-    $(document).ready(function() {
-      $('.edit-product-btn').click(function() {
+    $(document).ready(function () {
+      $('.edit-product-btn').click(function () {
         // Get product details from data attributes
         var productId = $(this).data('product-id');
         var productName = $(this).data('product-name');
@@ -834,7 +859,7 @@
         $('#edit-product-price').val(productPrice);
         $('#edit-product-category').val(productCategory);
         $('#edit-product-quantity').val(productQuantity);
-        $('#edit-product-thumbnail').attr('src', 'https://grithallacademy.com.ng/uploads/shop/' + productImage);
+        $('#edit-product-thumbnail').attr('src', 'https://strad.africa/uploads/shop/' + productImage);
 
         // Show the edit modal
         $('#editModel').modal('show');
@@ -842,20 +867,20 @@
     });
 
 
-    document.getElementById('editProductBtn').addEventListener('click', function() {
+    document.getElementById('editProductBtn').addEventListener('click', function () {
       var form = document.getElementById('editProductForm');
       var formData = new FormData(form);
 
       // AJAX request to send form data
       var xhr = new XMLHttpRequest();
       xhr.open('POST', 'update_product.php', true);
-      xhr.onload = function() {
+      xhr.onload = function () {
         if (xhr.status === 200) {
           // Success
           displayPopup(xhr.responseText, true);
           // Optionally, close the modal or display a success message
           $('#editModel').modal('hide');
-          setTimeout(function() {
+          setTimeout(function () {
             location.reload();
           }, 1000);
         } else {
@@ -863,7 +888,7 @@
           displayPopup('Error occurred while updating product', true);
         }
       };
-      xhr.onerror = function() {
+      xhr.onerror = function () {
         console.error('AJAX request failed');
       };
       xhr.send(formData);

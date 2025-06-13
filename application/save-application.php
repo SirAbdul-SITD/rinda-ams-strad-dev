@@ -259,11 +259,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ";
 
     // Additional headers
-    $headers .= 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+    $headers .= 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
 
-    $amnin_emails = 'admin@grithallacademy.com.ng, grithallacademy@gmail.com, abdulkarimhussain7gmail.com, noreply@grithallacademy.com.ng';
+    $amnin_emails = 'admin@strad.africa, grithallacademy@gmail.com, abdulkarimhussain7gmail.com, noreply@strad.africa';
     // Send email
     mail($amnin_emails, $subject, $message, $headers);
 

@@ -108,7 +108,7 @@ if (isset($_POST['ref']) && isset($_POST['status'])) {
                                 </div>
                                 <div class='content'>
                                     <p>$comment</p>
-                                    <p>You can follow <a href='https://parent.grithallacademy.com.ng/dashboard/invoices.php'>this link</a> to log in and view all invoices.</p>
+                                    <p>You can follow <a href='https://parent.strad.africa/dashboard/invoices.php'>this link</a> to log in and view all invoices.</p>
                                 </div>
                                 <div class='footer'>
                                     <p>Thank you,</p>
@@ -120,7 +120,7 @@ if (isset($_POST['ref']) && isset($_POST['status'])) {
                         </html>";
 
                         // Headers
-                        $headers = 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+                        $headers = 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
                         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
                         // Send email

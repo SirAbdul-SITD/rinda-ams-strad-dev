@@ -59,7 +59,7 @@ $message = "
         <div class='content'>
             <p>Dear Parent/Guardian,</p>
             <p>We are pleased to inform you that your child/ward has been successfully promoted to the next class for the upcoming academic session. This is a significant milestone, and we commend your child's/ward's hard work and dedication throughout the school year.</p>
-            <p>To view your child's/ward's new class assignment and the corresponding invoice, please log in to your dashboard by following <a href='https://application.grithallacademy.com.ng/'>this link</a>. We kindly request that you review the invoice and ensure timely payment to secure your child's/ward's place in the new class.</p>
+            <p>To view your child's/ward's new class assignment and the corresponding invoice, please log in to your dashboard by following <a href='https://application.strad.africa/'>this link</a>. We kindly request that you review the invoice and ensure timely payment to secure your child's/ward's place in the new class.</p>
             <p>Thank you for your continued support and cooperation. We look forward to another successful academic year together.</p>
         </div>
         <div class='footer'>
@@ -73,7 +73,7 @@ $message = "
 ";
 
 // Additional headers
-$headers = 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+$headers = 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
 // Loop through each parent email and send the email

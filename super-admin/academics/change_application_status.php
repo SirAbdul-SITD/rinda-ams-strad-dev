@@ -119,7 +119,7 @@ if (isset($_POST['ref']) && isset($_POST['status'])) {
         
                                     
                                     <p>
-                                    You can follow <a a href='https://parent.grithallacademy.com.ng/dashboard/application-status.php?ref=$ref'>this link</a> to view the progress of your application
+                                    You can follow <a a href='https://parent.strad.africa/dashboard/application-status.php?ref=$ref'>this link</a> to view the progress of your application
                                     </p>
                                 </div>
                                 <div class='footer'>
@@ -133,7 +133,7 @@ if (isset($_POST['ref']) && isset($_POST['status'])) {
                             ";
 
                     // Additional headers
-                    $headers .= 'From: Grithall Academy <noreply@grithallacademy.com.ng>' . "\r\n";
+                    $headers .= 'From: Grithall Academy <noreply@strad.africa>' . "\r\n";
                     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
 
