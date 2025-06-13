@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../assets/images/logo.jpg">
-<<<<<<< HEAD
+
   <title>Expenses - Admin | Rinda AMS</title>
   <!-- Simple bar CSS -->
   <link rel="stylesheet" href="../css/simplebar.css">
@@ -417,7 +417,7 @@
                         <div class="mb-3">
                             <p class="small text-muted mb-0">Total paid amount</p>
                             <p class="h1 mb-0">
-                                ₦<?= number_format($totalExpenses, 2) ?>
+                                ₦<?= number_format($totalExpenses ?? 0, 2) ?>
                             </p>
                         </div>
                         <div>
@@ -468,7 +468,7 @@
                             <div class="mb-3">
                                 <p class="small text-muted mb-0">This Month</p>
                                 <p class="h4 mb-0">
-                                    ₦<?= number_format($monthlyExpenses, 2) ?>
+                                    ₦<?= number_format($monthlyExpenses ?? 0, 2) ?>
                                 </p>
                             </div>
                             <div>

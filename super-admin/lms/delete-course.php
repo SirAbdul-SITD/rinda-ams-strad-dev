@@ -1,53 +1,48 @@
 <?php
-require_once('../settings.php');
+require_once '../includes/config.php';
+require_once '../includes/functions.php';
 
-// Check if the form was submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate required fields
-    if (empty($_POST['course_id'])) {
-        die(json_encode(['success' => false, 'message' => "Course ID is required."]));
-    }
-
-    try {
-        // Begin transaction
-        $pdo->beginTransaction();
-
-        // First, get the thumbnail path to delete it later
-        $stmt = $pdo->prepare("SELECT thumbnail FROM courses WHERE course_id = ?");
-        $stmt->execute([$_POST['course_id']]);
-        $course = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$course) {
-            throw new Exception("Course not found.");
-        }
-
-        // Delete the course (cascading deletes will handle topics and materials)
-        $stmt = $pdo->prepare("DELETE FROM courses WHERE course_id = ?");
-        $stmt->execute([$_POST['course_id']]);
-
-        // Delete the thumbnail file if it exists
-        if ($course['thumbnail'] && file_exists('../../' . $course['thumbnail'])) {
-            unlink('../../' . $course['thumbnail']);
-        }
-
-        // Commit transaction
-        $pdo->commit();
-
-        echo json_encode([
-            'success' => true,
-            'message' => 'Course deleted successfully!'
-        ]);
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error: ' . $e->getMessage()
-        ]);
-    }
-} else {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Invalid request method.'
-    ]);
+// Check if user is logged in and has admin privileges
+session_start();
+if (!isset($_SESSION['user_id']) || !isAdmin($_SESSION['user_id'])) {
+    die(json_encode(['success' => false, 'message' => 'Unauthorized access']));
 }
-?>
+
+// Validate input
+if (empty($_POST['id'])) {
+    die(json_encode(['success' => false, 'message' => 'Course ID is required']));
+}
+
+try {
+    $pdo = getDBConnection();
+    
+    // Get course thumbnail path before deletion
+    $stmt = $pdo->prepare("SELECT thumbnail FROM courses WHERE id = ?");
+    $stmt->execute([$_POST['id']]);
+    $course = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Delete the course
+    $stmt = $pdo->prepare("DELETE FROM courses WHERE id = ?");
+    $stmt->execute([$_POST['id']]);
+    
+    if ($stmt->rowCount() > 0) {
+        // Delete thumbnail file if exists
+        if ($course && $course['thumbnail']) {
+            $thumbnail_path = '../' . $course['thumbnail'];
+            if (file_exists($thumbnail_path)) {
+                unlink($thumbnail_path);
+            }
+        }
+        
+        echo json_encode(['success' => true, 'message' => 'Course deleted successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Course not found']);
+    }
+    
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Database error occurred']);
+} catch (Exception $e) {
+    error_log("General error: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'An error occurred']);
+}

@@ -1,84 +1,61 @@
 <?php
-require_once '../settings.php';
+require '../settings.php';
 
 header('Content-Type: application/json');
 
-// Validate required fields
-$required_fields = ['staff_id', 'type', 'description', 'amount', 'date'];
-foreach ($required_fields as $field) {
-    if (!isset($_POST[$field]) || empty($_POST[$field])) {
-        echo json_encode([
-            'success' => false,
-            'message' => ucfirst(str_replace('_', ' ', $field)) . ' is required'
-        ]);
-        exit;
-    }
-}
-
-// Sanitize and validate input
-$staff_id = filter_var($_POST['staff_id'], FILTER_VALIDATE_INT);
-$type = filter_var($_POST['type'], FILTER_SANITIZE_STRING);
-$description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-$amount = filter_var($_POST['amount'], FILTER_VALIDATE_FLOAT);
-$date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
-
-// Validate staff_id
-if (!$staff_id) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Invalid staff ID'
-    ]);
-    exit;
-}
-
-// Validate amount
-if ($amount === false || $amount < 0) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Invalid amount'
-    ]);
-    exit;
-}
-
-// Validate date format
-if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Invalid date format'
-    ]);
-    exit;
-}
-
 try {
-    $pdo->beginTransaction();
-    
-    // Insert new penalty
-    $query = "INSERT INTO penalties (staff_id, type, description, amount, date, status, created_at) 
-              VALUES (?, ?, ?, ?, ?, 'pending', CURRENT_TIMESTAMP)";
-    
-    $stmt = $pdo->prepare($query);
-    $stmt->execute([$staff_id, $type, $description, $amount, $date]);
-    
-    if ($stmt->rowCount() > 0) {
-        $penalty_id = $pdo->lastInsertId();
-        $pdo->commit();
-        
-        echo json_encode([
-            'success' => true,
-            'message' => 'Penalty added successfully',
-            'penalty_id' => $penalty_id
-        ]);
-    } else {
-        $pdo->rollBack();
-        echo json_encode([
-            'success' => false,
-            'message' => 'Failed to add penalty'
-        ]);
+    // Validate input
+    if (empty($_POST['staff_id']) || empty($_POST['type_id']) || empty($_POST['date'])) {
+        throw new Exception('Staff, penalty type, and date are required');
     }
-} catch (PDOException $e) {
-    $pdo->rollBack();
+
+    $staff_id = intval($_POST['staff_id']);
+    $type_id = intval($_POST['type_id']);
+    $date = $_POST['date'];
+    $description = trim($_POST['description'] ?? '');
+
+    // Check if staff exists
+    $stmt = $pdo->prepare("SELECT id FROM staffs WHERE id = ?");
+    $stmt->execute([$staff_id]);
+    if ($stmt->rowCount() === 0) {
+        throw new Exception('Staff member not found');
+    }
+
+    // Get penalty type and its amount
+    $stmt = $pdo->prepare("SELECT id, amount FROM penalty_types WHERE id = ?");
+    $stmt->execute([$type_id]);
+    if ($stmt->rowCount() === 0) {
+        throw new Exception('Penalty type not found');
+    }
+    $penalty_type = $stmt->fetch(PDO::FETCH_ASSOC);
+    $amount = floatval($penalty_type['amount']);
+
+    // Check if penalty_type_id column exists
+    $stmt = $pdo->query("SHOW COLUMNS FROM penalties LIKE 'penalty_type_id'");
+    if ($stmt->rowCount() === 0) {
+        // Column doesn't exist, use type column instead
+        $stmt = $pdo->prepare("INSERT INTO penalties (staff_id, type, date, amount, description) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$staff_id, $type_id, $date, $amount, $description]);
+    } else {
+        // Get the type name for the type column
+        $stmt = $pdo->prepare("SELECT type_name FROM penalty_types WHERE id = ?");
+        $stmt->execute([$type_id]);
+        $type_name = $stmt->fetch(PDO::FETCH_ASSOC)['type_name'];
+
+        // Column exists, use both penalty_type_id and type
+        $stmt = $pdo->prepare("INSERT INTO penalties (staff_id, penalty_type_id, type, date, amount, description) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$staff_id, $type_id, $type_name, $date, $amount, $description]);
+    }
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Penalty added successfully'
+    ]);
+
+} catch (Exception $e) {
     echo json_encode([
         'success' => false,
-        'message' => 'Error adding penalty: ' . $e->getMessage()
+        'message' => $e->getMessage()
     ]);
-} 
+}
+?> 

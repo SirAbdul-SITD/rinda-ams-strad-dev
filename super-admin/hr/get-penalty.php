@@ -1,25 +1,24 @@
 <?php
-require_once '../settings.php';
+require '../settings.php';
 
 header('Content-Type: application/json');
 
 try {
-    if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
-        throw new Exception('Invalid penalty ID');
+    // Validate input
+    if (empty($_GET['penalty_id'])) {
+        throw new Exception('Penalty ID is required');
     }
 
-    $penalty_id = intval($_POST['id']);
+    $penalty_id = intval($_GET['penalty_id']);
 
-    // Fetch penalty details with staff and department information
-    $query = "SELECT p.*, 
-                     CONCAT(s.first_name, ' ', s.last_name) as staff_name,
-                     d.department
-              FROM penalties p
-              JOIN staffs s ON p.staff_id = s.id
-              LEFT JOIN departments d ON s.department_id = d.id
-              WHERE p.id = ?";
-
-    $stmt = $pdo->prepare($query);
+    // Get penalty details
+    $stmt = $pdo->prepare("
+        SELECT p.*, s.first_name, s.last_name, pt.type_name, pt.price
+        FROM penalties p
+        JOIN staffs s ON p.staff_id = s.id
+        JOIN penalty_types pt ON p.penalty_type_id = pt.id
+        WHERE p.id = ?
+    ");
     $stmt->execute([$penalty_id]);
     $penalty = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -29,7 +28,7 @@ try {
 
     echo json_encode([
         'success' => true,
-        'penalty' => $penalty
+        'data' => $penalty
     ]);
 
 } catch (Exception $e) {

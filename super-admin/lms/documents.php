@@ -1113,24 +1113,34 @@ function formatSize($bytes) {
       </div>
     </div>
   </div>
-
+<?php include('./lms-footer.php'); ?>
   <!-- JavaScript -->
   <script src="../js/jquery.min.js"></script>
   <script src="../js/popper.min.js"></script>
+  <script src="../js/moment.min.js"></script>
   <script src="../js/bootstrap.min.js"></script>
   <script src="../js/simplebar.min.js"></script>
-  <script src="../js/daterangepicker.js"></script>
-  <script src="../js/jquery.stickOnScroll.js"></script>
+  <script src='../js/daterangepicker.js'></script>
+  <script src='../js/jquery.stickOnScroll.js'></script>
   <script src="../js/tinycolor-min.js"></script>
   <script src="../js/config.js"></script>
-  <script src="../js/jquery.dataTables.min.js"></script>
-  <script src="../js/dataTables.bootstrap4.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
-  <!-- Summernote WYSIWYG Editor -->
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+  <script src='../js/jquery.dataTables.min.js'></script>
+  <script src='../js/dataTables.bootstrap4.min.js'></script>
+  <script src="../js/select2.min.js"></script>
+  <script src="../js/apps.js"></script>
   
   <script>
   $(document).ready(function() {
+    // Initialize SimpleBar for sidebar
+    new SimpleBar(document.getElementById('leftSidebar'));
+
+    // Menu button functionality
+    $('.collapseSidebar').on('click', function() {
+      $('.wrapper').toggleClass('sidebar-collapsed');
+      $('.sidebar-left').toggleClass('sidebar-collapsed');
+      $('.main-content').toggleClass('sidebar-collapsed');
+    });
+
     // Initialize DataTables
     $('#documentTable').DataTable({
       order: [[5, 'desc']],

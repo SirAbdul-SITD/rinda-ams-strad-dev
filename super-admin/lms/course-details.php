@@ -414,7 +414,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="course-header">
               <div class="row">
                 <div class="col-md-3">
-                  <img src="<?= $course['thumbnail'] ? './' . htmlspecialchars($course['thumbnail']) : '../assets/images/default-course.jpg' ?>" 
+                  <img src="<?= $course['thumbnail'] ? '../' . htmlspecialchars($course['thumbnail']) : '../assets/images/default-course.jpg' ?>" 
                        alt="Course thumbnail" class="course-thumbnail-lg img-fluid">
                 </div>
                 <div class="col-md-9">

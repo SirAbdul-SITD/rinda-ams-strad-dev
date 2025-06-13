@@ -169,6 +169,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="fingerprints.php">
+              <i class="fe fe-codesandbox fe-16"></i>
+              <span class="ml-3 item-text">Fingerprints</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="penalties.php">
               <i class="fe fe-alert-triangle fe-16"></i>
               <span class="ml-3 item-text">Penalties</span>
@@ -223,25 +229,11 @@
               </a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="message.php">
-                <i class="fe fe-copy fe-16"></i>
-                <span class="ml-3 item-text">Message</span>
-                </i>
-              </a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="payroll.php">
                 <i class="fe fe-dollar-sign fe-16"></i>
                 <span class="ml-3 item-text">Payroll</span>
               </a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fe fe-fast-forward fe-16"></i>
-                <span class="ml-3 item-text">Penalties</span>
-                </i>
-              </a>
-            </li> -->
           </ul>
       </nav>
     </aside>

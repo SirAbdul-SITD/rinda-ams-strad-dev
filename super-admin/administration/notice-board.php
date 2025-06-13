@@ -340,21 +340,29 @@ $otherNotices = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                   </div>
                   <div class="card-body">
-                    <div style="max-height: 54vh; overflow-y: auto;">
-                      <?php foreach ($otherNotices as $notice): ?>
-                        <div class="  mr-1 alert alert-secondary other-notice-item"
-                          data-subject="<?= htmlspecialchars($notice['subject']) ?>"
-                          data-content="<?= htmlspecialchars($notice['content']) ?>"
-                          data-date="<?= date('D d/m/Y', strtotime($notice['start_date'])) ?>">
-                          <div class="d-flex w-100 justify-content-between">
-                            <span class="fe fe-bell fe-16 mr-2"></span>
-                            <small><?= date('D d/m/Y', strtotime($notice['start_date'])) ?></small>
-                          </div>
-                          <?= htmlspecialchars($notice['subject']) ?>
-                        </div>
-                      <?php endforeach; ?>
+                  <div style="max-height: 54vh; overflow-y: auto;">
+  <?php foreach ($otherNotices as $notice): ?>
+    <?php 
+      $subject = $notice['subject'] ?? 'Event';
+      $content = $notice['content'] ?? '';
+      $startDate = $notice['start_date'] ?? '';
+      $formattedDate = $startDate ? date('D d/m/Y', strtotime($startDate)) : 'N/A';
+    ?>
+    <div class="mr-1 alert alert-secondary other-notice-item"
+      data-subject="<?= htmlspecialchars($subject) ?>"
+      data-content="<?= htmlspecialchars($content) ?>"
+      data-date="<?= $formattedDate ?>">
+      
+      <div class="d-flex w-100 justify-content-between">
+        <span class="fe fe-bell fe-16 mr-2"></span>
+        <small><?= $formattedDate ?></small>
+      </div>
+      
+      <?= htmlspecialchars($subject) ?>
+    </div>
+  <?php endforeach; ?>
+</div>
 
-                    </div>
                   </div>
                 </div>
               </div>

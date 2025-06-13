@@ -176,10 +176,22 @@
               <span class="ml-3 item-text">Attendance</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="fingerprints.php">
+              <i class="fe fe-codesandbox fe-16"></i>
+              <span class="ml-3 item-text">Fingerprints</span>
+            </a>
+          </li>
           <li class="nav-item active">
             <a class="nav-link text-primary" href="penalties.php">
               <i class="fe fe-alert-triangle fe-16"></i>
               <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties-types.php">
+              <i class="fe fe-list fe-16"></i>
+              <span class="ml-3 item-text">Penalty Types</span>
             </a>
           </li>
         </ul>
@@ -221,23 +233,11 @@
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="message.php">
-              <i class="fe fe-copy fe-16"></i>
-              <span class="ml-3 item-text">Message</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="payroll.php">
               <i class="fe fe-dollar-sign fe-16"></i>
               <span class="ml-3 item-text">Payroll</span>
             </a>
           </li>
-          <!-- <li class="nav-item active">
-            <a class="nav-link text-primary" href="penalties.php">
-              <i class="fe fe-alert-triangle fe-16"></i>
-              <span class="ml-3 item-text">Penalties</span>
-            </a>
-          </li> -->
         </ul>
       </nav>
     </aside>
@@ -488,10 +488,17 @@
                 <label for="type">Penalty Type</label>
                 <select class="form-control" id="type" required>
                   <option value="">Select Type</option>
-                  <option value="late">Late Arrival</option>
-                  <option value="absent">Absence</option>
-                  <option value="misconduct">Misconduct</option>
-                  <option value="other">Other</option>
+                  <?php
+                  try {
+                      $query = "SELECT * FROM penalty_types ORDER BY type_name";
+                      $stmt = $pdo->query($query);
+                      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                          echo "<option value='{$row['id']}' data-amount='{$row['amount']}'>{$row['type_name']}</option>";
+                      }
+                  } catch (PDOException $e) {
+                      echo "Error: " . $e->getMessage();
+                  }
+                  ?>
                 </select>
               </div>
             </div>
@@ -499,15 +506,9 @@
               <label for="description">Description</label>
               <textarea class="form-control" id="description" rows="3" required></textarea>
             </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="amount">Amount</label>
-                <input type="number" class="form-control" id="amount" step="0.01" required>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="date">Date</label>
-                <input type="date" class="form-control" id="date" required>
-              </div>
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" class="form-control" id="date" required>
             </div>
           </form>
         </div>
@@ -593,10 +594,17 @@
                 <label for="edit_type">Penalty Type</label>
                 <select class="form-control" id="edit_type" required>
                   <option value="">Select Type</option>
-                  <option value="late">Late Arrival</option>
-                  <option value="absent">Absence</option>
-                  <option value="misconduct">Misconduct</option>
-                  <option value="other">Other</option>
+                  <?php
+                  try {
+                      $query = "SELECT * FROM penalty_types ORDER BY type_name";
+                      $stmt = $pdo->query($query);
+                      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                          echo "<option value='{$row['id']}' data-amount='{$row['amount']}'>{$row['type_name']}</option>";
+                      }
+                  } catch (PDOException $e) {
+                      echo "Error: " . $e->getMessage();
+                  }
+                  ?>
                 </select>
               </div>
             </div>
@@ -841,17 +849,35 @@
         }
       });
 
+      // Handle penalty type change to get amount
+      $('#type').on('change', function() {
+        const selectedOption = $(this).find('option:selected');
+        const amount = selectedOption.data('amount');
+        if (amount) {
+          // Store the amount in a hidden input for form submission
+          if (!$('#penalty_amount').length) {
+            $('<input>').attr({
+              type: 'hidden',
+              id: 'penalty_amount',
+              name: 'penalty_amount',
+              value: amount
+            }).appendTo('#addPenaltyForm');
+          } else {
+            $('#penalty_amount').val(amount);
+          }
+        }
+      });
+
       // Handle Add Penalty form submission
       $('#savePenaltyBtn').on('click', function() {
         // Get form values
         const staffId = $('#staff').val();
-        const type = $('#type').val();
+        const typeId = $('#type').val();
         const description = $('#description').val();
-        const amount = $('#amount').val();
         const date = $('#date').val();
 
         // Validate form
-        if (!staffId || !type || !description || !amount || !date) {
+        if (!staffId || !typeId || !date) {
             displayPopup('Please fill in all required fields', false);
             return;
         }
@@ -862,9 +888,8 @@
             type: 'POST',
             data: {
                 staff_id: staffId,
-                type: type,
+                type_id: typeId,
                 description: description,
-                amount: amount,
                 date: date
             },
             dataType: 'json',
@@ -903,7 +928,7 @@
               $('#view_department').val(penalty.department);
               $('#view_staff_email').val(penalty.email);
               $('#view_staff_phone').val(penalty.phone);
-              $('#view_type').val(penalty.type.charAt(0).toUpperCase() + penalty.type.slice(1));
+              $('#view_type').val(penalty.type_name);
               $('#view_description').val(penalty.description);
               $('#view_amount').val('₦' + parseFloat(penalty.amount).toFixed(2));
               $('#view_date').val(moment(penalty.date).format('MMM D, YYYY'));
@@ -1071,7 +1096,7 @@
               // Populate form fields
               $('#edit_penalty_id').val(penalty.id);
               $('#edit_staff_id').val(penalty.staff_id).trigger('change');
-              $('#edit_type').val(penalty.type);
+              $('#edit_type').val(penalty.type_id);
               $('#edit_description').val(penalty.description);
               $('#edit_amount').val(penalty.amount);
               $('#edit_date').val(penalty.date);
@@ -1114,6 +1139,15 @@
             displayPopup('Error updating penalty', false);
           }
         });
+      });
+
+      // Handle edit type change to get amount
+      $('#edit_type').on('change', function() {
+        const selectedOption = $(this).find('option:selected');
+        const amount = selectedOption.data('amount');
+        if (amount) {
+          $('#edit_amount').val(amount);
+        }
       });
     });
 

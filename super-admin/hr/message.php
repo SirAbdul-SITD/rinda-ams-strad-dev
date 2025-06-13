@@ -197,15 +197,15 @@ $staff_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="attendance.php">
-              <i class="fe fe-calendar fe-16"></i>
-              <span class="ml-3 item-text">Attendance</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="penalties.php">
               <i class="fe fe-alert-triangle fe-16"></i>
               <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties-types.php">
+              <i class="fe fe-list fe-16"></i>
+              <span class="ml-3 item-text">Penalty Types</span>
             </a>
           </li>
         </ul>

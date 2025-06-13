@@ -177,9 +177,21 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="fingerprints.php">
+              <i class="fe fe-codesandbox fe-16"></i>
+              <span class="ml-3 item-text">Fingerprints</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="penalties.php">
               <i class="fe fe-alert-triangle fe-16"></i>
               <span class="ml-3 item-text">Penalties</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="penalties-types.php">
+              <i class="fe fe-list fe-16"></i>
+              <span class="ml-3 item-text">Penalty Types</span>
             </a>
           </li>
         </ul>
@@ -221,13 +233,7 @@
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="message.php">
-              <i class="fe fe-copy fe-16"></i>
-              <span class="ml-3 item-text">Message</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link text-primary" href="payroll.php">
+            <a class="nav-link" href="payroll.php">
               <i class="fe fe-dollar-sign fe-16"></i>
               <span class="ml-3 item-text">Payroll</span>
             </a>
