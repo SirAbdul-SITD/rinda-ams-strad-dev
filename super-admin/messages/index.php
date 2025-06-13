@@ -165,7 +165,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="chats.php.php">
+            <a class="nav-link" href="https://web.whatsapp.com" target="_blank">
               <i class="fe fe-message-circle fe-16"></i>
               <span class="ml-3 item-text">Live Chats</span>
               </i>
@@ -337,7 +337,8 @@
                     <h3 class="h4 mt-4 mb-1 text-white">Start a live chart</h3>
                     <p class="text-white mb-4">Chats are mostly used when the receiver is required to reply to the
                       message received or make further enquiries.</p>
-                    <a href="chat-select.php" class="btn btn-lg bg-success-light text-white">New Chat<i
+                    <a href="https://web.whatsapp.com" target="_blank"
+                      class="btn btn-lg bg-success-light text-white">New Chat<i
                         class="fe fe-arrow-right fe-16 ml-2"></i></a>
                   </div> <!-- .card-body -->
                 </div> <!-- .card -->

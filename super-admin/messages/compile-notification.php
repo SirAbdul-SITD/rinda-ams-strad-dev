@@ -35,7 +35,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
   <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
   <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme" disabled>
   <!-- Place the first <script> tag in your HTML's <head> -->
-  <script src="https://cdn.tiny.cloud/1/bh3wpg04969gk3sicbornjf3q78tlfmp06uvjlwk2gi4t7ge/tinymce/7/tinymce.min.js"
+  <script src="https://cdn.tiny.cloud/1/13zsit1092dkhikv2pz402ypn0rkon2d7rnrx2k7cyyovh45/tinymce/7/tinymce.min.js"
     referrerpolicy="origin"></script>
   <style>
     .card {
@@ -182,7 +182,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="chats.php.php">
+            <a class="nav-link" href="https://web.whatsapp.com" target="_blank">
               <i class="fe fe-message-circle fe-16"></i>
               <span class="ml-3 item-text">Live Chats</span>
               </i>

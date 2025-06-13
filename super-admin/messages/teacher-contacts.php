@@ -216,7 +216,7 @@ $staffs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="chats.php.php">
+            <a class="nav-link" href="https://web.whatsapp.com" target="_blank">
               <i class="fe fe-message-circle fe-16"></i>
               <span class="ml-3 item-text">Live Chats</span>
               </i>

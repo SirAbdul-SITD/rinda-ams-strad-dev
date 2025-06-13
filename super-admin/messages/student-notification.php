@@ -51,7 +51,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         <i class="fe fe-menu navbar-toggler-icon"></i>
       </button>
       <form class="form-inline mr-auto searchform text-muted">
-        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search" placeholder="Type something..." aria-label="Search">
+        <input class="form-control mr-sm-2 bg-transparent border-0 pl-4 text-muted" type="search"
+          placeholder="Type something..." aria-label="Search">
       </form>
       <ul class="nav">
         <li class="nav-item">
@@ -71,7 +72,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <img src="../assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
             </span>
@@ -101,7 +103,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         <!-- nav bar -->
         <div class="w-100 mb-4 d-flex">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+            <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -122,7 +125,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="chats.php.php">
+            <a class="nav-link" href="https://web.whatsapp.com" target="_blank">
               <i class="fe fe-message-circle fe-16"></i>
               <span class="ml-3 item-text">Live Chats</span>
               </i>
@@ -222,12 +225,14 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                   <div class="card shadow mb-4">
                     <div class="card-header">
                       <strong class="card-title">Configure Notification</strong>
-                      <span class="float-right"><i class="fe fe-flag mr-2"></i><span class="badge badge-pill badge-success text-white"><?= $template ?></span></span>
+                      <span class="float-right"><i class="fe fe-flag mr-2"></i><span
+                          class="badge badge-pill badge-success text-white"><?= $template ?></span></span>
                     </div>
                     <div class="card-body">
                       <div class="form-group col-md-12">
                         <label for="subject">Header Subject</label>
-                        <input type="text" name="subject" id="subject" class="form-control required" required value="<?= $subject ?>">
+                        <input type="text" name="subject" id="subject" class="form-control required" required
+                          value="<?= $subject ?>">
                       </div>
 
                       <div class=" col-md-12">
@@ -235,14 +240,16 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                         <div class="form-row">
                           <div class="col-md-6">
                             <div class="custom-control custom-radio">
-                              <input type="radio" class="custom-control-input required" id="customControlValidation23" name="whom" checked required value='1'>
+                              <input type="radio" class="custom-control-input required" id="customControlValidation23"
+                                name="whom" checked required value='1'>
                               <label class="custom-control-label" for="customControlValidation23">All</label>
                               <p class="text-muted">All Parents will receive this notification.</p>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="custom-control custom-radio mb-3">
-                              <input type="radio" class="custom-control-input required" id="customControlValidation34" name="whom" required value='2'>
+                              <input type="radio" class="custom-control-input required" id="customControlValidation34"
+                                name="whom" required value='2'>
                               <label class="custom-control-label" for="customControlValidation34">Select</label>
                               <p class="text-muted"> Select Parents that will receive this notification.
                               </p>
@@ -253,7 +260,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
 
                       <div class="form-group col-md-12">
                         <label for="recipients">Select Recipients</label>
-                        <select required class="form-control select2-multi required" id="recipients" name="recipients" aria-placeholder="Search Teachers" multiple>
+                        <select required class="form-control select2-multi required" id="recipients" name="recipients"
+                          aria-placeholder="Search Teachers" multiple>
                           <?php
                           $query = "SELECT id, CONCAT(firstName, ' ', lastName) AS full_name FROM parents ORDER BY firstName ASC";
                           $stmt = $pdo->prepare($query);
@@ -262,7 +270,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                           if (count($teachers) === 0) {
                             echo '<option value="" selected disabled>None added Yet!</option>';
                           } else {
-                            foreach ($teachers as $teacher) :
+                            foreach ($teachers as $teacher):
                               $x = $teacher['id'];
                               $y = $teacher['full_name'];
                               echo "<option value=$x>$y</option>";
@@ -282,9 +290,11 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                     <div class="card-body">
                       <div class="form-group">
                         <label for="content" class="sr-only">Your Message</label>
-                        <textarea required class="form-control bg-light required" id="content" name="content" rows="5"><?= $content ?></textarea>
+                        <textarea required class="form-control bg-light required" id="content" name="content"
+                          rows="5"><?= $content ?></textarea>
                       </div>
-                      <button type="submit" class="w-100 btn btn-primary">Send Notification <i class="fe fe-send text-white"></i></button>
+                      <button type="submit" class="w-100 btn btn-primary">Send Notification <i
+                          class="fe fe-send text-white"></i></button>
                     </div> <!-- .card-body -->
                   </div> <!-- .card -->
                 </div> <!-- .col-md -->
@@ -294,27 +304,33 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
                       <h3 class="h5 mb-1">Channels</h3>
                       <p class="text-muted mb-4">Where would you like this notification to be sent?</p>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendToEmail" value="sendToEmail">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendToEmail" value="sendToEmail">
                         <label class="form-check-label" for="sendToEmail">Send to Email</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendToWhatsApp" value="sendToWhatsApp">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendToWhatsApp" value="sendToWhatsApp">
                         <label class="form-check-label" for="sendToWhatsApp">Send to WhatsApp</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMS" value="sendBySMS">
+                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMS"
+                          value="sendBySMS">
                         <label class="form-check-label" for="sendBySMS">Send by SMS</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendToEmailWhatsApp" value="sendToEmailWhatsApp">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendToEmailWhatsApp" value="sendToEmailWhatsApp">
                         <label class="form-check-label" for="sendToEmailWhatsApp">To Email & WhatsApp</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMSWhatsApp" value="sendBySMSWhatsApp">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendBySMSWhatsApp" value="sendBySMSWhatsApp">
                         <label class="form-check-label" for="sendBySMSWhatsApp">By SMS and WhatsApp</label>
                       </div>
                       <div class="form-check mb-2">
-                        <input class="form-check-input required" type="radio" name="sendOption" required id="sendBySMSEmail" value="sendBySMSEmail">
+                        <input class="form-check-input required" type="radio" name="sendOption" required
+                          id="sendBySMSEmail" value="sendBySMSEmail">
                         <label class="form-check-label" for="sendBySMSEmail">By SMS and Email</label>
                       </div>
                     </div>
@@ -326,7 +342,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         </div> <!-- .col-12 -->
       </div> <!-- .row -->
   </div> <!-- .container-fluid -->
-  <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+  <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -354,7 +371,8 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
       </div>
     </div>
   </div>
-  <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+  <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -462,7 +480,7 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
 
   <script>
     // Add event listener to the multi-select dropdown
-    document.getElementById('recipients').addEventListener('change', function() {
+    document.getElementById('recipients').addEventListener('change', function () {
       // Get the count of selected options
       var selectedCount = this.selectedOptions.length;
       // Update the count in the span element
@@ -552,42 +570,42 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
         [{
-            'header': 1
-          },
-          {
-            'header': 2
-          }
+          'header': 1
+        },
+        {
+          'header': 2
+        }
         ],
         [{
-            'list': 'ordered'
-          },
-          {
-            'list': 'bullet'
-          }
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }
         ],
         [{
-            'script': 'sub'
-          },
-          {
-            'script': 'super'
-          }
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }
         ],
         [{
-            'indent': '-1'
-          },
-          {
-            'indent': '+1'
-          }
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }
         ], // outdent/indent
         [{
           'direction': 'rtl'
         }], // text direction
         [{
-            'color': []
-          },
-          {
-            'background': []
-          }
+          'color': []
+        },
+        {
+          'background': []
+        }
         ], // dropdown with defaults from theme
         [{
           'align': []
@@ -602,14 +620,14 @@ $content = isset($_COOKIE['content']) ? $_COOKIE['content'] : '';
       });
     }
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    (function () {
       'use strict';
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
             if (form.checkValidity() === false) {
               event.preventDefault();
               event.stopPropagation();

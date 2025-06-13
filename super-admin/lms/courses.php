@@ -24,24 +24,25 @@
       border-radius: 8px;
       transition: transform 0.3s ease;
     }
-    
+
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
-    
+
     .stat-card-icon {
       font-size: 2rem;
       opacity: 0.3;
     }
-    
+
     .action-buttons .btn {
       padding: 0.25rem 0.5rem;
       font-size: 0.875rem;
     }
-    
+
     .modal-xl {
-      max-width: 90%; /* Adjust width as needed */
+      max-width: 90%;
+      /* Adjust width as needed */
     }
   </style>
 </head>
@@ -74,7 +75,8 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
               <?php if ($gender == 'Female') { ?>
                 <img src="../../uploads/staff-profiles/2.jpeg" alt="..." class="avatar-img rounded-circle">
@@ -96,7 +98,7 @@
         </li>
       </ul>
     </nav>
-    
+
     <aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
       <a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
         <i class="fe fe-x"><span class="sr-only"></span></i>
@@ -164,8 +166,8 @@
             </a>
           </li>
         </ul>
- <!-- Lesson Materials -->
- <p class="text-muted nav-heading mt-4 mb-1">
+        <!-- Lesson Materials -->
+        <p class="text-muted nav-heading mt-4 mb-1">
           <span>Lesson Materials</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
@@ -208,7 +210,7 @@
         </ul>
       </nav>
     </aside>
-    
+
     <main role="main" class="main-content">
       <div class="container-fluid">
         <div class="row justify-content-center">
@@ -223,7 +225,7 @@
                 </button>
               </div>
             </div>
-            
+
             <!-- Stats Cards Row -->
             <div class="row mb-4">
               <?php
@@ -232,20 +234,20 @@
                 // Total Courses
                 $stmt = $pdo->query("SELECT COUNT(*) as total_courses FROM courses");
                 $total_courses = $stmt->fetch(PDO::FETCH_ASSOC)['total_courses'];
-                
+
                 // Total Students Enrolled
                 $stmt = $pdo->query("SELECT COUNT(DISTINCT student_id) as total_students FROM student_courses");
                 $total_students = $stmt->fetch(PDO::FETCH_ASSOC)['total_students'] ?? 0;
-                
+
               } catch (PDOException $e) {
                 // Default values if query fails
                 $total_courses = 0;
                 $total_students = 0;
               }
               ?>
-              
+
               <!-- Total Courses Card -->
-              <div class="col-md-6 col-xl-3 mb-4">
+              <div class="col-md-6 col-xl-6 mb-4">
                 <div class="card shadow">
                   <div class="card-body">
                     <div class="row align-items-center">
@@ -263,9 +265,9 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Students Enrolled Card -->
-              <div class="col-md-6 col-xl-3 mb-4">
+              <div class="col-md-6 col-xl-6 mb-4">
                 <div class="card shadow">
                   <div class="card-body">
                     <div class="row align-items-center">
@@ -284,7 +286,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Courses Table -->
             <div class="row">
               <div class="col-md-12 mb-4">
@@ -320,7 +322,7 @@
                               ORDER BY c.created_at DESC
                             ");
                             $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            
+
                             if (empty($courses)) {
                               echo '<tr><td colspan="8" class="text-center text-muted">No courses found.</td></tr>';
                             } else {
@@ -379,7 +381,8 @@
   </div>
 
   <!-- Add Course Modal -->
-  <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="addCourseModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="addCourseModalLabel"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -409,7 +412,7 @@
                     try {
                       $stmt = $pdo->query("SELECT id, name FROM curriculum_types ORDER BY name");
                       $types = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                      
+
                       foreach ($types as $type) {
                         echo '<option value="' . $type['id'] . '">' . htmlspecialchars($type['name']) . '</option>';
                       }
@@ -451,7 +454,8 @@
   </div>
 
   <!-- Edit Course Modal -->
-  <div class="modal fade" id="editCourseModal" tabindex="-1" role="dialog" aria-labelledby="editCourseModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="editCourseModal" tabindex="-1" role="dialog" aria-labelledby="editCourseModalLabel"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -481,7 +485,7 @@
                     try {
                       $stmt = $pdo->query("SELECT id, name FROM curriculum_types ORDER BY name");
                       $types = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                      
+
                       foreach ($types as $type) {
                         echo '<option value="' . $type['id'] . '">' . htmlspecialchars($type['name']) . '</option>';
                       }
@@ -523,7 +527,8 @@
   </div>
 
   <!-- Delete Confirmation Modal -->
-  <div class="modal fade" id="deleteCourseModal" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="deleteCourseModal" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -536,7 +541,8 @@
           <input type="hidden" id="deleteCourseId" name="course_id">
           <div class="modal-body">
             <p>Are you sure you want to delete this course? This action cannot be undone.</p>
-            <p class="text-danger"><strong>Warning:</strong> All related topics, materials, and enrollments will also be deleted.</p>
+            <p class="text-danger"><strong>Warning:</strong> All related topics, materials, and enrollments will also be
+              deleted.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -554,45 +560,45 @@
   <script src="../js/jquery.dataTables.min.js"></script>
   <script src="../js/dataTables.bootstrap4.min.js"></script>
   <script src="../js/apps.js"></script>
-  
+
   <script>
-$(document).ready(function() {
-    // Initialize DataTable
-    $('#coursesTable').DataTable({
+    $(document).ready(function () {
+      // Initialize DataTable
+      $('#coursesTable').DataTable({
         autoWidth: true,
         "lengthMenu": [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"]
+          [10, 25, 50, -1],
+          [10, 25, 50, "All"]
         ]
-    });
-    
-    // Thumbnail preview for add course
-    $('#thumbnail').change(function() {
+      });
+
+      // Thumbnail preview for add course
+      $('#thumbnail').change(function () {
         var file = this.files[0];
         if (file) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#thumbnailPreview').html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 150px;">')
-                                    .removeClass('d-none');
-            }
-            reader.readAsDataURL(file);
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#thumbnailPreview').html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 150px;">')
+              .removeClass('d-none');
+          }
+          reader.readAsDataURL(file);
         }
-    });
-    
-    // Thumbnail preview for edit course
-    $('#editThumbnail').change(function() {
+      });
+
+      // Thumbnail preview for edit course
+      $('#editThumbnail').change(function () {
         var file = this.files[0];
         if (file) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#editThumbnailPreview').html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 150px;">');
-            }
-            reader.readAsDataURL(file);
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#editThumbnailPreview').html('<img src="' + e.target.result + '" class="img-fluid" style="max-height: 150px;">');
+          }
+          reader.readAsDataURL(file);
         }
-    });
-    
-    // Edit Course Button Click
-    $('.edit-course').click(function() {
+      });
+
+      // Edit Course Button Click
+      $('.edit-course').click(function () {
         var courseId = $(this).data('id');
         var courseName = $(this).data('name');
         var courseCode = $(this).data('code');
@@ -600,104 +606,104 @@ $(document).ready(function() {
         var level = $(this).data('level');
         var description = $(this).data('description');
         var thumbnail = $(this).data('thumbnail');
-        
+
         $('#editCourseId').val(courseId);
         $('#editCourseName').val(courseName);
         $('#editCourseCode').val(courseCode);
         $('#editCurriculumType').val(curriculumTypeId);
         $('#editLevel').val(level);
         $('#editDescription').val(description);
-        
+
         // Set thumbnail preview if exists
         if (thumbnail) {
-            $('#editThumbnailPreview').html('<img src="../' + thumbnail + '" class="img-fluid" style="max-height: 150px;">');
+          $('#editThumbnailPreview').html('<img src="../' + thumbnail + '" class="img-fluid" style="max-height: 150px;">');
         } else {
-            $('#editThumbnailPreview').html('');
+          $('#editThumbnailPreview').html('');
         }
-        
+
         $('#editCourseModal').modal('show');
-    });
-    
-    // Delete Course Button Click
-    $('.delete-course').click(function() {
+      });
+
+      // Delete Course Button Click
+      $('.delete-course').click(function () {
         var courseId = $(this).data('id');
         $('#deleteCourseId').val(courseId);
         $('#deleteCourseModal').modal('show');
-    });
-    
-    // Form submission handling with AJAX
-    $('#addCourseForm, #editCourseForm, #deleteCourseForm').submit(function(e) {
+      });
+
+      // Form submission handling with AJAX
+      $('#addCourseForm, #editCourseForm, #deleteCourseForm').submit(function (e) {
         e.preventDefault();
         var form = $(this);
         var url = form.attr('action');
         var formData = new FormData(form[0]); // Use FormData to handle file uploads
         var submitBtn = form.find('button[type="submit"]');
-        
+
         // Disable submit button to prevent multiple submissions
         submitBtn.prop('disabled', true);
         submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
-        
+
         $.ajax({
-            type: "POST",
-            url: url,
-            data: formData,
-            processData: false, // Don't process the files
-            contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-            dataType: 'json', // Expect JSON response
-            success: function(response) {
-                if (response.success) {
-                    // Show success message with toast notification
-                    showToast('success', response.message);
-                    // Reload the page after 1.5 seconds to see changes
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1500);
-                } else {
-                    // Show error message
-                    showToast('danger', response.message || 'An error occurred');
-                }
-            },
-            error: function(xhr, status, error) {
-                var errorMessage = 'An error occurred';
-                try {
-                    var response = JSON.parse(xhr.responseText);
-                    errorMessage = response.message || errorMessage;
-                } catch (e) {
-                    errorMessage = xhr.statusText || errorMessage;
-                }
-                showToast('danger', errorMessage);
-            },
-            complete: function() {
-                submitBtn.prop('disabled', false);
-                submitBtn.html(form.attr('id') === 'deleteCourseForm' ? 'Delete Course' : 'Save Course');
+          type: "POST",
+          url: url,
+          data: formData,
+          processData: false, // Don't process the files
+          contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+          dataType: 'json', // Expect JSON response
+          success: function (response) {
+            if (response.success) {
+              // Show success message with toast notification
+              showToast('success', response.message);
+              // Reload the page after 1.5 seconds to see changes
+              setTimeout(function () {
+                location.reload();
+              }, 1500);
+            } else {
+              // Show error message
+              showToast('danger', response.message || 'An error occurred');
             }
+          },
+          error: function (xhr, status, error) {
+            var errorMessage = 'An error occurred';
+            try {
+              var response = JSON.parse(xhr.responseText);
+              errorMessage = response.message || errorMessage;
+            } catch (e) {
+              errorMessage = xhr.statusText || errorMessage;
+            }
+            showToast('danger', errorMessage);
+          },
+          complete: function () {
+            submitBtn.prop('disabled', false);
+            submitBtn.html(form.attr('id') === 'deleteCourseForm' ? 'Delete Course' : 'Save Course');
+          }
         });
-    });
-    
-    // Toast notification function
-    function showToast(type, message) {
+      });
+
+      // Toast notification function
+      function showToast(type, message) {
         var toast = $('<div class="toast align-items-center text-white bg-' + type + ' border-0" role="alert" aria-live="assertive" aria-atomic="true">' +
-                     '<div class="d-flex">' +
-                     '<div class="toast-body">' + message + '</div>' +
-                     '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>' +
-                     '</div></div>');
-        
+          '<div class="d-flex">' +
+          '<div class="toast-body">' + message + '</div>' +
+          '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>' +
+          '</div></div>');
+
         $('#toastContainer').append(toast);
         var bsToast = new bootstrap.Toast(toast[0]);
         bsToast.show();
-        
+
         // Remove toast after it hides
-        toast.on('hidden.bs.toast', function() {
-            $(this).remove();
+        toast.on('hidden.bs.toast', function () {
+          $(this).remove();
         });
-    }
-    
-    // Add toast container if it doesn't exist
-    if ($('#toastContainer').length === 0) {
+      }
+
+      // Add toast container if it doesn't exist
+      if ($('#toastContainer').length === 0) {
         $('body').append('<div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>');
-    }
-});
-</script>
-<?php require_once('./lms-footer.php'); ?>
-<!-- </body>
+      }
+    });
+  </script>
+  <?php require_once('./lms-footer.php'); ?>
+  <!-- </body>
 </html> -->
